@@ -186,3 +186,13 @@ def test_la_linea_de_comandos_prueba_la_restauracion_completa(juguete, monkeypat
     monkeypatch.setattr(r, "BRONCE", juguete)
     assert r.main(["probar"]) == 0
     assert '"ok": true' in capsys.readouterr().out
+
+
+def test_el_hash_de_la_copia_externa_citado_en_seguridad_es_el_del_manifiesto_versionado():
+    """§6.3 de seguridad.md cita el SHA-256 del zip que A verificó en la copia externa (2026-11-15): debe ser el del manifiesto versionado."""
+    import json
+    from pathlib import Path
+    raiz = Path(__file__).resolve().parents[1]
+    manifiesto = json.loads((raiz / "calidad" / "evidencia" / "bronce-manifiesto-20261114.json").read_text(encoding="utf-8"))
+    texto = (raiz / "docs" / "E1" / "seguridad.md").read_text(encoding="utf-8")
+    assert manifiesto["zip"]["sha256"] in texto and manifiesto["zip"]["sha256"].upper() in texto
