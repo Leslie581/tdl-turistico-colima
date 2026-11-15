@@ -17,7 +17,7 @@ Que los datos de DATATUR y DENUE viajen de bronce a oro sin intervención, con u
 
 **Autoría de `9489dc5`.** Git registra a Leslie Valadez como autora y comitente del MVP del tablero (`9489dc5`) y a `eimymuz` como autora de `80d8b5b` y `eb8f606`. Git no dice quién redactó qué dentro de `9489dc5`: la documentación lo atribuía a un trabajo de B y el commit se publicó desde la cuenta de A. Aquí solo se afirma lo que Git registra; la contribución técnica de cada una consta en su PSP y en su defensa.
 
-**Tiempo por bloque (PSP).** Ningún tiempo de A se midió: sus **960 min de E1** (16 h; la versión etiquetada decía 1,380) son una estimación retrospectiva de su dedicación personal: 870 del desarrollo original (contrato 45, pipeline 165, transformaciones 120, exploración y tablero 105, seguridad 60, pruebas y CI 90, respaldo 30, auditorías y correcciones 120, documentación y SQA 90, relatoría 45) y 90 de las mejoras de E1; con E0, 1,710 min ([CSV](../calidad/tiempo-integrante-a.csv)). B: 118 min en 23 intervalos con inicio y fin ([CSV](../calidad/tiempo-integrante-b.csv)), confirmados en su Auditoría 8.
+**Tiempo por bloque (PSP).** Los tiempos de A son estimaciones retrospectivas de su dedicación personal: 960 min de E1 (contrato 45, pipeline 165, transformaciones 120, exploración y tablero 105, seguridad 60, pruebas y CI 90, respaldo 30, auditorías y correcciones 120, documentación y SQA 90, relatoría 45 y 90 de las mejoras de E1); con E0, 1,710 min ([CSV](../calidad/tiempo-integrante-a.csv)). B: 118 min en 23 intervalos con inicio y fin ([CSV](../calidad/tiempo-integrante-b.csv)).
 
 ## 3. Qué decidimos y por qué
 - **Elegir por RMSE con Ljung-Box como filtro**, fijado antes de comparar: ganó SARIMA(1,1,1)(0,1,1)₁₂ + `d_covid` (RMSE 2.64 pp). Se descartó elegir por MAE, que habría favorecido al ingenuo estacional (2.20 contra 2.38).
@@ -26,9 +26,8 @@ Que los datos de DATATUR y DENUE viajen de bronce a oro sin intervención, con u
 - **MTBF solo exploratorio**: con un incidente y 3.83 días de bitácora no es una medición.
 
 ## 4. Qué salió mal y cómo lo corregimos
-- **Doce PR de E1 se fusionaron sin revisión previa** (once hacia `main`, #7 a #16 y #18, en 9 a 68 s, y el #17 por error hacia la rama de integración), aunque el plan lo prohibía; el #18, el cierre definitivo, llegó a `main` 12 s después de abrirse sin la aprobación de B prevista. La protección de `main` **no está configurada**.
+- **Revisión de PR:** doce PR de E1 se fusionaron sin la revisión previa que fija el plan; las revisiones son posteriores (detalle en [`plan_sqa.md`](E1/plan_sqa.md) §5.1).
 - **El CI de `main` estuvo en rojo** (3 de 30 ejecuciones) por una prueba del tablero que dependía de `__pycache__` (defecto 22 de A); B la corrigió en `eb8f606` y `main` volvió a verde; el CI nuevo pasó en GitHub (ejecuciones 43557153021 y 43557683882).
-- **La URL pública servía una versión anterior** (03:09 UTC del 14-nov); tras reconfigurar el despliegue desde `main`, a las 04:25 UTC sirve la integrada.
 - **La bitácora no llega a 7 días** (3.83): éxito 85.7 % (6/7), objetivo del 95 % **no cumplido**; no hay historia real recuperable de Actions.
 - **Faltaban requisitos del PDF** que la auditoría final detectó y se implementaron; la discretización supervisada **no generalizó a 2024** (exactitud 0.50 frente a 0.75) y se declara así.
 

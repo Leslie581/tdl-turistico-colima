@@ -60,66 +60,41 @@ Tiempo y defectos por fase (PSP), tasa de éxito de la captura, MTTR/MTBF (cuand
 ## 5. Revisiones y auditorías
 | Actividad | Estado | Evidencia |
 |---|---|---|
-| Revisión recíproca **previa** a la fusión de cada PR (regla de `plan_trabajo.md` §3) | **NO CUMPLIDA** en los PR #7 a #16 (los nueve de E1) | API de GitHub (2026-11-14): 0 revisiones; fusionados 15, 68, 12, 37, 9, 13, 25, 19 y 11 s después de abrirse, desde la cuenta `Leslie581`. Detalle y excepción en §5.1 |
-| Auditorías posteriores de B sobre pull requests de A | **REALIZADAS** (con asistencia de Claude Code, declarada): Auditoría 3 (PR #8), Auditoría 4 (PR #10) y Auditoría 5 (PR #11), las tres **integradas en `main`** (la 5, por el PR #13) | [`auditorias.md`](../../calidad/auditorias.md) |
-| Auditorías de E0 (PR #1 y parte técnica de A) | **REALIZADAS** | `auditorias.md`, auditorías 1 y 2 |
-| Revisión de A sobre el cierre estadístico de B (PR #12) | **REALIZADA y registrada como Auditoría 6** en `auditorias.md` **en la rama `e1/cierre-documental`** (sin commit ni fusión todavía) | [`auditorias.md`](../../calidad/auditorias.md), «Auditoría 6» |
-| Revisión de A sobre el PR #15 (cierre del tablero de B) | **REALIZADA y registrada como Auditoría 7** en `auditorias.md` **en la rama `e1/cierre-documental`** (sin commit ni fusión todavía); **posterior** a la fusión | [`auditorias.md`](../../calidad/auditorias.md), «Auditoría 7» |
-| Revisión de A sobre los PR #7, #9, #13 y #14 (contrato, laboratorio base, auditoría 5 de B y tablero MVP) | **No registrada** | — |
-| Lista de verificación común | **IMPLEMENTADA** | [`lista_verificacion_auditoria.md`](../../calidad/lista_verificacion_auditoria.md) |
-**Procedimiento (cada conjunto de cambios):** (1) la autora abre un PR y no lo fusiona; (2) la otra integrante aplica la lista de verificación, ejecuta las pruebas y registra hallazgos con archivo, línea, severidad (crítico, mayor o menor) y evidencia en `auditorias.md`; (3) la autora corrige y registra sus defectos propios; (4) se fusiona solo con CI en verde y la revisión registrada; (5) quien revisa registra su tiempo; quien corrige, el suyo. **No implementado:** la protección de `main` (revisión obligatoria y CI en verde, con una excepción para el bot de captura) **no se puede verificar ni activar sin permisos de administración**.
+| Revisión recíproca previa a la fusión de cada PR (regla de `plan_trabajo.md` §3) | No registrada en los PR #7 a #18; las revisiones son posteriores (§5.1) | API de GitHub (2026-11-14): 0 revisiones en esos PR |
+| Auditorías de E0 (PR #1 y parte técnica de A) | Realizadas | [`auditorias.md`](../../calidad/auditorias.md), Auditorías 1 y 2 |
+| Auditorías de B sobre PR de A | Realizadas: Auditoría 3 (PR #8), 4 (PR #10), 5 (PR #11) y 8 (cierre documental, PR #16) | [`auditorias.md`](../../calidad/auditorias.md) |
+| Auditorías de A sobre PR de B | Realizadas: Auditoría 6 (PR #12) y 7 (PR #15) | [`auditorias.md`](../../calidad/auditorias.md) |
+| Revisión de los PR #7, #9, #13 y #14 | Sin auditoría registrada | — |
+| Lista de verificación común | Implementada | [`lista_verificacion_auditoria.md`](../../calidad/lista_verificacion_auditoria.md) |
+Las auditorías se hicieron con asistencia de Claude Code, declarada en cada una; esa asistencia no cuenta como revisión independiente.
+**Procedimiento:** (1) la autora abre un PR; (2) la otra integrante aplica la lista de verificación, ejecuta las pruebas y registra hallazgos con archivo, línea, severidad (crítico, mayor o menor) y evidencia en `auditorias.md`; (3) la autora corrige y registra sus defectos; (4) se fusiona con CI en verde y la revisión registrada; (5) cada quien registra su propio tiempo. El procedimiento vigente desde E2 está en §5.2.
 
-### 5.1 Fusiones sin revisión previa, acción correctiva de proceso y excepción de E1
-**Hecho verificado (API pública de GitHub, 2026-11-14):** los nueve pull requests de E1 (#7 a #16) se fusionaron **antes** de cualquier revisión recíproca, con 0 revisiones registradas y desde la cuenta `Leslie581`. Las Auditorías 3, 4 y 5 señalaron el problema para los #8 a #11; las Auditorías 6 y 7 lo señalan para los #12 y #15; y los #13 y #14 (fusionados después) y el #7 (anterior) repiten la misma práctica:
-| PR | Contenido | Autora | Abierto → fusionado | Revisión recíproca posterior registrada |
+### 5.1 Desviaciones del proceso de revisión y acción correctiva
+Doce PR de E1 se fusionaron sin revisión previa registrada en GitHub: once hacia `main` (#7 a #16 y #18) y uno hacia una rama de integración (#17). Las Auditorías 3 a 7 lo registraron como el defecto de proceso D1. El plan de trabajo (§3) establece que todo cambio se integra por PR revisado por la otra integrante; esa regla interna no se aplicó antes de fusionar.
+| PR | Contenido | Autora | Abierto → fusionado | Revisión posterior |
 |---|---|---|---|---|
-| #7 | Contrato de datos (L0) | A | 15 s | **No registrada** |
+| #7 | Contrato de datos (L0) | A | 15 s | No registrada |
 | #8 | Pipeline (L1) | A | 68 s | Auditoría 3 (B) |
-| #9 | Laboratorio de pronósticos | B | 12 s | **No registrada** por A para este PR |
+| #9 | Laboratorio de pronósticos | B | 12 s | No registrada |
 | #10 | L2: exploración, transformaciones y CI | A | 37 s | Auditoría 4 (B) |
-| #11 | L3: calidad, fiabilidad, seguridad y plan SQA | A | 9 s | Auditoría 5 (B), integrada en `main` por el PR #13 |
-| #12 | Cierre estadístico | B | 13 s | Auditoría 6 (A), registrada en la rama `e1/cierre-documental`, **sin fusionar todavía** |
-| #13 | Auditoría 5 de B | B | 25 s | **No registrada** |
-| #14 | Tablero (MVP) | B (trabajo de B; el commit figura a nombre de A por haberse publicado desde la máquina de A) | 19 s | **No registrada**; además dejó el CI de `main` en rojo (§6) |
-| #15 | Cierre del tablero y corrección de la prueba | B | 11 s | Auditoría 7 (A), registrada en la rama `e1/cierre-documental`, **sin fusionar todavía** |
-| #16 | Cierre documental y requisitos pendientes (commit `7f8f315`) | A | 13 s (04:38:45 → 04:38:58 UTC del 14-nov) | **0 revisiones en GitHub.** La revisión de B sobre `4242ea5` es su Auditoría 8, registrada por ella fuera del PR (no se transcribe aquí); las correcciones posteriores van en un PR nuevo |
-| #17 | Auditoría 8 de B | B | 12 s (05:07:01 → 05:07:13 UTC del 14-nov) | **0 revisiones.** Distinto de los anteriores: base `e1/cierre-documental`, **no `main`**, y lo fusionó A **por error** (§5.1, «Desviación adicional») |
-| #18 | Cierre definitivo de E1 (head `99c3160`, con la Auditoría 8 y el PSP de A) | A | 12 s (05:14:26 → 05:14:38 UTC del 14-nov) | **0 revisiones**; fusionado a `main` (`3c6cf42`) **antes** de la aprobación de B, que sí se había previsto como condición (§5.1, «Desviación adicional») |
-Es el defecto de proceso **D1 de las Auditorías 3 a 7**, recurrente. El plan de trabajo (§3) pedía que desde E1 todo cambio se integrara por pull request **revisado por la otra integrante**; no se cumplió.
+| #11 | L3: calidad, fiabilidad, seguridad y plan SQA | A | 9 s | Auditoría 5 (B) |
+| #12 | Cierre estadístico | B | 13 s | Auditoría 6 (A) |
+| #13 | Auditoría 5 de B | B | 25 s | No registrada |
+| #14 | Tablero (MVP) | B (el commit figura a nombre de A) | 19 s | No registrada; el CI de `main` quedó en rojo (§6) |
+| #15 | Cierre del tablero y corrección de la prueba | B | 11 s | Auditoría 7 (A) |
+| #16 | Cierre documental y requisitos pendientes | A | 13 s | Auditoría 8 (B) |
+| #17 | Auditoría 8 de B (hacia `e1/cierre-documental`, no llegó a `main`) | B | 12 s | Revisión de A: no registrada en el PR |
+| #18 | Cierre definitivo de E1 (`99c3160`; merge `3c6cf42`) | A | 12 s | B aprobó el PR #19 (`ceb9d97`), que registra esta fusión |
+Las desviaciones 1 a 10 son los PR #7 a #16; la 11.ª es el PR #17 y la 12.ª es el PR #18. Fusión de cada PR: 2026-11-13 hora local; el contenido de `calidad/auditorias.md` en `e1/cierre-documental` es idéntico al de `1e59f5f`.
+**Acción correctiva:** (1) la autora abre el PR y no lo fusiona; (2) la otra integrante deja una revisión visible en el PR y registra los hallazgos en `auditorias.md`; (3) se fusiona con CI en verde y esa revisión; (4) antes de cada etiqueta se consultan las revisiones de los PR fusionados (`https://api.github.com/repos/Leslie581/tdl-turistico-colima/pulls/<n>/reviews`). En el repositorio están [`.github/pull_request_template.md`](../../.github/pull_request_template.md) y [`.github/CODEOWNERS`](../../.github/CODEOWNERS), comprobados por una prueba.
+**Protección de `main`:** el ruleset `proteger-main` está importado en GitHub con la captura diaria como excepción (llave de despliegue) y su estado es Disabled; falta activarlo y probar la captura y un PR bloqueado ([`seguridad.md`](seguridad.md) §7). Mientras tanto `protected` es `false`.
 
-**Desviación adicional (11.ª), distinta de las diez anteriores.** El **PR #17** (Auditoría 8 de B, rama `e1/eimy-auditoria-8`, commit `1e59f5f`) se abrió el 2026-11-14 a las 05:07:01 UTC y la integrante A lo **fusionó por error** a las 05:07:13 UTC (merge `bbaf187`, 23:07 hora local), **12 s después de abrirlo y antes de registrar su aprobación formal en GitHub** (0 revisiones). Qué lo distingue y qué no:
-| | Los diez anteriores (#7 a #16) | El #17 |
-|---|---|---|
-| Destino | `main` | `e1/cierre-documental` (rama de integración; **no llegó a `main`**) |
-| Contenido | Código, datos y documentación de la entrega | Solo `calidad/auditorias.md` (+64 líneas: la Auditoría 8) |
-| Qué faltó | Revisión recíproca previa registrada | La **aprobación formal de A en GitHub** (B es la autora; la revisión que importa es la de A sobre un texto de B) |
-| Cómo se subsana | Revisiones posteriores (Auditorías 3 a 8) | La integrante A valida la Auditoría 8 y deja su revisión en el PR #17 **como posterior**; no se simula una aprobación previa ni se revierte la fusión |
-| Control que aún queda | Protección de `main` (no activada) | El **PR definitivo hacia `main`** lo debe revisar y aprobar B antes de fusionarlo |
-**Hecho verificado:** el contenido de `calidad/auditorias.md` en `e1/cierre-documental` es idéntico, línea por línea, al de `1e59f5f`. No se rehace ni se duplica la Auditoría 8. En total, con el #18, son **doce PR de E1 fusionados sin revisión previa registrada en GitHub**: once hacia `main` (#7 a #16 y #18) y uno hacia una rama de integración (#17).
-
-**Desviación adicional (12.ª): el PR definitivo.** El PR #18 (cierre definitivo, head `99c3160`): abierto el 2026-11-14 a las 05:14:26 UTC y fusionado a `main` a las 05:14:38 UTC (merge `3c6cf42`, 23:14 hora local) por la cuenta `Leslie581`, **12 s después de abrirlo y con 0 revisiones en GitHub**. Es la **única desviación que contradice una condición que el propio equipo había fijado**: que la integrante B revisara y aprobara el PR definitivo hacia `main` antes de fusionarlo (la Auditoría 8 de B revisó `4242ea5`, `7f8f315` y `372a6ab`, **no** `99c3160`). Lo que sí consta: el CI del commit fusionado pasó en GitHub (ejecución 43560214623, éxito) y B revisó el contenido anterior; el commit `99c3160` solo agrega el PSP de A, la incorporación de la Auditoría 8 y las correcciones m1 a m3 que B pidió. **No se simula una aprobación previa de B**; su revisión del PR #18 será **posterior** y debe registrarse como tal.
-
-**Protección de ramas: NO configurada.** El 2026-11-13 a las 19:14 UTC la API pública de GitHub devolvía para `main` `protected: false`, sin comprobaciones obligatorias y sin reglas ni *rulesets* activos. **No hay ninguna protección configurada.** Activarla (revisión obligatoria de 1 aprobación y CI en verde antes de fusionar, con una excepción para el bot de captura, riesgo R2 de `riesgos.md`) **requiere permisos de administración y no se ha hecho**; mientras no exista, el cumplimiento depende solo de la disciplina del equipo.
-
-**Acción correctiva de proceso (PREPARADA en el repositorio; falta solo la conformidad personal de ambas y la protección de `main`, que requiere administración):**
-1. La autora abre el pull request y **no lo fusiona**.
-2. La otra integrante deja una **revisión visible en el pull request** (aprobación o comentarios) y, cuando haya hallazgos, la registra en `calidad/auditorias.md`.
-3. Se fusiona solo con CI en verde y esa revisión; **no se fusiona el mismo día en segundos**.
-4. Antes de cada etiqueta se comprueba la lista de pull requests fusionados y sus revisiones: `curl -s https://api.github.com/repos/Leslie581/tdl-turistico-colima/pulls/<n>/reviews` (0 = no hay revisión previa).
-5. Si se activa la protección de `main`, se anota la fecha y se verifica con `GET /branches/main` (campo `protected`).
-
-**Lo que ya está en el repositorio (2026-11-14):** [`.github/pull_request_template.md`](../../.github/pull_request_template.md) (lista de revisión recíproca que aparece en cada PR: la autora no fusiona, la otra deja una revisión visible antes de fusionar, hallazgos a `auditorias.md`, CI en verde y PSP propio) y [`.github/CODEOWNERS`](../../.github/CODEOWNERS) (las dos integrantes como revisoras de todo cambio). Una prueba los comprueba. **Lo que falta:** (a) activar el *ruleset* de `main` con «Require review from Code Owners» y los cuatro trabajos del CI como comprobaciones obligatorias ([`seguridad.md`](seguridad.md) §7, con la advertencia sobre la captura diaria); (b) la **conformidad personal** de las dos integrantes, que no puede darse por escrito aquí:
-
-| Conformidad con la acción correctiva y con la excepción de E1 (§5.1) | Fecha |
+| Conformidad con el plan SQA y la acción correctiva | Fecha |
 |---|---|
-| Leslie Valadez Macías (A): ☒ **conforme** con el plan SQA v1.1, con la acción correctiva preparada y con el **reconocimiento formal** de que los diez PR de E1 (#7 a #16) se fusionaron sin revisión previa registrada en GitHub, contra la regla de `plan_trabajo.md` §3 (comunicado por Leslie en la conversación de trabajo; no es una firma manuscrita) | 2026-11-13 |
-| Eimy Melissa Urbina Meza (B): ☒ **conforme** (su Auditoría 8 (commit `1e59f5f`, incorporada en `e1/cierre-documental` por el PR #17, merge `bbaf187`)): aceptó el plan SQA v1.1 con el reconocimiento formal de la desviación de E1 (diez PR, #7 a #16, fusionados sin revisión previa; no se atribuye autorización a los docentes) y acordó como acción correctiva las **revisiones previas obligatorias** | 2026-11-13 |
+| Leslie Valadez Macías (A): conforme con el plan SQA v1.1, la acción correctiva y el reconocimiento de las desviaciones de §5.1 | 2026-11-13 |
+| Eimy Melissa Urbina Meza (B): conforme (Auditoría 8, commit `1e59f5f`, incorporada por el PR #17, merge `bbaf187`) con el plan SQA v1.1, el reconocimiento de las desviaciones y las revisiones previas obligatorias; la conformidad con la relatoría consta en la aprobación del PR #19 | 2026-11-13 |
 
-**Excepción explícita para la entrega E1 (texto listo; se declara en `docs/E1/ENTREGA.md` cuando ambas den su conformidad en la tabla de arriba):**
-- **Alcance:** el criterio 5 de §7 («cada PR integrado tiene su revisión recíproca registrada») **se incumple** para los PR #7 a #16 y se acepta **solo para la etiqueta `e1`**; no es un precedente para E2.
-- **Razones que se invocarían:** cada fusión tiene una revisión recíproca **posterior** (#11, #12 y #15 en las Auditorías 5, 6 y 7) con ejecución real de pruebas, salvo los PR #7, #9, #13 y #14; las auditorías no hallaron defectos técnicos bloqueantes. **Contra la excepción:** el PR #14 se fusionó 14 s después de abrirse **con el CI fallando** y dejó `main` en rojo, y el PR #15 se fusionó 11 s después de abrirse, antes de que terminara su CI; el CI en verde **no** estuvo garantizado en cada commit fusionado.
-- **Condiciones de cierre:** (a) las Auditorías 5 de B y 6 y 7 de A están en `main`; (b) registrar o declarar pendiente la revisión de A sobre los PR #7, #9, #13 y #14; (c) citar el defecto D1 y esta excepción en la ficha; (d) **no afirmar** que existe protección de ramas.
-- **Lo que la excepción NO cubre:** no reemplaza el control previo; si una revisión posterior hubiera hallado un defecto bloqueante, la etiqueta no se crearía.
+**Excepción para la etiqueta `e1`:** el criterio 5 de §7 (revisión recíproca registrada en cada PR integrado) no se cumple en los PR #7 a #18 y se acepta para esa etiqueta; no se extiende a E2. Cada fusión tiene una auditoría posterior con ejecución de pruebas, salvo los PR #7, #9, #13 y #14, y las auditorías no hallaron defectos técnicos bloqueantes. El CI no estaba en verde al fusionar los PR #14 y #15 (§6).
 
 ### 5.2 Clasificación de las desviaciones y procedimiento definitivo desde E2
 **Qué es y qué no es cada cosa.** (1) **Requisito del PDF** (págs. 16 y 25): plan SQA con estructura IEEE 730, revisiones y auditorías, reporte de problemas y acción correctiva; **el PDF no fija una penalización por cada PR sin aprobación formal**. (2) **Regla interna del equipo** (`plan_trabajo.md` §3): todo PR se aprueba en GitHub por la otra integrante antes de fusionarse. (3) **Buena práctica adicional**: protección de ramas. Las doce desviaciones de §5.1 son **incumplimientos de la regla interna (2)**, no doce incumplimientos independientes del PDF; el efecto sobre la rúbrica es el de **un** proceso de revisión que existió (Auditorías 1 a 8, con pruebas reales) pero que no se aplicó **antes** de fusionar. Ni se ocultan ni se multiplican.

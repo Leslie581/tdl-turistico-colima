@@ -197,7 +197,7 @@ with tab_2025:
     st.subheader("Proyección histórica para 2025")
     st.warning(
         "**Esto es una proyección histórica, no un pronóstico vigente.** Se calculó con la información disponible hasta diciembre de 2024. "
-        "La fuente de datos no incluye valores observados de 2025, por lo que esta proyección no se pudo comparar con la realidad.", icon=None)
+        "La fuente de datos no incluye valores observados de 2025, por lo que esta proyección no puede compararse con valores observados.", icon=None)
     st.altair_chart(gr.grafica_proyeccion(oro, proy), width="stretch")
     st.caption("Línea negra: ocupación observada en 2023 y 2024. Línea morada discontinua: proyección del SARIMA para 2025. Franja morada: intervalo de predicción del 95 %.")
     st.markdown(textos["proyeccion_2025"])

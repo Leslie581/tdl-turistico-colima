@@ -411,7 +411,7 @@ def textos_cliente(d: Datos) -> dict:
         "proyeccion_2025": (
             "**Proyección 2025: una proyección histórica, no un pronóstico vigente.** Se calculó con la información disponible hasta diciembre de 2024, "
             f"que es donde termina la fuente de datos. Cuando se generaron estos resultados ({mes_generacion}) 2025 ya había transcurrido, pero la fuente usada no trae datos observados de 2025, "
-            f"así que esta proyección no se pudo comparar con la realidad. Su valor central anual es {p['media_anual']:.1f} %, con {p['mes_max']} ({p['valor_max']:.1f} %) como el mes más alto "
+            f"así que esta proyección no puede compararse con valores observados. Su valor central anual es {p['media_anual']:.1f} %, con {p['mes_max']} ({p['valor_max']:.1f} %) como el mes más alto "
             f"y {p['mes_min']} ({p['valor_min']:.1f} %) como el más bajo. No debe usarse como una predicción para decisiones de 2026."),
     }
 

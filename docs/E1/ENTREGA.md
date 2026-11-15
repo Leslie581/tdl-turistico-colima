@@ -5,10 +5,10 @@ Repositorio: https://github.com/Leslie581/tdl-turistico-colima (el nombre anteri
 
 ## Resumen en tres líneas
 1. Los datos viajan de bronce a oro sin intervención ([`pipeline.md`](pipeline.md)): 31,147 filas de DATATUR leídas, 2 rechazadas a cuarentena con su motivo, 108 meses de oro para Manzanillo; el tablero publica el pronóstico elegido por su error en 2024 (SARIMA, RMSE 2.64 pp), que **no supera** a la referencia ingenua estacional en MAE ni en MAPE ([`pronostico.md`](pronostico.md) §4).
-2. Calidad medida, no supuesta, y con resultados que **no cumplen** todos los objetivos: tasa de éxito de la captura 85.7 % (6 de 7; objetivo 95 %), bitácora de **3.83 de 7 días**, MTBF y disponibilidad solo como estimación exploratoria ([`fiabilidad.md`](fiabilidad.md)); **doce PR de E1 se fusionaron sin revisión previa registrada en GitHub** (#7 a #16, #17 y #18) y `main` no tiene protección activa ([`plan_sqa.md`](plan_sqa.md) §5.1). El CI de `main` está en **verde** (`ac9c88d`) tras haber estado en rojo con el PR #14.
-3. **La entrega está cerrada:** etiqueta `e1` sobre `134c333` (CI de `main` en verde, ejecución 43561778746), aprobación definitiva de la integrante B en el [PR #19](https://github.com/Leslie581/tdl-turistico-colima/pull/19) y registro en el formulario. Lo que sigue abierto y es una limitación real está en las secciones B a D.
+2. Calidad medida, no supuesta, y con resultados que **no cumplen** todos los objetivos: tasa de éxito de la captura 85.7 % (6 de 7; objetivo 95 %), bitácora de **3.83 de 7 días**, MTBF y disponibilidad solo como estimación exploratoria ([`fiabilidad.md`](fiabilidad.md)). Las desviaciones del proceso de revisión están en [`plan_sqa.md`](plan_sqa.md) §5.1. El CI de `main` está en verde.
+3. Etiqueta `e1` sobre `134c333` (CI de `main` en verde, ejecución 43561778746), relatoría aprobada por la integrante B en el [PR #19](https://github.com/Leslie581/tdl-turistico-colima/pull/19) y enlace registrado en el formulario. Las limitaciones vigentes están en la última sección.
 
-> Esta ficha enlaza solo evidencias que existen en la rama. **PARCIAL**, **NO CUMPLIDO** y **PENDIENTE** significan lo que dicen. El cumplimiento por criterio del PDF, con implementación, pruebas y limitaciones, está en [`matriz_cumplimiento.md`](matriz_cumplimiento.md).
+> Esta ficha enlaza evidencias que existen en el repositorio. El cumplimiento por criterio del PDF, con implementación, pruebas y limitaciones, está en [`matriz_cumplimiento.md`](matriz_cumplimiento.md).
 
 ## Lista de comprobación de entregables
 **Origen:** *PDF* = lo pide el PDF oficial; *Interno* = regla del equipo; *Extra* = buena práctica adicional; *Mejora* = fortalecimiento de E1 que no está en la versión etiquetada (rama `e1/mejoras-postentrega`).
@@ -57,59 +57,52 @@ Repositorio: https://github.com/Leslie581/tdl-turistico-colima (el nombre anteri
 ## Calidad en los Sistemas de Información
 | Criterio de la rúbrica E1 | Evidencia (enlace) | Estado | Nota del equipo |
 |---|---|---|---|
-| *Arranque de calidad* (criterio de la rúbrica de **E0**; la pág. 14 lo lista): registros individuales, bitácora activa, tres objetivos medibles | [`tiempo-integrante-a.csv`](../../calidad/tiempo-integrante-a.csv), [`defectos-integrante-a.csv`](../../calidad/defectos-integrante-a.csv), [`tiempo-integrante-b.csv`](../../calidad/tiempo-integrante-b.csv), [`defectos-integrante-b.csv`](../../calidad/defectos-integrante-b.csv), [`bitacora_capturas.jsonl`](../../calidad/bitacora_capturas.jsonl), [`objetivos.md`](../../calidad/objetivos.md) | **PARCIAL** | A: tiempos **estimados retrospectivamente, no medidos** (E0 750 min; E1 960 min: 870 del desarrollo original en 10 bloques + 90 de las mejoras; acumulado 1,710 min, 1,230 sin el prototipo; minutos de corrección estimados; dedicación **personal** de A, sin tiempo de ejecución autónoma de herramientas; la versión etiquetada decía 1,380 min en E1) ([`psp-e1-integrante-a-respaldo.md`](../../calidad/psp-e1-integrante-a-respaldo.md)). Defectos: A 22 en la entrega (28 desde el 2026-11-14, al agregar 6 de documentación y entorno hallados en la Auditoría 8), B 14. B confirmó sus 118 min en 23 intervalos en su Auditoría 8 (sujeto a que correspondan a sus actividades reales; no se modificaron) |
+| *Arranque de calidad* (criterio de la rúbrica de **E0**; la pág. 14 lo lista): registros individuales, bitácora activa, tres objetivos medibles | [`tiempo-integrante-a.csv`](../../calidad/tiempo-integrante-a.csv), [`defectos-integrante-a.csv`](../../calidad/defectos-integrante-a.csv), [`tiempo-integrante-b.csv`](../../calidad/tiempo-integrante-b.csv), [`defectos-integrante-b.csv`](../../calidad/defectos-integrante-b.csv), [`bitacora_capturas.jsonl`](../../calidad/bitacora_capturas.jsonl), [`objetivos.md`](../../calidad/objetivos.md) | **PARCIAL** | A: E0 750 min y E1 960 min (870 + 90 de las mejoras de E1); acumulado 1,710 min, 1,230 sin el prototipo; tiempos y minutos de corrección estimados retrospectivamente, sin tiempo de ejecución autónoma de herramientas; 28 defectos ([`psp-e1-integrante-a-respaldo.md`](../../calidad/psp-e1-integrante-a-respaldo.md)). B: 118 min en 23 intervalos con inicio y fin; 14 defectos |
 | **Fiabilidad y disponibilidad**: MTBF, MTTR y disponibilidad con 7 días de bitácora | [`fiabilidad.md`](fiabilidad.md), [`fiabilidad_e1.json`](../../calidad/fiabilidad_e1.json), [`pipeline/fiabilidad.py`](../../pipeline/fiabilidad.py), [`test_fiabilidad.py`](../../tests/test_fiabilidad.py) | **PARCIAL** | Medidas con lo que hay: éxito 85.7 % (6/7, IC 95 % 42.1–99.6 %), MTTR 268 s (n = 1, extremos no corroborados). La bitácora cubre **3.83 de 7 días**; MTBF y disponibilidad solo exploratorios (un incidente). **No cumple el objetivo del 95 %** |
-| **Seguridad**: `gitleaks` y `pip-audit` sin hallazgos; respaldo probado | [`seguridad.md`](seguridad.md), [`calidad/evidencia/`](../../calidad/evidencia/), [`test_evidencia_gitleaks.py`](../../tests/test_evidencia_gitleaks.py), [`test_respaldo_bronce.py`](../../tests/test_respaldo_bronce.py), [`test_bloqueo_tablero.py`](../../tests/test_bloqueo_tablero.py) | CUMPLE con salvedades | `gitleaks` 8.30.1 sin hallazgos (local y automatizado en CI); `pip-audit` sin vulnerabilidades, también en las transitivas del tablero; **respaldo del bronce con manifiesto SHA-256 y restauración automatizada probada** (28 archivos); bloqueo con hashes del tablero; acciones fijadas por SHA. Salvedades: el CI nuevo **verificado en GitHub (ejecución 43557153021 de `ci.yml` sobre `4242ea5`: éxito en `calidad`, `auditoria-dependencias`, `bloqueo-tablero` y `secretos`)**, la copia del bronce **estaba en el mismo equipo** en la versión etiquetada (la externa se confirmó el 2026-11-15) y `main` **no tiene protección** |
-| **Requerimientos**: verificables, cada uno con su comprobación | [`requerimientos.md`](requerimientos.md), [`test_requerimientos.py`](../../tests/test_requerimientos.py) | CUMPLE | 43: 35 cumplidos, 3 parciales, 4 no cumplidos, 0 pendientes, 1 propuesto (los 7 últimos revisados técnicamente por B en su Auditoría 8) |
-| **Plan SQA**: estructura IEEE 730 adaptada | [`plan_sqa.md`](plan_sqa.md), [`auditorias.md`](../../calidad/auditorias.md) (Auditorías 1 a 8) | CUMPLE con salvedades | Plan completo (versión 1.1). La acción correctiva de D1 y la excepción de E1 están **preparadas** (plantilla de PR y CODEOWNERS en `.github/`); faltan la conformidad personal de ambas y la protección de `main` |
-| **Integración continua**: pruebas, linter y puerta de datos en cada push | [`ci.yml`](../../.github/workflows/ci.yml), [`test_ci_workflow.py`](../../tests/test_ci_workflow.py), [`pipeline.md`](pipeline.md) §6 | **PARCIAL** | `main` está en **verde** (`ac9c88d`: ejecución 43548657495; `628136b`, tras fusionar el PR #16: 43557697492); de 30 ejecuciones, 3 fallaron (`9489dc5`, corregidas en `eb8f606`). `ci.yml` de esta rama instala las dependencias del tablero y **exige** sus pruebas, mide cobertura (piso de 75 %; medida 84 %), audita el bloqueo y las transitivas del tablero, ejecuta `gitleaks` y fija las acciones por SHA; la suite local da **408 aprobadas y 2 omitidas** (las 2 de red). **Ejecución en GitHub: `ci.yml` pasó en GitHub con los cuatro trabajos (`calidad`, `auditoria-dependencias`, `bloqueo-tablero` y `secretos`) en éxito: ejecución 43557153021 (`4242ea5`), 43557547843 (push) y 43557683882 (pull request) de `7f8f315`, 43557697492 (push a `main`, `628136b`) y 43558845112 (`372a6ab`) y 43559160808 (`1a31012`)** |
+| **Seguridad**: `gitleaks` y `pip-audit` sin hallazgos; respaldo probado | [`seguridad.md`](seguridad.md), [`calidad/evidencia/`](../../calidad/evidencia/), [`test_evidencia_gitleaks.py`](../../tests/test_evidencia_gitleaks.py), [`test_respaldo_bronce.py`](../../tests/test_respaldo_bronce.py), [`test_bloqueo_tablero.py`](../../tests/test_bloqueo_tablero.py) | CUMPLE | `gitleaks` 8.30.1 sin hallazgos (local y CI); `pip-audit` sin vulnerabilidades, también en las transitivas del tablero; respaldo del bronce con manifiesto SHA-256, restauración probada (28 archivos) y copia externa verificada por hash ([`seguridad.md`](seguridad.md) §6.3); bloqueo con hashes del tablero; acciones fijadas por SHA. Protección de `main`: ruleset importado, sin activar ([`seguridad.md`](seguridad.md) §7) |
+| **Requerimientos**: verificables, cada uno con su comprobación | [`requerimientos.md`](requerimientos.md), [`test_requerimientos.py`](../../tests/test_requerimientos.py) | CUMPLE | 43 requerimientos: 35 cumplidos, 3 parciales, 4 no cumplidos, 1 propuesto |
+| **Plan SQA**: estructura IEEE 730 adaptada | [`plan_sqa.md`](plan_sqa.md), [`auditorias.md`](../../calidad/auditorias.md) (Auditorías 1 a 8) | CUMPLE con salvedades | Plan versión 1.1; desviaciones y acción correctiva en §5.1; plantilla de PR y `CODEOWNERS` en `.github/` |
+| **Integración continua**: pruebas, linter y puerta de datos en cada push | [`ci.yml`](../../.github/workflows/ci.yml), [`test_ci_workflow.py`](../../tests/test_ci_workflow.py), [`pipeline.md`](pipeline.md) §6 | CUMPLE | `ci.yml` ejecuta `ruff`, `pytest` con cobertura (piso de 75 %), la puerta de datos, `verificar_oro`, el verificador de E0, `gitleaks`, `pip-audit` y el bloqueo del tablero; acciones fijadas por SHA. Suite: 432 aprobadas y 2 omitidas (red); cobertura 82 %. Ejecuciones en GitHub: 43557153021 (`4242ea5`) y posteriores, con los cuatro trabajos en éxito |
 
 ## Relatoría de etapa
 [`docs/relatoria-E1.md`](../relatoria-E1.md) (máximo dos páginas, verificadas al exportar a PDF A4). Conformidad de A y de B (aprobación del PR #19).
 
 ## Tablero
-- URL: https://tdl-turistico-colima.streamlit.app. Verificada el 2026-11-14 a las 04:25 UTC (2026-11-13, 22:25, hora de la Ciudad de México) en el navegador integrado: la aplicación, desplegada desde `main` con Python 3.13 (declarado por la titular del repositorio), muestra el filtro de periodo, el resumen ejecutivo, las fechas clave y los indicadores 45.9 %, 54.7 %, 1.5 % y 12 de 12; las seis pestañas abren sin errores y la frase que reemplazó el PR #15 ya no aparece.
-- Historial: el 2026-11-14 a las 03:09 UTC la URL todavía servía una versión anterior ([Auditoría 7](../../calidad/auditorias.md), D2); la titular corrigió el despliegue y la lectura de las 04:25 UTC lo confirma.
-- El tablero de `main` coincide con los CSV del laboratorio (recálculo independiente: Auditoría 7, V3 a V5). **No verificado:** vista en un teléfono, ni que el despliegue siga la rama `main` en cada cambio futuro (la configuración de Streamlit Cloud no se puede leer desde el repositorio).
-- Streamlit Community Cloud puede dejar la aplicación en reposo; no es un servicio con disponibilidad garantizada.
+- URL: https://tdl-turistico-colima.streamlit.app, desplegada desde `main` con Python 3.13. Lectura del 2026-11-14 04:25 UTC: filtro de periodo, resumen ejecutivo, fechas clave, indicadores 45.9 %, 54.7 %, 1.5 % y 12 de 12, y seis pestañas sin errores.
+- El tablero coincide con los CSV del laboratorio (recálculo en la Auditoría 7, V3 a V5).
+- No verificado: vista en teléfono y seguimiento de `main` en cada cambio futuro (la configuración de Streamlit Cloud no se lee desde el repositorio). Streamlit Community Cloud puede dejar la aplicación en reposo.
 - Cumplimiento por criterio del PDF, con pruebas y evidencias: [`matriz_cumplimiento.md`](matriz_cumplimiento.md).
 
 ## Issues de la entrega anterior
-La API pública de GitHub (2026-11-14) devuelve **0 issues** en el repositorio (ninguno abierto ni cerrado). No hay observaciones de los docentes registradas como issues; si las dejaron por otro medio, el equipo no las ha recibido. **PENDIENTE:** confirmar con los docentes.
+La API pública de GitHub (2026-11-14) devuelve 0 issues. No hay observaciones de los docentes registradas como issues; la confirmación con los docentes está pendiente.
 
 ## Uso de IA generativa
-Ambas integrantes usaron Claude Code (Anthropic) para escribir y revisar código, pruebas y documentos, ejecutar verificaciones y redactar auditorías; los PSP de B lo marcan fila por fila. La asistencia **no cuenta como revisión independiente**. Cada integrante debe poder explicar lo que entrega en la defensa del 17 y 18 de noviembre.
+Ambas integrantes usaron Claude Code (Anthropic) para escribir y revisar código, pruebas y documentos, ejecutar verificaciones y redactar auditorías; los PSP de B lo marcan fila por fila. La asistencia no cuenta como revisión independiente. Cada integrante debe poder explicar lo que entrega en la defensa del 17 y 18 de noviembre.
 
-## Pendientes declarados
-### A. Obligatorios para la entrega (PDF, págs. 5 y 12; antes de las 23:59 del 13 de noviembre)
-| Pendiente | Estado | Quién |
-|---|---|---|
-| Integración del cierre definitivo en `main` | **Hecha** (PR #18, `3c6cf42`); **sin** la aprobación previa de B (desviación 12.ª). B puede dejar su revisión como **posterior** en el PR #18 | B |
-| **Etiqueta `e1`** sobre un commit de `main` (con esta ficha y la relatoría dentro) | **Creada** (`134c333`, 2026-11-13 23:32 hora local) | A |
-| **Registro del enlace de la etiqueta en el formulario de entregas** (un solo registro; cuenta para las tres materias) | **Registrado por A** (no verificable desde el repositorio) | A |
-| Los tres docentes como colaboradores del repositorio | **Declarado por la titular** (2026-11-13); no verificable desde la API pública | A (comprobarlo en Settings → Collaborators) |
-| Relatoría y registros PSP **de cada integrante** (el tiempo y los defectos son individuales) | Relatoría redactada (2 páginas verificadas); **PSP de A completo** (E0 750 + E1 960 min con las mejoras = 1,710 min; 1,230 sin el prototipo); PSP de B: lo registra B, y su Auditoría 8 confirma sus 118 min | A y B, cada una lo suyo |
-| Conformidad personal con el plan SQA v1.1 y el reconocimiento de los PR sin revisión previa | **A y B: registradas** (2026-11-13; la de B en su Auditoría 8 y, con la relatoría definitiva, en la aprobación del PR #19) ([`plan_sqa.md`](plan_sqa.md) §5.1) | A y B |
-
-### B. Mejoras opcionales (no las exige el PDF)
-| Mejora | Estado |
+## Estado de los requisitos de entrega y limitaciones vigentes
+| Requisito de entrega (PDF, págs. 5 y 12) | Estado |
 |---|---|
-| Protección de `main` con los cuatro trabajos como comprobaciones obligatorias | **Configurada pero no activa** (ruleset importado en GitHub, llave de despliegue como excepción de la captura; declarado por A el 2026-11-15; falta probar la captura y un PR bloqueado; [`seguridad.md`](seguridad.md) §7) |
-| Copia del respaldo del bronce fuera del equipo | **Hecha** (confirmada por A el 2026-11-15; hash del zip coincidente con el manifiesto, [`seguridad.md`](seguridad.md) §6.3) |
-| Hashes para las otras tres listas de dependencias; fijar las imágenes por *digest* | No implementados |
-| Isolation Forest, unión mes a mes, nuevas fuentes | No aplican / no viables |
+| Etiqueta `e1` sobre un commit de `main` | Creada: `134c333`, 2026-11-13 23:32 hora local |
+| Enlace de la etiqueta en el formulario de entregas | Registrado por A; no verificable desde el repositorio |
+| Los tres docentes como colaboradores | Declarado por la titular (2026-11-13); no verificable desde la API pública |
+| Relatoría y registros PSP | Relatoría de 2 páginas; PSP de A con E0 750 + E1 960 min = 1,710 min (1,230 sin el prototipo); PSP de B: 118 min confirmados en la Auditoría 8 |
+| Conformidad con el plan SQA | A y B registradas (2026-11-13), [`plan_sqa.md`](plan_sqa.md) §5.1; relatoría aprobada por B en el PR #19 |
 
-### C. Incumplimientos históricos que ya no se pueden corregir antes de la entrega
-| Incumplimiento | Evidencia |
+| Componente adicional (no lo exige el PDF) | Estado |
 |---|---|
-| Los **once PR de E1 hacia `main` (#7 a #16 y #18)** se fusionaron sin revisión previa registrada en GitHub, contra `plan_trabajo.md` §3; el **#17** (Auditoría 8) se fusionó por error en `e1/cierre-documental` antes de registrar la aprobación de A (no llegó a `main`). El **#18** (cierre definitivo) se fusionó 12 s después de abrirse, **sin la aprobación de B que el equipo había fijado como condición** | [`plan_sqa.md`](plan_sqa.md) §5.1; Auditorías 3 a 7 |
-| El CI de `main` estuvo en rojo (3 ejecuciones del commit `9489dc5`) | [`plan_sqa.md`](plan_sqa.md) §6; corregido en `eb8f606` |
-| La bitácora cubre **3.83 de 7 días**: MTBF y disponibilidad solo exploratorios; el objetivo del 95 % no se cumple. La ventana del PDF (6 al 13 de noviembre) no se puede completar hacia atrás | [`fiabilidad.md`](fiabilidad.md) §4.2 |
-| El mecanismo de la única celda vacía de Base70 (Mexicali) no se puede determinar | [`faltantes_y_atipicos.md`](faltantes_y_atipicos.md) §1 |
-| Un solo año de prueba (12 meses) y el ingenuo estacional supera al SARIMA en MAE y MAPE | [`pronostico.md`](pronostico.md) §4 |
+| Protección de `main` | Ruleset importado en GitHub con la captura como excepción (llave de despliegue), sin activar; falta probar la captura y un PR bloqueado ([`seguridad.md`](seguridad.md) §7) |
+| Copia externa del bronce | Hecha (2026-11-15), verificada por hash ([`seguridad.md`](seguridad.md) §6.3) |
+| Hashes para las otras tres listas de dependencias; imágenes por *digest* | No implementados |
+| Isolation Forest, unión mes a mes, nuevas fuentes | No aplican con los datos disponibles |
 
-### D. Para después de E1
-Regenerar [`fiabilidad_e1.json`](../../calidad/fiabilidad_e1.json) con las capturas nuevas; repetir `gitleaks` y la lectura de la URL del tablero sobre el commit etiquetado; correr el experimento de E2 ([`ruta_experimento_e2.md`](ruta_experimento_e2.md): ruta ingeniería, **confirmada por A**, pendiente de B).
+| Limitación vigente | Detalle |
+|---|---|
+| Fiabilidad: bitácora de 3.83 de 7 días, objetivo de 95 % no alcanzado, MTBF y disponibilidad exploratorios | [`fiabilidad.md`](fiabilidad.md) §4.2 |
+| Desviaciones del proceso de revisión de PR | [`plan_sqa.md`](plan_sqa.md) §5.1 |
+| Mecanismo de la única celda vacía de Base70 (Mexicali) no determinable | [`faltantes_y_atipicos.md`](faltantes_y_atipicos.md) §1 |
+| Un año de prueba; el ingenuo estacional supera al SARIMA en MAE y MAPE | [`pronostico.md`](pronostico.md) §4 y §10 |
+
+Próximos pasos: regenerar la fiabilidad con las capturas nuevas como un periodo adicional, repetir `gitleaks` sobre la versión vigente y correr el experimento de E2 ([`ruta_experimento_e2.md`](ruta_experimento_e2.md)).
 
 ## Mejoras de E1 (rama `e1/mejoras-postentrega`)
 Fortalecimiento y correcciones de los mismos componentes de E1, con fecha de 2026-11-14 en adelante; la etiqueta `e1` (`134c333`) conserva la versión original. No reemplazan ninguna métrica de E1.

@@ -40,7 +40,7 @@ Las **fases** (columna `fase`) se asignaron a partir del nombre de cada bloque y
 | 9 | Definitivo | Tratamiento incorrecto del incumplimiento de disponibilidad (run 42730477358) | `156a024` |
 | 10–11 | Definitivo | Salida cp1252; fallo de la prueba del paso final | `156a024` |
 
-El CSV es el registro individual de A; de los defectos de E0 no consta por escrito quién corrigió cada uno, y se atribuyen a A por haber sido hallados y corregidos en su trabajo (no hay constancia de que B los corrigiera).
+Los defectos de E0 se atribuyen a A por haberse hallado y corregido en su trabajo; no consta por escrito quién corrigió cada uno.
 
 ## Fuera del CSV de defectos (ver `calidad/riesgos.md`)
 - **Incidencias pendientes:** HTTP 403 de `repodatos` (no se corrige: no se evade), fin de línea del prototipo (mitigado aquí), disponibilidad 66.7 % sin cumplir, y **“fecha duplicada”**: **sin evidencia verificable** en los archivos, por lo que **no se agregó**; solo entra si se aporta commit, archivo o ejecución.
