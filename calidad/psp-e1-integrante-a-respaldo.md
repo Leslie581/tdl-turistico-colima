@@ -2,7 +2,7 @@
 
 Este archivo **no es el registro** (el registro son los CSV de `calidad/`): documenta cómo se construyó. Ningún tiempo de A se cronometró. Los minutos son **estimaciones retrospectivas de su dedicación personal** y **no incluyen** el tiempo de ejecución autónoma de herramientas (suites de pruebas, CI, escaneos) ni el trabajo de B. Los horarios de inicio y fin no se inventaron.
 
-## Tiempo de E1: 870 minutos (14 h 30 min)
+## Tiempo de E1: 960 minutos (870 del desarrollo original + 90 de las mejoras de E1)
 Confirmado por A el 2026-11-14 como estimación de su dedicación personal en varias sesiones (algunas de unas cinco horas, otras de dos o tres). **Sustituye la estimación anterior de 1,380 min (23 h), que A declaró errónea**; la versión etiquetada `e1` conserva esa cifra en su historial de Git y en sus documentos. La distribución por bloque es de A; el detalle por actividad y la fase de cada fila los asignó el asistente a partir de los archivos y commits de cada bloque, y el reparto interno de cada bloque entre sus filas es una estimación sin duración medida.
 | Bloque (código en la columna `actividad`) | Min | Qué incluye y evidencia |
 |---|---:|---|
@@ -20,7 +20,7 @@ Confirmado por A el 2026-11-14 como estimación de su dedicación personal en va
 
 **Fechas.** La fecha de cada fila es el día del commit que entrega el resultado del bloque (L0: contrato `f18e93a`, 2026-11-12 23:17; el resto: 2026-11-13). **No es el día en que se trabajó:** A trabajó antes de esos commits, y los minutos de L0 a L3 no caben en secuencia entre ellos (se trabajó en paralelo con las herramientas o antes del primer commit). Por eso 825 de los 870 min aparecen en un solo día de calendario: es una limitación de la evidencia, no una afirmación de que se trabajaron 13 h 45 min ese día.
 **Sin doble conteo.** Cada actividad figura en un solo bloque. El tiempo de corrección de un defecto (`minutos_correccion`) es **parte** del bloque donde se corrigió (casi siempre AUD, PCI o el bloque técnico correspondiente) y **no se suma** al total. La Auditoría 6 (PR #12) y la 7 (PR #15) están solo en AUD.
-**Mejoras de E1** (intervalos, esquema DENUE, ruido, notebook, ruleset, reorganización del PSP): no están en estos 870 min. Su tiempo, cuando A lo confirme, irá en [`tiempo-mejoras-e1-integrante-a.csv`](tiempo-mejoras-e1-integrante-a.csv), sin repetir filas del principal.
+**Mejoras de E1: 90 min** (intervalos bootstrap, esquema DENUE, ruido, notebook, ruleset, reorganización del PSP), en [`tiempo-mejoras-e1-integrante-a.csv`](tiempo-mejoras-e1-integrante-a.csv), 8 filas `(MEJ)`: alcance e instrucciones 10; revisión de resultados de intervalos y proyección 15; revisión del esquema DENUE y del ruido 10; revisión del tablero 10; documentación, rúbricas y relatoría 15; comprobaciones de CI y de instalación limpia 10; confirmación del PSP 10; instrucciones de protección de `main` y respaldo 10. Es la **participación personal de A** (no la ejecución autónoma de herramientas); la fecha de cada fila es la del commit que respalda la actividad, **no** una sesión, y no se conocen horarios. No repite filas del registro principal.
 
 ## Totales de A
 | Concepto | Minutos |
@@ -28,14 +28,16 @@ Confirmado por A el 2026-11-14 como estimación de su dedicación personal en va
 | Prototipo exploratorio `[PROTOTIPO]` (2026-11-08, repositorio `staymetrics-prototipo`) | 480 |
 | Desarrollo formal de E0 (2026-11-09) | 270 |
 | **E0** | **750** |
-| **E1** | **870** |
-| **Acumulado general (con prototipo)** | **1,620** (27 h) |
-| **Acumulado sin prototipo (E0 formal + E1)** | **1,140** (19 h) |
+| Desarrollo original de E1 | 870 |
+| Mejoras de E1 | 90 |
+| **E1** | **960** |
+| **Acumulado general (con prototipo)** | **1,710** (28 h 30 min) |
+| **Acumulado sin prototipo (E0 formal + E1)** | **1,230** (20 h 30 min) |
 Para las métricas de E3, el tiempo del prototipo no debe mezclarse con el del desarrollo formal. Una prueba ([`test_calidad_plantillas.py`](../tests/test_calidad_plantillas.py)) comprueba estas sumas.
 
 ## Defectos
 28 defectos en [`defectos-integrante-a.csv`](defectos-integrante-a.csv): 3 del prototipo, 8 de E0 formal y 17 de E1. Son errores que se introdujeron **y** se corrigieron, con su evidencia en la descripción. Las observaciones de una revisión sobre el trabajo de Eimy no son defectos de A y no se registran. Clasificación revisada el 2026-11-14: el #15 (importaciones sin usar, hallazgo de `ruff`) pasó de `construccion` a `sintaxis`; el #16 (un script que dejó finales de línea CRLF) pasó de `sistema` a `entorno` y su fecha a 2026-11-12, porque se corrigió antes del commit del contrato; el #28 (devcontainer) es una plantilla genérica de Codespaces agregada en `f8811ac` a nombre de A. Los defectos 23 a 28 (Auditoría 8 de B) se agregaron el 2026-11-14; su fecha de introducción y de corrección está en cada descripción.
-**Minutos de corrección:** ninguno está registrado. Los commits dan fechas, no esfuerzo; vacío significa «no registrado». Están propuestos en el mensaje de trabajo de esta corrección para que A los confirme; no se convierten en mediciones.
+**Minutos de corrección:** 440 min en total, **estimaciones retrospectivas sujetas a confirmación de A**, no mediciones (los commits dan fechas, no esfuerzo); cada descripción lo declara. Ese tiempo está **dentro** de los bloques donde se corrigió (casi siempre AUD, PCI o el bloque técnico) y **no se suma** al total. Por grupos: #1 a #3 (prototipo) 105; #4 a #11 (E0 formal) 130; #12 a #22 (E1) 160; #23 a #28 45.
 **Defecto 22 (prueba del tablero):** el commit `9489dc5` (2026-11-13 17:08) es de Leslie Valadez; lo corrigieron `80d8b5b` y `eb8f606` de `eimymuz` (20:27 y 20:42) en el PR #15. Se registra en A porque el commit que lo introdujo figura a su nombre; Git no distingue quién redactó qué dentro de ese commit. El defecto 14 de B es otro.
 
 ## Métricas de E3: qué se puede calcular

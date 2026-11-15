@@ -58,7 +58,10 @@ def test_totales_de_a_separan_prototipo_de_desarrollo_formal():
         return sum(int(f["minutos_estimados"]) for f in fs)
     proto = [f for f in filas if "[PROTOTIPO]" in f["actividad"]]
     e0 = [f for f in filas if f["fecha"] < "2026-11-12"]
-    assert (suma(proto), suma(e0), suma(filas), suma(filas) - suma(proto)) == (480, 750, 1620, 1140)
+    _, mejoras = _leer("tiempo-mejoras-e1-integrante-a.csv")
+    assert suma(mejoras) == 90 and all("(MEJ)" in f["actividad"] for f in mejoras)
+    assert (suma(proto), suma(e0), suma(filas), suma(filas) - suma(proto)) == (480, 750, 1620, 1140)  # sin las mejoras de E1
+    assert (suma(filas) + suma(mejoras), suma(filas) + suma(mejoras) - suma(proto), suma(filas) - suma(e0) + suma(mejoras)) == (1710, 1230, 960)
 
 
 def test_el_registro_de_mejoras_no_duplica_tiempo_del_principal():
@@ -70,7 +73,10 @@ def test_el_registro_de_mejoras_no_duplica_tiempo_del_principal():
 
 def test_defectos_a_usan_tipos_psp_y_no_inventan_minutos():
     _, filas = _leer("defectos-integrante-a.csv")
-    assert filas and all(f["tipo"] in TIPOS_PSP and f["minutos_correccion"] == "" for f in filas)
+    assert filas and all(f["tipo"] in TIPOS_PSP for f in filas)
+    # minutos_correccion: estimaciones retrospectivas (no mediciones); cada fila lo declara en su descripción
+    assert all(f["minutos_correccion"].isdigit() and "estimacion retrospectiva" in f["descripcion"] for f in filas)
+    assert sum(int(f["minutos_correccion"]) for f in filas) == 440
     assert not any("duplicad" in f["descripcion"].lower() and "fecha" in f["descripcion"].lower() for f in filas)
     assert not any("manova" in f["descripcion"].lower() for f in filas)  # MANOVA es riesgo, no defecto
 

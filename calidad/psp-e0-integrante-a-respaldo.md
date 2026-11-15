@@ -29,7 +29,7 @@ Las **fases** (columna `fase`) las asignó el asistente a partir del nombre de c
 ## Columnas
 **Tiempo:** `fecha` · `inicio`/`fin` (HH:MM) · `interrupcion_min` · `fase` (planeacion, diseno, codigo, revision, pruebas, documentacion, entrevista) · `actividad`. **Defectos:** `numero` · `fecha` · `tipo` (los 10 de PSP) · `fase_introducido` · `fase_eliminado` · `minutos_correccion` · `defecto_origen` · `descripcion`.
 
-## Defectos (solo corregidos; `minutos_correccion` vacío en todos: no se inventó)
+## Defectos (solo corregidos; `minutos_correccion` con estimaciones retrospectivas desde el 2026-11-15, no mediciones)
 | # | Dónde | Qué | Evidencia |
 |---|---|---|---|
 | 1 | Prototipo | Parser leyó la definición (20 argumentos) y no la llamada (16) | `evidencias/diagnostico_monitoreo_20261109T044253Z` del prototipo |
