@@ -24,9 +24,11 @@ def test_pide_una_aprobacion_y_bloquea_force_push():
     assert _regla("non_fast_forward") and _regla("deletion")
 
 
-def test_se_entrega_desactivada_con_excepcion_para_la_captura():
+def test_se_entrega_desactivada_y_sin_actores_de_excepcion():
     # Importado como "disabled": no bloquea nada hasta que la usuaria lo active tras probar la captura con workflow_dispatch (el modo "evaluate" es solo de planes Enterprise).
+    # bypass_actors vacío: GitHub rechazó al importar un actor de tipo Integration (error "invalid actor"); la excepción de la captura se agrega en la interfaz
+    # (llave de despliegue) y no por archivo.
     assert RS["enforcement"] == "disabled"
-    assert any(b["actor_id"] == 15368 and b["actor_type"] == "Integration" for b in RS["bypass_actors"])
+    assert RS["bypass_actors"] == []
     captura = (RAIZ / ".github" / "workflows" / "captura-diaria.yml").read_text(encoding="utf-8")
     assert 'git push origin "HEAD:${GITHUB_REF_NAME}"' in captura   # el empuje que necesita la excepción
