@@ -1,7 +1,7 @@
 # Seguridad del sistema de información (E1)
 
 Rama `e1/leslie-calidad` · corte **2026-11-13** · Responsable: Leslie Valadez Macías (integrante A).
-Requisito (PDF, pág. 16): «búsqueda de secretos en el historial con **gitleaks**, vulnerabilidades de dependencias con **pip-audit**, tokens con el **mínimo permiso** necesario y **respaldo de la capa bronce**». Rúbrica (pág. 25, 15 pts): «gitleaks y pip-audit sin hallazgos abiertos; respaldo probado» frente a «secretos expuestos».
+Requisito (PDF, pág. 16): «búsqueda de secretos en el historial con **gitleaks**, vulnerabilidades de dependencias con **pip-audit**, tokens con el **mínimo permiso** necesario y **respaldo de la capa bronce**». Rúbrica (pág. 25): «gitleaks y pip-audit sin hallazgos abiertos; respaldo probado» frente a «secretos expuestos».
 **Este documento no publica ningún valor secreto**: lo que se encontrara se describiría por archivo, tipo y gravedad, nunca por contenido.
 
 ## 1. Resumen

@@ -24,7 +24,7 @@ Confirmado por la integrante A el 2026-11-10: **prototipo el 2026-11-08 (480 min
 | [DEFINITIVO] Auditoría interna posterior a la fusión del PR #1 sobre los 7 archivos de la integrante B (estimación retrospectiva, sin horario) | 30 | revision | 2026-11-09 |
 | **Total con la auditoría** | **750** | | |
 
-Las **fases** (columna `fase`) las asignó el asistente a partir del nombre de cada bloque; A **no las ha confirmado una por una**: es una limitación del registro.
+Las **fases** (columna `fase`) se asignaron a partir del nombre de cada bloque y no se confirmaron una por una: es una limitación del registro.
 
 ## Columnas
 **Tiempo:** `fecha` · `inicio`/`fin` (HH:MM) · `interrupcion_min` · `fase` (planeacion, diseno, codigo, revision, pruebas, documentacion, entrevista) · `actividad`. **Defectos:** `numero` · `fecha` · `tipo` (los 10 de PSP) · `fase_introducido` · `fase_eliminado` · `minutos_correccion` · `defecto_origen` · `descripcion`.

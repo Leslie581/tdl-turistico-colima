@@ -39,7 +39,7 @@ Dependencias técnicas: **C** = contrato de datos ([`contrato_datos.md`](contrat
 | Requisito oficial | Evidencia esperada | Responsable propuesto |
 |---|---|---|
 | Ficha única `docs/E1/ENTREGA.md` con tres apartados y enlaces a la evidencia (pág. 12) | Ficha basada en la de E0 | Leslie (consolida); cada una llena su apartado |
-| Relatoría de etapa `docs/relatoria-E1.md`, máx. 2 páginas, con las 6 preguntas (10 pts, cuenta en las tres materias) | Cronología con fechas, responsables y horas tomadas del registro de tiempo | Las dos; se redacta con los PSP |
+| Relatoría de etapa `docs/relatoria-E1.md`, máx. 2 páginas, con las 6 preguntas (cuenta en las tres materias) | Cronología con fechas, responsables y horas tomadas del registro de tiempo | Las dos; se redacta con los PSP |
 | Etiqueta `e1` antes de las 23:59 y un solo registro en el formulario | Etiqueta sobre un commit de `main` | Quien integre al final |
 | Atender los issues que dejen los docentes antes de la siguiente entrega (pág. 12) | Issues cerrados con commit | Las dos |
 | (No calificada, pero necesaria) elegir la ruta del experimento de E2 | Decisión escrita | Las dos |
