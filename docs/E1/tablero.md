@@ -1,6 +1,6 @@
-# Tablero de E1 · Observatorio de Ocupación Hotelera de Colima (Manzanillo)
+# Tablero de E1 · Observatorio de Ocupación Hotelera de Colima — Manzanillo
 
-Rama `e1/eimy-tablero` · 2026-11-13 · Responsable: integrante B (Eimy Melissa Urbina Meza). **El nombre del observatorio es provisional.**
+Rama `e1/eimy-tablero` · 2026-11-13 · Responsable: integrante B (Eimy Melissa Urbina Meza). El nombre del observatorio es definitivo (2026-11-14): «Observatorio de Ocupación Hotelera de Colima — Manzanillo».
 Aplicación: [`tablero/streamlit_app.py`](../../tablero/streamlit_app.py) (Streamlit y Altair). Pruebas: [`tests/test_tablero_cargador.py`](../../tests/test_tablero_cargador.py) y [`tests/test_tablero_app.py`](../../tests/test_tablero_app.py).
 
 ## 1. Estado
@@ -109,7 +109,6 @@ Abrir la URL en el navegador y en un teléfono, y comprobar que: la página carg
 - **Una categoría agregada:** hoteles de 2 a 5 estrellas de Manzanillo en conjunto; no hay desglose ni datos de establecimientos.
 - **Pruebas de la aplicación en CI:** `ci.yml` instala `tablero/requirements.txt` junto con las demás listas (una sola resolución de `pip`; `pip check` sin conflictos) y exige que `test_tablero_app.py` se ejecute (`TDL_EXIGIR_TABLERO=1`). **Ya se ejecutó en GitHub: ejecución 43557153021 de `ci.yml` sobre `4242ea5`: éxito en `calidad`, `auditoria-dependencias`, `bloqueo-tablero` y `secretos`.** La revisión de móvil fue visual.
 - **Streamlit Community Cloud** puede poner la aplicación en reposo por inactividad y tardar unos segundos en reactivarla; no es un servicio con disponibilidad garantizada.
-- **Nombre provisional:** el nombre del observatorio puede cambiar.
 
 ## 11. Cierre de E1: segunda iteración (2026-11-13, integrante B)
 Cambios sobre el MVP, sin rediseñarlo y sin cambiar dependencias:
@@ -127,5 +126,5 @@ Cambios sobre el MVP, sin rediseñarlo y sin cambiar dependencias:
 
 **Verificación del 2026-11-13 (20:35–20:45):** la aplicación arranca sin excepciones; las métricas del SARIMA (MAE 2.38 pp, RMSE 2.64 pp, MAPE 4.36 %, 12 de 12 meses dentro del intervalo), las tablas de 2024 y 2025 y sus límites del 95 % coinciden con los CSV del laboratorio; `streamlit run` responde (`/_stcore/health` = `ok`). En un clon limpio con las dependencias del CI pasan 272 pruebas aunque exista `tablero/__pycache__`. La URL pública responde (HTTP 200, sin inicio de sesión), pero sirve la versión de la rama configurada en Streamlit Cloud: los cambios de esta rama se verán allí solo después de fusionarla y comprobarlo en un navegador.
 
-## 12. Ampliación posterior a la entrega (2026-11-14)
+## 12. Mejora de E1 (2026-11-14)
 La rama `e1/mejoras-postentrega` agrega al tablero, sin cambiar lo anterior: (a) el **intervalo sin supuesto de normalidad** (bootstrap de bloques) junto al gaussiano en las pestañas «Pronóstico 2024» y «Proyección 2025», con su cobertura en origen móvil y la advertencia de que **no es más preciso**; y (b) en «Comparación de modelos», la **validación de origen móvil** que muestra que el menor RMSE es de Holt-Winters y que la elección de un solo año no es firme. El cargador valida que el intervalo gaussiano de esos archivos coincida con el publicado. Archivos nuevos que lee: `laboratorio/pronosticos/resultados/intervalos/` (4 CSV). (c) la **proyección histórica 2026–2027** con ambos intervalos, rotulada como no vigente (la pestaña pasó a llamarse «Proyección 2025–2027»; el gráfico principal de 2025 no cambia). Hasta que esa rama se fusione, la URL pública sigue sirviendo la versión entregada.

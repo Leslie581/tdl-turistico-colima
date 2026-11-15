@@ -241,10 +241,10 @@ Los resultados versionados se generaron con **Python 3.14.3**; el CI y la reprod
 ## 9. Limitaciones y fuera de alcance
 - Las pruebas de pronósticos se ejecutan en CI (`TDL_EXIGIR_PRONOSTICOS=1`); la revisión recíproca de la integrante A consta en [`auditorias.md`](../../calidad/auditorias.md). El pronóstico se publica en el tablero ([`tablero.md`](tablero.md)).
 - La gráfica de la descomposición (§2.6) y la comparación min-max frente a z-score (§2.7) se resolvieron en `e1/eimy-cierre-estadistico`.
-- No se incluyeron un indicador de Semana Santa ni la comparación entrenando desde 2021-07. La validación con origen móvil y los intervalos por bootstrap se implementaron **después de la entrega** (§10).
+- No se incluyeron un indicador de Semana Santa ni la comparación entrenando desde 2021-07. La validación con origen móvil y los intervalos por bootstrap se agregaron como mejora de E1 (§10).
 
-## 10. Ampliación posterior a la entrega (2026-11-14): intervalos sin normalidad, origen móvil y proyección
-**Trazabilidad:** todo lo de esta sección se hizo **después** del plazo y de la etiqueta `e1` (rama `e1/mejoras-postentrega`, sin fusionar a `main` al escribirse). **No reemplaza** ninguna cifra de §4 ni §6: el modelo elegido, sus métricas de 2024 y sus intervalos gaussianos siguen siendo los entregados. Código: [`intervalos.py`](../../laboratorio/pronosticos/intervalos.py); resultados: [`resultados/intervalos/`](../../laboratorio/pronosticos/resultados/intervalos/); notebook: [`pronostico_e1.ipynb`](../../notebooks/pronostico_e1.ipynb).
+## 10. Mejora de E1 (2026-11-14): intervalos sin normalidad, origen móvil y proyección
+**Trazabilidad:** todo lo de esta sección es trabajo individual de la integrante A, posterior a la etiqueta `e1` (rama `e1/mejoras-postentrega`, sin fusionar a `main`) y sin revisión de la integrante B. **No reemplaza** ninguna cifra de §4 ni §6: el modelo elegido, sus métricas de 2024 y sus intervalos gaussianos siguen siendo los entregados. Código: [`intervalos.py`](../../laboratorio/pronosticos/intervalos.py); resultados: [`resultados/intervalos/`](../../laboratorio/pronosticos/resultados/intervalos/); notebook: [`pronostico_e1.ipynb`](../../notebooks/pronostico_e1.ipynb).
 
 **Método.** Bootstrap de bloques de residuos del SARIMA elegido (bloques de 6 meses, B = 1,000, semilla 20261114; la autocorrelación de los residuos en el rezago 1 es 0.056, n = 83), simulado desde el estado filtrado al final de la muestra. Supone residuos intercambiables por bloques y **no** incorpora la incertidumbre de los parámetros. La validación de **origen móvil** usa 17 orígenes (2018-12 a 2022-12, uno cada tres meses, horizonte 12) con modelo reajustado en cada origen; **nunca se usa 2024**.
 

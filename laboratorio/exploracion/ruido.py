@@ -1,4 +1,4 @@
-"""Ruido de la ocupación mensual: cuánto es ruido, cuánto estacionalidad y cuánto evento real (Ingeniería de Datos, E1, mejora posterior a la entrega).
+"""Ruido de la ocupación mensual: cuánto es ruido, cuánto estacionalidad y cuánto evento real (Ingeniería de Datos, E1, mejora de E1).
 
     python -m laboratorio.exploracion.ruido
 

@@ -1,4 +1,4 @@
-"""Tablero de E1 · Observatorio de Ocupación Hotelera de Colima (Manzanillo). NOMBRE PROVISIONAL.
+"""Tablero de E1 · Observatorio de Ocupación Hotelera de Colima — Manzanillo.
 
     streamlit run tablero/streamlit_app.py
 
@@ -15,7 +15,7 @@ import streamlit as st  # noqa: E402
 import cargador as cg  # noqa: E402
 import graficas as gr  # noqa: E402
 
-TITULO = "Observatorio de Ocupación Hotelera de Colima · Manzanillo"
+TITULO = "Observatorio de Ocupación Hotelera de Colima — Manzanillo"
 
 st.set_page_config(page_title=TITULO, layout="wide", initial_sidebar_state="collapsed")
 st.markdown(
@@ -56,7 +56,7 @@ meses_dentro, meses_eval = cg.cobertura_ip95(retro)
 sar = comp.set_index("familia").loc["SARIMA"]
 
 st.title(TITULO)
-st.caption("Nombre provisional · Ocupación mensual de hoteles de 2 a 5 estrellas · Datos de DataTur (Secretaría de Turismo) hasta diciembre de 2024")
+st.caption("TDL de Ocupación Hotelera de Colima · Ocupación mensual de hoteles de 2 a 5 estrellas · Datos de DataTur (Secretaría de Turismo) hasta diciembre de 2024")
 st.info(
     f"Los datos observados llegan hasta **{fechas['ultimo_observado']}**. "
     "La proyección de 2025 es una **proyección histórica** calculada con la información disponible hasta diciembre de 2024; "
@@ -246,4 +246,4 @@ with tab_fuentes:
             "El tablero **no** reentrena modelos, no ejecuta el procesamiento de datos, no consulta servicios externos y no muestra datos de establecimientos.")
 
 st.divider()
-st.caption("Observatorio de Ocupación Hotelera de Colima (nombre provisional) · Proyecto Integrador Trusted Data Lab · Entrega E1 · Los modelos son estadísticos y las proyecciones no son datos observados.")
+st.caption("Observatorio de Ocupación Hotelera de Colima — Manzanillo · Proyecto Integrador Trusted Data Lab · Entrega E1 · Los modelos son estadísticos y las proyecciones no son datos observados.")

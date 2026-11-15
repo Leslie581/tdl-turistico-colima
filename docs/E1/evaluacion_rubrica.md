@@ -51,7 +51,7 @@ Los 3 puntos de criterios propios que faltan en las dos primeras materias son l�
 ## Puntos descontados y cuáles se pueden recuperar
 | Criterio | Hoy | Recuperable | Qué lo permite | Quién | ¿Depende solo de nosotras? |
 |---|---|---|---|---|---|
-| Relatoría | 8 / 10 | hasta +2 | Que B apruebe la versión corregida de la relatoría (su Auditoría 8 la aprueba «sujeto a revisar la versión corregida»; el tiempo del cierre documental de A ya está registrado: 720 min) | Leslie y Eimy | **Sí** |
+| Relatoría | 8 / 10 | hasta +2 | La conformidad de B ya consta (aprobación del PR #19); los tiempos de A son estimaciones retrospectivas (870 min de E1 desde el 2026-11-14) | Leslie | Sí |
 | Plan SQA | 23 / 25 | hasta +2 | Una **primera revisión previa real** ya no es posible para el cierre (el #18 se fusionó antes de la aprobación de B): solo queda aplicarla a **todo cambio posterior** y registrar la revisión de B al #18 como posterior; la conformidad de ambas con la acción correctiva (tabla en [`plan_sqa.md`](plan_sqa.md) §5.1) y activar la protección de `main`. Los PR ya fusionados no se pueden deshacer ni se simula una aprobación previa | Leslie y Eimy | **Sí** (la protección requiere ser propietaria) |
 | Integración continua | 14 / 15 | +1 | Protección de `main` con los cuatro trabajos como comprobaciones obligatorias ([`seguridad.md`](seguridad.md) §7, con la advertencia sobre la captura diaria) | Leslie | **Sí** |
 | Fiabilidad y disponibilidad | 14 / 25 | **no hoy** | Más ejecuciones de captura (7 días hacia el 2026-11-17) y, para el MTBF, un segundo incidente real; no hay historia recuperable ni se inventa | — | **No**: depende de que pasen los días |
@@ -61,7 +61,7 @@ Los 3 puntos de criterios propios que faltan en las dos primeras materias son l�
 Que no exista la etiqueta `e1` antes de las 23:59 del 13 de noviembre o que el enlace no se registre en el formulario (pág. 5: «Lo que llegue después se evalúa sobre 70 en las tres materias»); que el CI falle en el PR de correcciones; y la defensa individual si cualquiera de las dos no puede explicar lo entregado (factor 0.8 o 0.5).
 **Lo que esta evaluación no puede verificar:** el registro en el formulario, los colaboradores del repositorio (la titular informó que los tres docentes ya tienen acceso), los issues de los docentes por otros medios y la configuración interna de Streamlit Community Cloud.
 
-## Reevaluación estricta y mejoras posteriores a la entrega (2026-11-14)
+## Reevaluación estricta y mejoras de E1 (2026-11-14)
 **La autoevaluación de arriba (95, 95 y 84) es la de la entrega y se conserva, pero era complaciente.** Una auditoría estricta posterior recalculó cada criterio contra el PDF y dio **89, 89 y 76** para la versión entregada. Aquí se revisa esa auditoría con dos reglas: (a) una **limitación de los datos** o un resultado reportado con honestidad no es una mala implementación, y (b) una **acción propuesta** no vale como acción implementada. Cambia un criterio solo si hay una mejora hecha y verificable en `e1/mejoras-postentrega` (sin fusionar) o si el descuento no correspondía a lo que pide el PDF. Estimaciones, no calificaciones oficiales; no incluyen la defensa; margen razonable de ±3 puntos por materia.
 | Criterio | Pts | Estricta | Ahora | Por qué cambia (o no) |
 |---|---|---|---|---|

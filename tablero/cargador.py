@@ -267,7 +267,7 @@ class Datos:
     elegido: pd.DataFrame
     resumen: dict
     ejecucion: dict
-    intervalos: "dict | None" = None   # intervalos sin supuesto de normalidad (bootstrap de bloques), ampliación posterior a la entrega
+    intervalos: "dict | None" = None   # intervalos sin supuesto de normalidad (bootstrap de bloques), mejora de E1
 
 
 CARPETA_INTERVALOS = CARPETA_RESULTADOS / "intervalos"

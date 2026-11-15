@@ -1,4 +1,4 @@
-# Relatoría E1 · Observatorio de Ocupación Hotelera de Colima (Manzanillo)
+# Relatoría E1 · Observatorio de Ocupación Hotelera de Colima — Manzanillo
 
 Equipo: Leslie Valadez Macías (A) y Eimy Melissa Urbina Meza (B) · Periodo: 2026-11-12 a 2026-11-13 · **Conformidad: A, conforme; B, conforme de forma definitiva** al aprobar el [PR #19](https://github.com/Leslie581/tdl-turistico-colima/pull/19) (`ceb9d97`), versión entregada (etiqueta `e1` sobre `134c333`)
 Horas de la Ciudad de México (UTC−6) salvo indicación; GitHub registra en UTC (el PR #15 se fusionó el 14-nov 02:52 UTC = 13-nov 20:52 local).
@@ -17,7 +17,7 @@ Que los datos de DATATUR y DENUE viajen de bronce a oro sin intervención, con u
 
 **Autoría de `9489dc5`.** Git registra a Leslie Valadez como autora y comitente del MVP del tablero (`9489dc5`) y a `eimymuz` como autora de `80d8b5b` y `eb8f606`. Git no dice quién redactó qué dentro de `9489dc5`: la documentación lo atribuía a un trabajo de B y el commit se publicó desde la cuenta de A. Aquí solo se afirma lo que Git registra; la contribución técnica de cada una consta en su PSP y en su defensa.
 
-**Tiempo por bloque (PSP).** Ningún tiempo de A se midió: sus **1,380 min de E1** son estimaciones retrospectivas de su dedicación personal: contrato y laboratorio (L0 y L1) 240, pipeline (L2) 150, calidad y tablero (L3) 270, cierre documental 720; con E0, 2,130 min ([CSV](../calidad/tiempo-integrante-a.csv)). B: 118 min en 23 intervalos con inicio y fin ([CSV](../calidad/tiempo-integrante-b.csv)), confirmados en su Auditoría 8 y en el PR #19.
+**Tiempo por bloque (PSP).** Ningún tiempo de A se midió: sus **870 min de E1** (14 h 30 min; la versión etiquetada decía 1,380) son una estimación retrospectiva de su dedicación personal: contrato 45, pipeline 165, transformaciones 120, exploración y tablero 105, seguridad 60, pruebas y CI 90, respaldo 30, auditorías y correcciones 120, documentación y SQA 90, relatoría 45; con E0, 1,620 min ([CSV](../calidad/tiempo-integrante-a.csv)). B: 118 min en 23 intervalos con inicio y fin ([CSV](../calidad/tiempo-integrante-b.csv)), confirmados en su Auditoría 8.
 
 ## 3. Qué decidimos y por qué
 - **Elegir por RMSE con Ljung-Box como filtro**, fijado antes de comparar: ganó SARIMA(1,1,1)(0,1,1)₁₂ + `d_covid` (RMSE 2.64 pp). Se descartó elegir por MAE, que habría favorecido al ingenuo estacional (2.20 contra 2.38).

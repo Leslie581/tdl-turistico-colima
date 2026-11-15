@@ -1,10 +1,10 @@
-# Observatorio de Ocupación Hotelera de Colima (Manzanillo)
+# Observatorio de Ocupación Hotelera de Colima — Manzanillo
 
-Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Estadístico para Ciencia de Datos · Calidad en los Sistemas de Información). Nombre comercial por definir («StayMetrics» fue solo el prototipo).
+Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Estadístico para Ciencia de Datos · Calidad en los Sistemas de Información). También se le llama TDL de Ocupación Hotelera de Colima («StayMetrics» fue solo el prototipo).
 
 **Qué observa:** ocupación hotelera mensual de Manzanillo (SECTUR/DataTur, 2016–2024) y la oferta de hospedaje (INEGI, DENUE, captura diaria).
 **Para quién:** propietarios, administradores, gerentes e inversionistas hoteleros (hipótesis por validar).
-**Estado:** **E1 entregada** (etiqueta `e1` sobre `134c333`; no se mueve). Tablero: <https://tdl-turistico-colima.streamlit.app>. Las mejoras posteriores a la entrega viven en la rama `e1/mejoras-postentrega` y se resumen al final de [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) y están en cada documento técnico, con su fecha. Siguen vigentes las limitaciones declaradas: la disponibilidad de la captura (85.7 %, 6 de 7 ejecuciones) **no** alcanza el objetivo de 95 %, `main` **no** tiene protección de rama activada y no existe aún una copia externa del bronce.
+**Estado:** **E1 entregada** (etiqueta `e1` sobre `134c333`; no se mueve). Tablero: <https://tdl-turistico-colima.streamlit.app>. Las **mejoras de E1** (fortalecimiento y correcciones, trabajo individual de la integrante A) están en la rama `e1/mejoras-postentrega`: se resumen al final de [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) y figuran con su fecha en cada documento técnico; la versión etiquetada (`e1`) no las incluye. Siguen vigentes las limitaciones declaradas: la disponibilidad de la captura (85.7 %, 6 de 7 ejecuciones) **no** alcanza el objetivo de 95 %, `main` **no** tiene protección de rama activada y no existe aún una copia externa del bronce.
 
 ## Documentación
 | Documento | Contenido |
@@ -54,8 +54,8 @@ python -m venv .venv
 ```powershell
 .\.venv\Scripts\python.exe -m laboratorio.pronosticos.ejecutar --fuente oro
 .\.venv\Scripts\python.exe -m laboratorio.exploracion.explorar
-.\.venv\Scripts\python.exe -m laboratorio.pronosticos.intervalos     # rama e1/mejoras-postentrega; ≈ 1 min
-.\.venv\Scripts\python.exe -m laboratorio.exploracion.ruido          # rama e1/mejoras-postentrega
+.\.venv\Scripts\python.exe -m laboratorio.pronosticos.intervalos     # mejoras de E1; ≈ 1 min
+.\.venv\Scripts\python.exe -m laboratorio.exploracion.ruido          # mejoras de E1
 ```
 
 > **Nota:** volver a ejecutar el laboratorio en otro equipo cambia los resultados en el 5.º o 6.º decimal (tolerancia declarada: 1e-2, RNF-REP-04), y las pruebas del tablero comparan contra los valores versionados. Para probar el tablero después de regenerar, restaure primero los resultados: `git checkout -- laboratorio/pronosticos/resultados`. Comprobado en un entorno nuevo (Python 3.13): pipeline, verificación del oro, laboratorio, exploración, intervalos y ruido terminan en 0; 430 pruebas pasan y las 2 que fallan lo hacen solo por esa diferencia de 7e-6.
