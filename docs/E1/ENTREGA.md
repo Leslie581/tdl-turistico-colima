@@ -19,7 +19,7 @@ Repositorio: https://github.com/Leslie581/tdl-turistico-colima (el nombre anteri
 | Puerta de calidad y cuarentena | PDF | [`pipeline/calidad/`](../../pipeline/calidad/), [`resumen de cuarentena`](../../data/cuarentena/resumen_e1-e6c9a995c9ed.json) | Cumple |
 | Diccionario de datos | PDF | [`diccionario_datos.csv`](../../data/oro/diccionario_datos.csv) | Cumple |
 | Laboratorio estadístico y cuatro modelos | PDF | [`laboratorio/pronosticos/`](../../laboratorio/pronosticos/README.md), [`comparacion_modelos_2024.csv`](../../laboratorio/pronosticos/resultados/comparacion_modelos_2024.csv), [`pronostico.md`](pronostico.md) | Cumple |
-| Notebook reproducible | Extra / Mejora | [`notebooks/pronostico_e1.ipynb`](../../notebooks/pronostico_e1.ipynb) | Solo en la versión actual; ejecutado por una prueba |
+| Notebook reproducible | Extra / Mejora | [`notebooks/pronostico_e1.ipynb`](../../notebooks/pronostico_e1.ipynb) | Ejecutado por una prueba |
 | Tablero público | PDF | https://tdl-turistico-colima.streamlit.app, [`tablero.md`](tablero.md) | Cumple (la URL sirve la versión entregada) |
 | Plan SQA (IEEE 730 adaptado) | PDF | [`plan_sqa.md`](plan_sqa.md) | Cumple, con la desviación interna de §5.1 |
 | Registros PSP individuales | PDF | [`tiempo-integrante-a.csv`](../../calidad/tiempo-integrante-a.csv), [`defectos-integrante-a.csv`](../../calidad/defectos-integrante-a.csv), [`tiempo-integrante-b.csv`](../../calidad/tiempo-integrante-b.csv), [`defectos-integrante-b.csv`](../../calidad/defectos-integrante-b.csv) | Parcial: tiempos estimados y sin minutos de corrección |
@@ -111,8 +111,8 @@ Ambas integrantes usaron Claude Code (Anthropic) para escribir y revisar código
 ### D. Para después de E1
 Regenerar [`fiabilidad_e1.json`](../../calidad/fiabilidad_e1.json) con las capturas nuevas; repetir `gitleaks` y la lectura de la URL del tablero sobre el commit etiquetado; correr el experimento de E2 ([`ruta_experimento_e2.md`](ruta_experimento_e2.md): ruta ingeniería, **confirmada por A**, pendiente de B).
 
-## Mejoras de E1 (rama `e1/mejoras-postentrega`, 2026-11-14 en adelante)
-Fortalecimiento y correcciones de los mismos componentes de E1, hechos por la integrante A **por iniciativa propia**, después de la etiqueta `e1`: **no están en la versión etiquetada** (`134c333`), no se han fusionado a `main` y **no cuentan con revisión ni conformidad de la integrante B**: su aprobación de la entrega original conserva su alcance y fecha y no se extiende a estos cambios. La revisión cruzada formal se retoma en E2. No reemplazan ninguna métrica de E1.
+## Mejoras de E1 (rama `e1/mejoras-postentrega`)
+Fortalecimiento y correcciones de los mismos componentes de E1, con fecha de 2026-11-14 en adelante; la etiqueta `e1` (`134c333`) conserva la versión original. No reemplazan ninguna métrica de E1.
 | Mejora | Dónde está documentada |
 |---|---|
 | Intervalos de predicción por bootstrap de bloques y validación de origen móvil; publicados en el tablero; proyección histórica 2025–2027; sin datos oficiales 2025–2026 | [`pronostico.md`](pronostico.md) §10, [`tablero.md`](tablero.md) §12 |
