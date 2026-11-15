@@ -11,31 +11,40 @@ fecha,inicio,fin,interrupcion_min,fase,actividad,minutos_estimados
 2026-11-09,,,,codigo,[DEFINITIVO][ESTIMADO RETROSPECTIVO] Configuracion y depuracion de GitHub Actions,65
 2026-11-09,,,,pruebas,[DEFINITIVO][ESTIMADO RETROSPECTIVO] Revision de pruebas y ejecucion exitosa,20
 2026-11-09,,,,revision,[DEFINITIVO][ESTIMADO RETROSPECTIVO] Auditoria interna posterior a la fusion del PR #1 sobre los 7 archivos de la integrante B,30
-2026-11-13,,,,planeacion,[ESTIMADO RETROSPECTIVO] Lectura de los requisitos de E1 en el PDF y matriz de requisitos,25
-2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] Diagnostico de Base70 y DENUE con datos reales,30
-2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] Contrato de datos 1.0.0 y su revision r1,40
-2026-11-13,,,,revision,[ESTIMADO RETROSPECTIVO] Revision de las tres observaciones de Eimy sin fusionar su rama,15
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Plata de Base70 y DENUE, reglas R-D01 a R-E06 y cuarentena",45
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Capa oro, diccionario, interfaz, orquestador y validacion contra derivacion independiente",30
-2026-11-13,,,,pruebas,"[ESTIMADO RETROSPECTIVO] Pruebas del pipeline, de la interfaz, de la reproducibilidad y de ci.yml",35
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Dependencias fijadas, ruff.toml, ci.yml y revision de wrapt",20
-2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] Exploracion: estadisticas y cuatro graficas del oro (L2),40
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Transformaciones sin fuga: min-max, z-score y discretizacion (L2)",40
-2026-11-13,,,,pruebas,[ESTIMADO RETROSPECTIVO] Pruebas de exploracion y de transformaciones (L2),25
-2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] verificar_oro y su paso en ci.yml (L2),25
-2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] transformaciones.md y textos de CI (L2),20
-2026-11-13,,,,planeacion,[ESTIMADO RETROSPECTIVO] Lectura de los requisitos de Calidad en el PDF y comparacion con lo existente (L3),25
-2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] pipeline/fiabilidad.py y sus pruebas (L3),35
-2026-11-13,,,,pruebas,"[ESTIMADO RETROSPECTIVO] Evidencia operativa: API de Actions, cotejo con la bitacora, restauracion del bronce, busqueda de secretos, pip-audit y permisos (L3)",40
-2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] requerimientos.md (36 requerimientos) y su prueba de consistencia (L3),45
-2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] fiabilidad.md y seguridad.md (L3),40
-2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] plan_sqa.md y actualizacion de plan_trabajo.md y README (L3),35
-2026-11-13,,,,pruebas,"[ESTIMADO RETROSPECTIVO] Validacion: suite, ruff, verificador E0 y pipeline (L3)",10
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Cierre de observaciones: gitleaks, evaluacion del UUID, horarios y defectos 17 y 18 (L3)",40
-2026-11-13,,,,revision,[ESTIMADO RETROSPECTIVO] Integracion de main y Auditoria 7 (cierre documental),60
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Gitleaks, pruebas del tablero y CI (cierre documental)",90
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Jerarquias, discretizacion, faltantes y atipicos (cierre documental)",150
-2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Respaldo, dependencias, seguridad y cobertura (cierre documental)",105
-2026-11-13,,,,planeacion,[ESTIMADO RETROSPECTIVO] Preparacion de la ruta experimental de E2 (cierre documental),45
-2026-11-13,,,,revision,[ESTIMADO RETROSPECTIVO] Auditoria integral y evaluacion de rubricas (cierre documental),135
-2026-11-13,,,,documentacion,"[ESTIMADO RETROSPECTIVO] Revision cruzada, correcciones y cierre documental (cierre documental)",135
+2026-11-12,,,,planeacion,[ESTIMADO RETROSPECTIVO] Lectura de los requisitos de E1 en el PDF y matriz de requisitos (L0),10
+2026-11-12,,,,diseno,[ESTIMADO RETROSPECTIVO] Diagnostico de Base70 y DENUE con datos reales (L0),15
+2026-11-12,,,,documentacion,[ESTIMADO RETROSPECTIVO] Contrato de datos 1.0.0 y su revision r1 (L0),20
+2026-11-13,,,,revision,[ESTIMADO RETROSPECTIVO] Revision de las tres observaciones de Eimy sin fusionar su rama (L1),15
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Plata de Base70 y DENUE, reglas R-D01 a R-E06 y cuarentena (L1)",55
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Capa oro, diccionario, interfaz, orquestador y validacion contra derivacion independiente (L1)",35
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Dependencias fijadas, ruff.toml y revision de wrapt (L1)",20
+2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] Integracion de main sin sobrescribir cambios de Eimy y limpieza de ramas (L1),40
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Transformaciones sin fuga: min-max, z-score y discretizacion (L2)",35
+2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] Jerarquias conceptuales y discretizacion supervisada (L2),25
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] Faltantes y atipicos: diagnostico, simulacion de tratamientos, IQR y z robusto (L2)",30
+2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] verificar_oro y comparacion del oro regenerado con el versionado (L2),20
+2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] transformaciones.md y faltantes_y_atipicos.md (L2),10
+2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] Exploracion: estadisticas descriptivas y cuatro graficas del oro (L3),40
+2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] Tablero Streamlit (MVP) y verificacion de la URL publica (L3),25
+2026-11-13,,,,planeacion,[ESTIMADO RETROSPECTIVO] Ruta experimental de E2 (matriz 2^3 y extractor propio) (L3),40
+2026-11-13,,,,pruebas,"[ESTIMADO RETROSPECTIVO] gitleaks sobre el historial, evaluacion del UUID sintetico y resumen versionado (SEG)",20
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] pip-audit, bloqueo del tablero con hashes, acciones por SHA y persist-credentials (SEG)",25
+2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] seguridad.md (SEG),15
+2026-11-13,,,,pruebas,"[ESTIMADO RETROSPECTIVO] Pruebas del pipeline, de la interfaz, de la reproducibilidad y de ci.yml (PCI)",30
+2026-11-13,,,,pruebas,"[ESTIMADO RETROSPECTIVO] Pruebas de exploracion, de transformaciones y de fiabilidad (PCI)",15
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] ci.yml: trabajos, cobertura con piso de 75 % y pruebas del tablero en CI (PCI)",20
+2026-11-13,,,,pruebas,"[ESTIMADO RETROSPECTIVO] Validacion integral: suite, ruff, verificador de E0 y pipeline (PCI)",10
+2026-11-13,,,,pruebas,[ESTIMADO RETROSPECTIVO] Reejecucion de pruebas y del CI tras las correcciones (PCI),15
+2026-11-13,,,,codigo,"[ESTIMADO RETROSPECTIVO] pipeline/respaldo.py: manifiesto SHA-256, verificacion y restauracion (RES)",20
+2026-11-13,,,,pruebas,[ESTIMADO RETROSPECTIVO] Restauracion probada con el bronce real y pruebas de fallas (RES),10
+2026-11-13,,,,revision,[ESTIMADO RETROSPECTIVO] Auditorias 6 (PR #12) y 7 (PR #15) sobre el trabajo de Eimy (AUD),35
+2026-11-13,,,,revision,[ESTIMADO RETROSPECTIVO] Auditoria integral contra el PDF y evaluacion de rubricas (AUD),30
+2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] Correccion de los defectos hallados en las Auditorias 5 y 8 y de los defectos 17 y 18 (AUD),25
+2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] Atencion de la revision cruzada de Eimy y actualizacion de cifras en los documentos (AUD),15
+2026-11-13,,,,pruebas,[ESTIMADO RETROSPECTIVO] Diagnostico del CI en rojo del tablero (defecto 22) y seguimiento de su correccion (AUD),15
+2026-11-13,,,,codigo,[ESTIMADO RETROSPECTIVO] pipeline/fiabilidad.py y evidencia operativa (API de Actions y cotejo con la bitacora) (DOC),20
+2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] requerimientos.md (43) y su prueba de consistencia (DOC),30
+2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] plan_sqa.md y plan_trabajo.md (DOC),25
+2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] fiabilidad.md (DOC),15
+2026-11-13,,,,documentacion,[ESTIMADO RETROSPECTIVO] Relatoria de dos paginas y exportacion a PDF (REL),30
+2026-11-13,,,,revision,"[ESTIMADO RETROSPECTIVO] Revision final de ENTREGA.md, enlaces y etiqueta e1 (REL)",15

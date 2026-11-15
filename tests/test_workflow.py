@@ -27,7 +27,7 @@ def test_disparadores_y_permisos(wf):
     on = wf.get("on", wf.get(True))
     assert set(on) == {"schedule", "workflow_dispatch"}
     assert on["schedule"][0]["cron"].count(" ") == 4
-    assert wf["permissions"] == {"contents": "write"}
+    assert wf["permissions"] == {"contents": "read"}   # el empuje lo hace la llave de despliegue, no GITHUB_TOKEN
     assert wf["concurrency"]["cancel-in-progress"] is False
     assert wf["defaults"]["run"]["shell"] == "bash"
 

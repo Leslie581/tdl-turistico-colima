@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write   # solo para guardar bitácora y bronce sanitizado; sin otros permisos
+  contents: read   # el empuje de la bitácora y el bronce sanitizado lo hace la llave de despliegue (secreto CAPTURA_DEPLOY_KEY), no GITHUB_TOKEN
 
 defaults:
   run:
@@ -35,6 +35,8 @@ jobs:
       FORZAR: ${{ inputs.forzar }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
+        with:
+          ssh-key: ${{ secrets.CAPTURA_DEPLOY_KEY }}   # llave de despliegue de este repositorio con permiso de escritura; es la excepción del ruleset de main
 
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:

@@ -1,0 +1,9 @@
+fecha,inicio,fin,interrupcion_min,fase,actividad,minutos_estimados
+2026-11-13,,,,diseno,"[ESTIMADO RETROSPECTIVO] [MEJORA E1] Alcance e instrucciones de las mejoras de E1 (intervalos bootstrap, origen movil, esquema DENUE, ruido) (MEJ)",10
+2026-11-13,,,,revision,"[ESTIMADO RETROSPECTIVO] [MEJORA E1] Revision de resultados de los intervalos bootstrap, el origen movil y la proyeccion 2025-2027 (MEJ)",15
+2026-11-13,,,,revision,[ESTIMADO RETROSPECTIVO] [MEJORA E1] Revision del esquema pandera de DENUE y del analisis de ruido (MEJ),10
+2026-11-14,,,,revision,[ESTIMADO RETROSPECTIVO] [MEJORA E1] Revision de los cambios del tablero (intervalos sin normalidad y origen movil) (MEJ),10
+2026-11-14,,,,documentacion,"[ESTIMADO RETROSPECTIVO] [MEJORA E1] Revision de la documentacion integrada, las rubricas y la relatoria (MEJ)",15
+2026-11-14,,,,pruebas,"[ESTIMADO RETROSPECTIVO] [MEJORA E1] Comprobaciones: CI, pruebas y reproduccion desde una instalacion limpia (MEJ)",10
+2026-11-15,,,,revision,"[ESTIMADO RETROSPECTIVO] [MEJORA E1] Confirmacion del PSP: tiempos, fases y defectos con sus minutos de correccion (MEJ)",10
+2026-11-14,,,,planeacion,[ESTIMADO RETROSPECTIVO] [MEJORA E1] Instrucciones para la proteccion de main y el respaldo externo (MEJ),10

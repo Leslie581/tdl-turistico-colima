@@ -34,31 +34,49 @@ def test_las_plantillas_de_defectos_conservan_las_columnas_del_kit():
 def test_tiempos_retrospectivos_no_inventan_horarios():
     _, filas = _leer("tiempo-integrante-a.csv")
     retro = [f for f in filas if "RETROSPECTIVO" in f["actividad"]]
-    e0 = [f for f in retro if f["fecha"] < "2026-11-13"]
-    assert e0 and sum(int(f["minutos_estimados"]) for f in e0) == 750  # E0: 480 prototipo + 240 definitivo + 30 auditoria posterior al PR #1
+    assert len(retro) == len(filas)  # ningún tiempo de A se cronometró
     for f in retro:
         assert f["inicio"] == f["fin"] == f["interrupcion_min"] == "" and f["fecha"]
 
 
-def test_tiempos_aceptados_de_e1_por_bloque_y_suma_coherente():
-    """Los bloques aceptados (L0 y L1, L2 y L3) no cambian; el total de E1 puede crecer con el cierre documental."""
+BLOQUES_E1 = {"L0": 45, "L1": 165, "L2": 120, "L3": 105, "SEG": 60, "PCI": 90, "RES": 30, "AUD": 120, "DOC": 90, "REL": 45}
+
+
+def test_tiempos_de_e1_por_bloque_y_suma_coherente():
+    """E1 = 870 min en 10 bloques (estimación retrospectiva confirmada por A el 2026-11-14); cada fila lleva su bloque entre paréntesis."""
     _, filas = _leer("tiempo-integrante-a.csv")
-    e1 = [f for f in filas if f["fecha"] >= "2026-11-13" and "RETROSPECTIVO" in f["actividad"]]
+    e1 = [f for f in filas if f["fecha"] >= "2026-11-12"]
+    por_bloque = {b: sum(int(f["minutos_estimados"]) for f in e1 if f["actividad"].rstrip().endswith(f"({b})")) for b in BLOQUES_E1}
+    assert por_bloque == BLOQUES_E1
+    assert sum(por_bloque.values()) == sum(int(f["minutos_estimados"]) for f in e1) == 870
+    assert len(e1) > 30  # el detalle de las actividades se conserva (no se reduce a diez filas)
+
+
+def test_totales_de_a_separan_prototipo_de_desarrollo_formal():
+    _, filas = _leer("tiempo-integrante-a.csv")
     def suma(fs):
         return sum(int(f["minutos_estimados"]) for f in fs)
-    l2 = [f for f in e1 if f["actividad"].rstrip().endswith("(L2)")]
-    l3 = [f for f in e1 if f["actividad"].rstrip().endswith("(L3)")]
-    l0_l1 = [f for f in e1 if f not in l2 and f not in l3 and "(cierre documental)" not in f["actividad"]]
-    cierre = [f for f in e1 if "(cierre documental)" in f["actividad"]]
-    assert (suma(l0_l1), suma(l2), suma(l3)) == (240, 150, 270)  # estimaciones aceptadas por la integrante A (2026-11-13)
-    assert (len(l0_l1), len(l2), len(l3)) == (8, 5, 8)
-    assert (len(cierre), suma(cierre)) == (7, 720)  # cierre documental: 7 actividades, estimaciones retrospectivas aceptadas por la integrante A (2026-11-13)
-    assert suma(e1) == suma(l0_l1) + suma(l2) + suma(l3) + suma(cierre) == 1380  # E1 = 240 + 150 + 270 + 720; con E0 (750): 2,130
+    proto = [f for f in filas if "[PROTOTIPO]" in f["actividad"]]
+    e0 = [f for f in filas if f["fecha"] < "2026-11-12"]
+    _, mejoras = _leer("tiempo-mejoras-e1-integrante-a.csv")
+    assert suma(mejoras) == 90 and all("(MEJ)" in f["actividad"] for f in mejoras)
+    assert (suma(proto), suma(e0), suma(filas), suma(filas) - suma(proto)) == (480, 750, 1620, 1140)  # sin las mejoras de E1
+    assert (suma(filas) + suma(mejoras), suma(filas) + suma(mejoras) - suma(proto), suma(filas) - suma(e0) + suma(mejoras)) == (1710, 1230, 960)
+
+
+def test_el_registro_de_mejoras_no_duplica_tiempo_del_principal():
+    _, principal = _leer("tiempo-integrante-a.csv")
+    _, mejoras = _leer("tiempo-mejoras-e1-integrante-a.csv")
+    claves = {(f["fecha"], f["actividad"]) for f in principal}
+    assert not [f for f in mejoras if (f["fecha"], f["actividad"]) in claves]
 
 
 def test_defectos_a_usan_tipos_psp_y_no_inventan_minutos():
     _, filas = _leer("defectos-integrante-a.csv")
-    assert filas and all(f["tipo"] in TIPOS_PSP and f["minutos_correccion"] == "" for f in filas)
+    assert filas and all(f["tipo"] in TIPOS_PSP for f in filas)
+    # minutos_correccion: estimaciones retrospectivas (no mediciones); cada fila lo declara en su descripción
+    assert all(f["minutos_correccion"].isdigit() and "estimacion retrospectiva" in f["descripcion"] for f in filas)
+    assert sum(int(f["minutos_correccion"]) for f in filas) == 440
     assert not any("duplicad" in f["descripcion"].lower() and "fecha" in f["descripcion"].lower() for f in filas)
     assert not any("manova" in f["descripcion"].lower() for f in filas)  # MANOVA es riesgo, no defecto
 
@@ -101,3 +119,9 @@ def test_b_conserva_sus_registros_propios_sin_horarios_inventados():
     for f in filas:
         if "RETROSPECTIVO" in f["actividad"]:
             assert f["inicio"] == f["fin"] == ""
+
+
+def test_defectos_de_a_tienen_numeracion_continua_y_sin_duplicados():
+    _, filas = _leer("defectos-integrante-a.csv")
+    assert [int(f["numero"]) for f in filas] == list(range(1, len(filas) + 1)) and len(filas) == 28
+    assert len({f["descripcion"] for f in filas}) == len(filas)

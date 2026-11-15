@@ -1,4 +1,4 @@
-"""Tablero de E1 · Observatorio de Ocupación Hotelera de Colima (Manzanillo). NOMBRE PROVISIONAL.
+"""Tablero de E1 · Observatorio de Ocupación Hotelera de Colima — Manzanillo.
 
     streamlit run tablero/streamlit_app.py
 
@@ -15,7 +15,7 @@ import streamlit as st  # noqa: E402
 import cargador as cg  # noqa: E402
 import graficas as gr  # noqa: E402
 
-TITULO = "Observatorio de Ocupación Hotelera de Colima · Manzanillo"
+TITULO = "Observatorio de Ocupación Hotelera de Colima — Manzanillo"
 
 st.set_page_config(page_title=TITULO, layout="wide", initial_sidebar_state="collapsed")
 st.markdown(
@@ -56,7 +56,7 @@ meses_dentro, meses_eval = cg.cobertura_ip95(retro)
 sar = comp.set_index("familia").loc["SARIMA"]
 
 st.title(TITULO)
-st.caption("Nombre provisional · Ocupación mensual de hoteles de 2 a 5 estrellas · Datos de DataTur (Secretaría de Turismo) hasta diciembre de 2024")
+st.caption("TDL de Ocupación Hotelera de Colima · Ocupación mensual de hoteles de 2 a 5 estrellas · Datos de DataTur (Secretaría de Turismo) hasta diciembre de 2024")
 st.info(
     f"Los datos observados llegan hasta **{fechas['ultimo_observado']}**. "
     "La proyección de 2025 es una **proyección histórica** calculada con la información disponible hasta diciembre de 2024; "
@@ -74,7 +74,25 @@ with st.container(border=True):
                "desde sus archivos.")
 
 tab_resumen, tab_2024, tab_modelos, tab_2025, tab_leer, tab_fuentes = st.tabs(
-    ["Resumen", "Pronóstico 2024", "Comparación de modelos", "Proyección 2025", "Cómo leerlo", "Fuentes y datos"])
+    ["Resumen", "Pronóstico 2024", "Comparación de modelos", "Proyección 2025–2027", "Cómo leerlo", "Fuentes y datos"])
+
+def seccion_sin_normalidad(df, con_observado: bool, titulo: str):
+    """Intervalo sin supuesto de normalidad (bootstrap de bloques) junto al gaussiano; la cobertura sale del origen móvil versionado."""
+    st.markdown(f"#### {titulo}")
+    om = d.intervalos["origen_movil"].set_index(["metodo", "meses"])
+    g, b = om.loc[("gaussiano (E1)", "sin meses COVID")], om.loc[("bootstrap de bloques", "sin meses COVID")]
+    st.markdown(
+        "Los residuos del SARIMA **no son normales** (Jarque-Bera, p < 0,001), así que el intervalo gaussiano es aproximado. Se calculó también un intervalo "
+        "que **no supone normalidad** (bootstrap de bloques de residuos). **No es más preciso:** en una validación de origen móvil (17 orígenes, 2018-2022) "
+        f"cubrió {b['cobertura']:.0%} de los meses sin COVID frente a {g['cobertura']:.0%} del gaussiano, y es más ancho ({b['ancho_medio_pp']:.0f} frente a "
+        f"{g['ancho_medio_pp']:.0f} puntos). Se publica para mostrar la incertidumbre sin ese supuesto, no porque lo sustituya.")
+    st.altair_chart(gr.grafica_intervalos_comparados(df, con_observado), width="stretch")
+    st.caption("Franja azul: intervalo gaussiano (el de arriba). Líneas moradas discontinuas: límites del bootstrap de bloques. Línea azul: pronóstico central.")
+    with st.expander("Ver los límites mes por mes"):
+        tabla = df[["mes_texto", "li_gauss", "ls_gauss", "li_bootstrap", "ls_bootstrap"]].rename(columns={
+            "mes_texto": "Mes", "li_gauss": "Gauss inf. (%)", "ls_gauss": "Gauss sup. (%)", "li_bootstrap": "Bootstrap inf. (%)", "ls_bootstrap": "Bootstrap sup. (%)"})
+        st.dataframe(tabla, hide_index=True, column_config={c: st.column_config.NumberColumn(format="%.1f") for c in tabla.columns if c != "Mes"})
+
 
 # ------------------------------------------------------------------ Resumen
 with tab_resumen:
@@ -131,6 +149,8 @@ with tab_2024:
                      hide_index=True, column_config={c: st.column_config.NumberColumn(format="%.1f") for c in
                                                      ["Observado (%)", "Pronóstico (%)", "Límite inferior 95 % (%)", "Límite superior 95 % (%)"]})
 
+    seccion_sin_normalidad(d.intervalos["mensual_2024"], True, "Intervalo del 95 % sin suponer normalidad")
+
 # ------------------------------------------------------------------ Comparación de modelos
 with tab_modelos:
     st.subheader("Comparación de modelos en 2024")
@@ -145,6 +165,16 @@ with tab_modelos:
     col_c.altair_chart(gr.barras_metrica(comp, "MAPE", "MAPE (%)"), width="stretch")
     st.caption("Azul: modelo elegido (SARIMA). Gris oscuro: referencia ingenua estacional. Gris claro: los otros modelos.")
     st.markdown(textos["comparacion"])
+    st.markdown("#### ¿El resultado de 2024 es estable? Validación de origen móvil")
+    mo = d.intervalos["modelos_origen_movil"]
+    mo = mo[mo["meses"] == "sin meses COVID"].set_index("modelo").loc[list(cg.FAMILIAS)]
+    mejor = mo["RMSE"].idxmin()
+    st.markdown(
+        "Con **un solo año** de prueba el ganador puede cambiar. Se repitió la comparación con 17 orígenes de pronóstico (2018-2022, a 12 meses, sin los meses de COVID; "
+        f"nunca se usó 2024). **Aquí el menor RMSE es de {mejor}** ({mo.loc[mejor, 'RMSE']:.2f} frente a {mo.loc['SARIMA', 'RMSE']:.2f} del SARIMA); el SARIMA tiene el menor MAE. "
+        "El modelo publicado sigue siendo el elegido con la regla fijada de antemano (menor RMSE en 2024), pero **la elección no es firme**.")
+    st.dataframe(mo[["MAE", "RMSE", "MAPE_pct"]].rename(index=cg.NOMBRES, columns={"MAPE_pct": "MAPE (%)"}).reset_index().rename(columns={"modelo": "Modelo"}),
+                 hide_index=True, column_config={c: st.column_config.NumberColumn(format="%.2f") for c in ["MAE", "RMSE", "MAPE (%)"]})
     tabla = comp[["modelo", "MAE", "RMSE", "MAPE", "sesgo_medio"]].rename(columns={
         "modelo": "Modelo", "MAE": "MAE (pp)", "RMSE": "RMSE (pp)", "MAPE": "MAPE (%)", "sesgo_medio": "Sesgo medio (pp)"})
     st.dataframe(tabla, hide_index=True, column_config={c: st.column_config.NumberColumn(format="%.2f") for c in tabla.columns if c != "Modelo"})
@@ -167,13 +197,17 @@ with tab_2025:
     st.subheader("Proyección histórica para 2025")
     st.warning(
         "**Esto es una proyección histórica, no un pronóstico vigente.** Se calculó con la información disponible hasta diciembre de 2024. "
-        "La fuente de datos no incluye valores observados de 2025, por lo que esta proyección no se pudo comparar con la realidad.", icon=None)
+        "La fuente de datos no incluye valores observados de 2025, por lo que esta proyección no puede compararse con valores observados.", icon=None)
     st.altair_chart(gr.grafica_proyeccion(oro, proy), width="stretch")
     st.caption("Línea negra: ocupación observada en 2023 y 2024. Línea morada discontinua: proyección del SARIMA para 2025. Franja morada: intervalo de predicción del 95 %.")
     st.markdown(textos["proyeccion_2025"])
     st.dataframe(
         proy[["mes_texto", "media", "li", "ls"]].rename(columns={"mes_texto": "Mes", "media": "Proyección (%)", "li": "Límite inferior 95 % (%)", "ls": "Límite superior 95 % (%)"}),
         hide_index=True, column_config={c: st.column_config.NumberColumn(format="%.1f") for c in ["Proyección (%)", "Límite inferior 95 % (%)", "Límite superior 95 % (%)"]})
+
+    st.markdown("**2026 y 2027.** Con datos hasta diciembre de 2024, la franja se ensancha con el horizonte (en diciembre de 2027 ya abarca más de 60 puntos porcentuales): "
+                "es lo que el modelo puede decir sin información posterior, **no un pronóstico vigente**. No hay datos oficiales de 2025 en adelante en la fuente utilizada.")
+    seccion_sin_normalidad(d.intervalos["proyeccion"], False, "Proyección histórica 2025–2027 con ambos intervalos")
 
 # ------------------------------------------------------------------ Cómo leerlo
 with tab_leer:
@@ -212,4 +246,4 @@ with tab_fuentes:
             "El tablero **no** reentrena modelos, no ejecuta el procesamiento de datos, no consulta servicios externos y no muestra datos de establecimientos.")
 
 st.divider()
-st.caption("Observatorio de Ocupación Hotelera de Colima (nombre provisional) · Proyecto Integrador Trusted Data Lab · Entrega E1 · Los modelos son estadísticos y las proyecciones no son datos observados.")
+st.caption("Observatorio de Ocupación Hotelera de Colima — Manzanillo · Proyecto Integrador Trusted Data Lab · Entrega E1 · Los modelos son estadísticos y las proyecciones no son datos observados.")

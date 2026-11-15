@@ -6,7 +6,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[1]
 ENTREGA = RAIZ / "docs" / "E1" / "ENTREGA.md"
 RELATORIA = RAIZ / "docs" / "relatoria-E1.md"
-AUDITORIA_INTEGRAL = RAIZ / "docs" / "E1" / "auditoria_integral_pdf.md"
+MATRIZ = RAIZ / "docs" / "E1" / "matriz_cumplimiento.md"
 AUDITORIAS = RAIZ / "calidad" / "auditorias.md"
 
 
@@ -52,16 +52,25 @@ def test_ficha_cubre_cada_criterio_de_la_rubrica():
 
 def test_los_enlaces_relativos_de_los_documentos_de_cierre_existen():
     rotos = []
-    for ruta in (ENTREGA, RELATORIA, AUDITORIA_INTEGRAL):
+    for ruta in (ENTREGA, RELATORIA, MATRIZ):
         for destino in _enlaces_relativos(ruta):
             if not (ruta.parent / destino).resolve().exists():
                 rotos.append(f"{ruta.name}: {destino}")
     assert not rotos, rotos
 
 
+def test_ningun_enlace_relativo_de_la_documentacion_esta_roto():
+    rotos = []
+    for ruta in [RAIZ / "README.md", *RAIZ.glob("calidad/*.md"), *RAIZ.glob("docs/**/*.md")]:
+        for destino in _enlaces_relativos(ruta):
+            if not (ruta.parent / destino).resolve().exists():
+                rotos.append(f"{ruta.relative_to(RAIZ)}: {destino}")
+    assert not rotos, rotos
+
+
 def test_la_ficha_no_afirma_lo_que_no_esta_verificado():
     texto = _leer(ENTREGA)
-    assert "no creada todavía" in texto
+    assert "no creada todavía" not in texto and "134c333" in texto   # la etiqueta e1 ya existe
     assert "@@" not in texto and "@@" not in _leer(RELATORIA)
     for prohibida in ("tablero está actualizado con `main`", "CI en verde", "disponibilidad cumplida"):
         assert prohibida not in texto
@@ -98,5 +107,5 @@ def test_los_recuentos_de_requerimientos_coinciden_entre_documentos():
 
 
 def test_los_documentos_e1_no_usan_el_nombre_antiguo_del_prototipo():
-    for ruta in (ENTREGA, RELATORIA, AUDITORIA_INTEGRAL):
+    for ruta in (ENTREGA, RELATORIA, MATRIZ):
         assert "StayMetrics" not in _leer(ruta)
