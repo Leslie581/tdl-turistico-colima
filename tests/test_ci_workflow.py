@@ -212,11 +212,14 @@ def test_ci_no_deja_el_token_guardado_en_git_config():
     assert not [j for j in wf["jobs"].values() if "permissions" in j]                       # ningún trabajo amplía los permisos
 
 
-def test_la_captura_diaria_conserva_solo_el_permiso_de_escritura_que_necesita():
+def test_la_captura_diaria_solo_lee_con_el_token_y_empuja_con_una_llave_de_despliegue():
     wf = _carga(CAPTURA)
-    assert wf["permissions"] == {"contents": "write"}                                       # el bot guarda la bitácora y el bronce
+    assert wf["permissions"] == {"contents": "read"}                                        # GITHUB_TOKEN ya no escribe
     texto = CAPTURA.read_text(encoding="utf-8")
-    assert texto.count("secrets.") == 1 and "secrets.INEGI_TOKEN" in texto                  # un solo secreto, el del extractor
+    assert texto.count("secrets.") == 2 and "secrets.INEGI_TOKEN" in texto                  # el del extractor y la llave de despliegue
+    assert texto.count("secrets.CAPTURA_DEPLOY_KEY") == 1
+    checkout = next(p for p in wf["jobs"]["capturar"]["steps"] if str(p.get("uses", "")).startswith("actions/checkout@"))
+    assert checkout["with"]["ssh-key"] == "${{ secrets.CAPTURA_DEPLOY_KEY }}"               # la llave solo se usa en el checkout (queda para el empuje)
 
 
 def test_la_accion_correctiva_de_revision_recíproca_esta_preparada_en_el_repositorio():
