@@ -94,7 +94,7 @@ Ambas integrantes usaron Claude Code (Anthropic) para escribir y revisar código
 ### B. Mejoras opcionales (no las exige el PDF)
 | Mejora | Estado |
 |---|---|
-| Protección de `main` con los cuatro trabajos como comprobaciones obligatorias | **Preparada, no activada** (`.github/rulesets/proteger-main.json`; compatibilidad con la captura y pasos en [`seguridad.md`](seguridad.md) §7) |
+| Protección de `main` con los cuatro trabajos como comprobaciones obligatorias | **Configurada pero no activa** (ruleset importado en GitHub, llave de despliegue como excepción de la captura; declarado por A el 2026-11-15; falta probar la captura y un PR bloqueado; [`seguridad.md`](seguridad.md) §7) |
 | Copia del respaldo del bronce fuera del equipo | **Hecha** (confirmada por A el 2026-11-15; hash del zip coincidente con el manifiesto, [`seguridad.md`](seguridad.md) §6.3) |
 | Hashes para las otras tres listas de dependencias; fijar las imágenes por *digest* | No implementados |
 | Isolation Forest, unión mes a mes, nuevas fuentes | No aplican / no viables |
