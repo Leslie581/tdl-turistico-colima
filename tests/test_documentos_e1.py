@@ -102,8 +102,8 @@ def test_las_auditorias_estan_numeradas_de_forma_consecutiva_y_sin_duplicados():
 def test_los_recuentos_de_requerimientos_coinciden_entre_documentos():
     plan = _leer(RAIZ / "docs" / "E1" / "plan_trabajo.md")
     entrega = _leer(ENTREGA)
-    assert "35 cumplidos, 3 parciales, 4 no cumplidos" in plan
-    assert "35 cumplidos, 3 parciales, 4 no cumplidos" in entrega
+    assert "36 cumplidos, 3 parciales, 3 no cumplidos" in plan
+    assert "36 cumplidos, 3 parciales, 3 no cumplidos" in entrega
 
 
 def test_los_documentos_e1_no_usan_el_nombre_antiguo_del_prototipo():

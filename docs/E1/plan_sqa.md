@@ -87,7 +87,7 @@ Doce PR de E1 se fusionaron sin revisión previa registrada en GitHub: once haci
 | #18 | Cierre definitivo de E1 (`99c3160`; merge `3c6cf42`) | A | 12 s | B aprobó el PR #19 (`ceb9d97`), que registra esta fusión |
 Las desviaciones 1 a 10 son los PR #7 a #16; la 11.ª es el PR #17 y la 12.ª es el PR #18. Fusión de cada PR: 2026-11-13 hora local; el contenido de `calidad/auditorias.md` en `e1/cierre-documental` es idéntico al de `1e59f5f`.
 **Acción correctiva:** (1) la autora abre el PR y no lo fusiona; (2) la otra integrante deja una revisión visible en el PR y registra los hallazgos en `auditorias.md`; (3) se fusiona con CI en verde y esa revisión; (4) antes de cada etiqueta se consultan las revisiones de los PR fusionados (`https://api.github.com/repos/Leslie581/tdl-turistico-colima/pulls/<n>/reviews`). En el repositorio están [`.github/pull_request_template.md`](../../.github/pull_request_template.md) y [`.github/CODEOWNERS`](../../.github/CODEOWNERS), comprobados por una prueba.
-**Protección de `main`:** el ruleset `proteger-main` está importado en GitHub con la captura diaria como excepción (llave de despliegue) y su estado es Disabled; falta activarlo y probar la captura y un PR bloqueado ([`seguridad.md`](seguridad.md) §7). Mientras tanto `protected` es `false`.
+**Protección de `main`:** el ruleset `proteger-main` está activo desde el 2026-11-15 con la captura diaria como excepción (llave de despliegue). Comprobaciones: dos capturas manuales con éxito, una de ellas con el ruleset activo, y el PR de prueba #21, bloqueado por la revisión requerida y por la comprobación `calidad` ([`seguridad.md`](seguridad.md) §7).
 
 | Conformidad con el plan SQA y la acción correctiva | Fecha |
 |---|---|
@@ -98,7 +98,7 @@ Las desviaciones 1 a 10 son los PR #7 a #16; la 11.ª es el PR #17 y la 12.ª es
 
 ### 5.2 Clasificación de las desviaciones y procedimiento definitivo desde E2
 **Qué es y qué no es cada cosa.** (1) **Requisito del PDF** (págs. 16 y 25): plan SQA con estructura IEEE 730, revisiones y auditorías, reporte de problemas y acción correctiva; **el PDF no fija una penalización por cada PR sin aprobación formal**. (2) **Regla interna del equipo** (`plan_trabajo.md` §3): todo PR se aprueba en GitHub por la otra integrante antes de fusionarse. (3) **Buena práctica adicional**: protección de ramas. Las doce desviaciones de §5.1 son **incumplimientos de la regla interna (2)**, no doce incumplimientos independientes del PDF; el efecto sobre la rúbrica es el de **un** proceso de revisión que existió (Auditorías 1 a 8, con pruebas reales) pero que no se aplicó **antes** de fusionar. Ni se ocultan ni se multiplican.
-**Auditorías efectivamente realizadas:** ocho, en [`auditorias.md`](../../calidad/auditorias.md). **Conformidad definitiva de B con la relatoría:** aprobación del PR #19. **Acción correctiva:** *propuesta y preparada* (plantilla de PR, `CODEOWNERS`, ruleset sin activar); **implementada** solo cuando la protección esté activa y probada ([`seguridad.md`](seguridad.md) §7).
+**Auditorías efectivamente realizadas:** ocho, en [`auditorias.md`](../../calidad/auditorias.md). **Conformidad definitiva de B con la relatoría:** aprobación del PR #19. **Acción correctiva:** implementada: plantilla de PR, `CODEOWNERS` y ruleset activo y probado desde el 2026-11-15 ([`seguridad.md`](seguridad.md) §7).
 **Mejoras de E1.** Se integran por PR; la revisión cruzada formal de este procedimiento rige desde E2, y las reglas de este plan **no se modifican retroactivamente** para justificar las desviaciones anteriores.
 **Procedimiento definitivo (E2 en adelante, sin burocracia añadida):**
 1. Todo cambio va en una rama y se integra por PR; la plantilla de PR trae la lista de comprobación (pruebas, `ruff`, documentación, defectos y tiempo registrados).
@@ -113,7 +113,7 @@ Las desviaciones 1 a 10 son los PR #7 a #16; la 11.ª es el PR #17 y la 12.ª es
 **Acciones correctivas (estado al 2026-11-14):**
 | Origen | Acción | Estado |
 |---|---|---|
-| Auditorías 3 a 7, D1 | No fusionar sin revisión de la otra integrante | **Abierta** (se repitió en los doce PR #7 a #18). Acción correctiva y excepción de E1 **preparadas** (plantilla de PR y CODEOWNERS en `.github/`); la conformidad personal de A y B consta (§5.1); falta activar la protección de `main`: está **preparada** (`.github/rulesets/proteger-main.json`, [`seguridad.md`](seguridad.md) §7) pero **no configurada** (`protected: false`) |
+| Auditorías 3 a 7, D1 | No fusionar sin revisión de la otra integrante | Se repitió en los doce PR #7 a #18. Plantilla de PR y `CODEOWNERS` en `.github/`; conformidad de A y B (§5.1); protección de `main` activa y comprobada desde el 2026-11-15 ([`seguridad.md`](seguridad.md) §7) |
 | Auditoría 3, D2 y Auditoría 4, D2 | Actualizar los textos sobre el estado de CI y de la comprobación del oro | **Corregidas** (textos actualizados con las ejecuciones reales; integradas en `main`) |
 | Auditoría 3, R3 | Comprobar en CI que el oro regenerado es igual al versionado | **Cerrada**: `pipeline/verificar_oro.py` (CI en éxito en `main`) |
 | Auditoría 3, R4 | Acordar cuándo se versiona un `resumen_<corrida>.json` nuevo | **Abierta** |
@@ -131,7 +131,7 @@ Las desviaciones 1 a 10 son los PR #7 a #16; la 11.ª es el PR #17 y la 12.ª es
 | Auditoría 7, O1 | `.env.example` marcado como archivo no publicable | **Corregida en la rama** (la plantilla se permite solo sin valores reales; `.env` y similares siguen rechazados) |
 | Este plan, seguridad | `gitleaks` en CI y auditoría de dependencias transitivas del tablero | **Implementadas en la rama** (`ci.yml`); verificadas localmente (control positivo, hash de la release, `pip-audit` del cierre de 34 paquetes); **ya ejecutado en GitHub (ejecución 43557153021 de `ci.yml` sobre `4242ea5`: éxito en `calidad`, `auditoria-dependencias`, `bloqueo-tablero` y `secretos`)** |
 | Este plan, seguridad | Acciones fijadas por SHA, archivo de bloqueo con hashes del tablero, `persist-credentials: false`, cobertura con piso de 75 %, copia adicional del bronce con manifiesto y restauración probada | **Implementados y comprobados en local** (2026-11-14); su ejecución en GitHub fue la ejecución 43557153021 de `ci.yml` sobre `4242ea5`: éxito en `calidad`, `auditoria-dependencias`, `bloqueo-tablero` y `secretos` ([`seguridad.md`](seguridad.md) §4 a §6) |
-| Este plan, seguridad | Protección de `main` y hashes para las otras tres listas de dependencias (la copia del bronce fuera del equipo se hizo el 2026-11-15) | **Abiertas** ([`seguridad.md`](seguridad.md) §7) |
+| Este plan, seguridad | Hashes para las otras tres listas de dependencias | Abierta ([`seguridad.md`](seguridad.md) §7); la protección de `main` y la copia externa del bronce están hechas |
 | Fiabilidad (criterio de Calidad del PDF) | Completar la bitácora con historia real de Actions | **No hay datos recuperables:** las 3 ejecuciones más antiguas de la bitácora ya no existen en la API (404), los registros dan 403 y el flujo se creó el 2026-11-09; se conserva la limitación ([`fiabilidad.md`](fiabilidad.md) §4.2) |
 
 ## 7. Criterios para aceptar o rechazar una entrega
@@ -165,20 +165,20 @@ Las desviaciones 1 a 10 son los PR #7 a #16; la 11.ª es el PR #17 y la 12.ª es
 - **Datos:** `.gitattributes` conserva los datos byte a byte (`data/** -text`); se versiona solo el oro público, agregado y reproducible; el bronce se publica sin datos personales ni de permiso incierto.
 - **Dependencias:** versiones exactas (`==`) en tres archivos separados (captura, laboratorio y desarrollo), para que una falla de una librería opcional no detenga la captura diaria.
 - **Atribución:** los commits asistidos por Claude Code lo declaran con `Co-Authored-By`.
-- **Protección de `main`: NO configurada.** La API pública (2026-11-13 19:14 UTC) devuelve `protected: false` y ninguna regla activa; **no está activada** y requiere permisos de administración (§5.1).
+- **Protección de `main`:** activa desde el 2026-11-15 (§5.1).
 
 ## 10. Riesgos de calidad
 Los riesgos generales viven en [`riesgos.md`](../../calidad/riesgos.md) (R1 a R8 e I1 a I4). Los **nuevos** de E1, con su mitigación:
 | ID | Riesgo | Mitigación | Estado |
 |---|---|---|---|
-| Q1 | Fusionar sin revisión repite la situación de E0 y deja pasar defectos | Acción correctiva y excepción de §5.1 (**preparadas**; falta la conformidad personal); protección de `main` (**no configurada**) | **Materializado** (PR #7 a #16; el #14 dejó `main` en rojo) |
+| Q1 | Fusionar sin revisión repite la situación de E0 y deja pasar defectos | Acción correctiva de §5.1, plantilla de PR, `CODEOWNERS` y protección de `main` activa | Materializado en los PR #7 a #18; el #14 dejó `main` en rojo |
 | Q2 | La medición de fiabilidad no alcanza los 7 días que pide la rúbrica, y con un solo incidente no cumple el criterio interno de 2 incidentes para el MTBF (regla metodológica de este plan, **no** de la rúbrica) | Declararlo; ofrecer solo la estimación exploratoria con su intervalo; actualizar con `pipeline.fiabilidad`; no suponer valores | Abierto |
 | Q3 | Un secreto futuro que nadie detecte porque `gitleaks` no corre en cada cambio, o uno fuera de su alcance (registros y secretos de GitHub) | `gitleaks` en CI (trabajo `secretos`, [`seguridad.md`](seguridad.md) §3.4); rotar el token si hay duda | Mitigado en la rama; **ya ejecutado en GitHub (ejecución 43557153021 de `ci.yml` sobre `4242ea5`: éxito en `calidad`, `auditoria-dependencias`, `bloqueo-tablero` y `secretos`)**. Lo que está fuera de su alcance sigue sin cubrirse |
 | Q4 | El único respaldo del bronce es GitHub | Copia adicional con manifiesto SHA-256 y restauración probada ([`seguridad.md`](seguridad.md) §6); copia externa confirmada por A el 2026-11-15 con hash coincidente (§6.3) | Mitigado; copia puntual, sin copia periódica |
 | Q5 | Plazo: E1 vencía el 2026-11-13 a las 23:59 | La etiqueta `e1` se creó a las 23:32 hora local y la ficha declara lo que sigue abierto | Cerrado |
 | Q6 | Equipo de dos personas y apoyo de una herramienta de IA: la independencia de la revisión es limitada | Declararlo en cada auditoría; ejecutar y reproducir, no solo leer | Aceptado |
 | Q7 | El agregado de oferta DENUE no protege las celdas de un solo establecimiento | No publicarlo en el tablero sin agrupar celdas < 3 | Abierto |
-| Q8 | Un cambio sin revisión rompe el CI de `main` y la rúbrica pide que «un cambio que rompe algo no entra» | Plantilla de PR y CODEOWNERS (**preparados**) y protección de `main` (**no activada**); `main` ya está en verde (`eb8f606`) | **Materializado** (`06452fd`); corregido en `eb8f606` |
+| Q8 | Un cambio sin revisión rompe el CI de `main` y el PDF exige que «un cambio que rompe algo no entra» | Protección de `main` activa: comprobaciones obligatorias y revisión de propietario del código (PR de prueba #21 bloqueado) | Materializado en `06452fd`; corregido en `eb8f606` |
 | Q9 | La URL pública del tablero muestra una versión distinta de la integrada | Comprobar la rama configurada y repetir la lectura (Auditoría 7, D2) | **Materializado y resuelto** (2026-11-14 04:25 UTC); repetir la lectura tras la integración definitiva |
 
 ## 11. Qué está implementado y qué falta (resumen)

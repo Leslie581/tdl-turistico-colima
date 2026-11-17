@@ -5,7 +5,7 @@ Un **riesgo** es algo que puede salir mal; un **defecto** es un error realmente 
 | ID | Riesgo | Estado | Mitigación |
 |---|---|---|---|
 | R1 | Uso automatizado/publicación de DATATUR (Sistema de Monitoreo) sin autorización | Abierto | Canal suspendido y fuera de Git (`docs/fuentes/datatur.md`) |
-| R2 | Hay 5 ejecuciones reales en GitHub Actions, 3 de ellas por `schedule`; `main` protegida haría fallar el push del bot | Abierto | Ejecución manual y revisión (`docs/E0/verificacion.md`) |
+| R2 | Hay 5 ejecuciones reales en GitHub Actions, 3 de ellas por `schedule`; `main` protegida haría fallar el push del bot | Mitigado (2026-11-15): llave de despliegue como bypass; capturas manuales con éxito antes y después de activar la protección | `docs/E1/seguridad.md` §7 |
 | R3 | El DENUE cambia poco; la captura diaria no produce serie diaria | Abierto | Documentado en la propuesta |
 | R4 | Cuotas de la API DENUE no documentadas | Abierto | Máx. 2–3 solicitudes por ejecución |
 | R5 | Cifras de SECTUR con revisiones retroactivas | Abierto | Hash y fecha en la ficha |

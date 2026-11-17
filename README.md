@@ -4,7 +4,7 @@ Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Esta
 
 **Qué observa:** ocupación hotelera mensual de Manzanillo (SECTUR/DataTur, 2016–2024) y la oferta de hospedaje (INEGI, DENUE, captura diaria).
 **Para quién:** propietarios, administradores, gerentes e inversionistas hoteleros (hipótesis por validar).
-**Estado:** **E1 entregada** (etiqueta `e1` sobre `134c333`; no se mueve). Tablero: <https://tdl-turistico-colima.streamlit.app>. Las **mejoras de E1** (fortalecimiento y correcciones) están en la rama `e1/mejoras-postentrega`: se resumen al final de [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) y figuran con su fecha en cada documento técnico. Siguen vigentes las limitaciones declaradas: la disponibilidad de la captura (85.7 %, 6 de 7 ejecuciones) **no** alcanza el objetivo de 95 %, `main` **no** tiene protección de rama activada y la copia externa del bronce es puntual (al 2026-11-14) y no se actualiza sola.
+**Estado:** **E1 entregada** (etiqueta `e1` sobre `134c333`; no se mueve). Tablero: <https://tdl-turistico-colima.streamlit.app>. Las **mejoras de E1** (fortalecimiento y correcciones) están en la rama `e1/mejoras-postentrega`: se resumen al final de [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) y figuran con su fecha en cada documento técnico. Siguen vigentes las limitaciones declaradas: la disponibilidad de la captura (85.7 %, 6 de 7 ejecuciones) **no** alcanza el objetivo de 95 %, y la copia externa del bronce es puntual (al 2026-11-14) y no se actualiza sola.
 
 ## Documentación
 | Documento | Contenido |
@@ -21,7 +21,7 @@ Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Esta
 ## Estructura
 ```
 .github/workflows/   ci.yml (pruebas, seguridad, dependencias) y captura-diaria.yml (DENUE: programada + manual)
-.github/rulesets/    proteger-main.json (preparada, sin activar)
+.github/rulesets/    proteger-main.json (protección de main, activa)
 docs/                E0/, E1/ (entrega), fuentes/; E2/ a E4/ reservadas
 calidad/             PSP (tiempo y defectos por integrante), auditorías, riesgos, bitácora de capturas
 extractores/         captura ética de DENUE y DataTur
