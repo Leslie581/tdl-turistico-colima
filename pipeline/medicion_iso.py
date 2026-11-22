@@ -169,7 +169,8 @@ def medir_25012(raiz: Path = RAIZ, corte: str = CORTE_POR_OMISION) -> dict:
     return out
 
 
-def _funciones_de_prueba(raiz: Path) -> int:
+def _definiciones_de_prueba(raiz: Path) -> int:
+    """Cuenta las definiciones ``def test_*`` en tests/test_*.py (análisis estático). No expande parametrizaciones: no es el número de casos que ejecuta pytest."""
     return sum(isinstance(n, ast.FunctionDef) and n.name.startswith("test_") for p in (raiz / "tests").glob("test_*.py") for n in ast.walk(ast.parse(p.read_text(encoding="utf-8"))))
 
 
@@ -215,7 +216,8 @@ def medir_25010(raiz: Path = RAIZ, herramientas: bool = False) -> dict:
     out = {
         "entorno_de_la_medicion": {"sistema": platform.platform(), "python": platform.python_version(), "ci": "ubuntu-latest (.github/workflows/ci.yml)"},
         "adecuacion_funcional": {"requerimientos_funcionales_por_estado": estados["RF"], "requerimientos_no_funcionales_por_estado": estados["RNF"],
-                                 "funciones_de_prueba": _funciones_de_prueba(raiz)},
+                                 "definiciones_de_prueba": _definiciones_de_prueba(raiz),
+                                 "nota_definiciones_de_prueba": "cuenta de def test_* en tests/test_*.py; no incluye la expansión de parametrizaciones ni equivale a los casos ejecutados por pytest"},
         "eficiencia_de_desempeno": {
             "experimento_corridas_oficiales": len(oficiales), "tiempo_por_corrida_s": {"min": round(min(tiempos), 3), "media": round(sum(tiempos) / len(tiempos), 3), "max": round(max(tiempos), 3)},
             "tasa_de_error_en_las_corridas": [c["capturas_con_error"] for c in oficiales if "capturas_con_error" in c] and sum(c["capturas_con_error"] for c in oficiales) / sum(c["capturas"] for c in oficiales),

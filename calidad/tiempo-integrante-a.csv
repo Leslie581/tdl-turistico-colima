@@ -53,7 +53,7 @@ fecha,inicio,fin,interrupcion_min,fase,actividad,minutos_estimados
 2026-11-22,,,,codigo,[E2][ESTIMADO RETROSPECTIVO POR LESLIE] pipeline/linaje.py: cadena de cada registro del oro hasta su archivo de origen (GEO),15
 2026-11-22,,,,documentacion,[E2][ESTIMADO RETROSPECTIVO POR LESLIE] docs/etica-datos.md y docs/E2/geoespacial.md (GEO),15
 2026-11-22,,,,pruebas,[E2][ESTIMADO RETROSPECTIVO POR LESLIE] tests/test_geoespacial.py y ajustes de las pruebas del tablero (GEO),10
-2026-11-22,,,,diseno,[E2][PENDIENTE DE CONFIRMACION DE TIEMPO] Evaluacion ISO/IEC 25010: metricas y resultados de las ocho caracteristicas (ISO),
-2026-11-22,,,,codigo,[E2][PENDIENTE DE CONFIRMACION DE TIEMPO] Mediciones ISO/IEC 25012 sobre la capa oro: pipeline/medicion_iso.py (ISO),
-2026-11-22,,,,documentacion,"[E2][PENDIENTE DE CONFIRMACION DE TIEMPO] Antecedentes normativos: ISO/IEC 9126, familia 25000 e ISO 9001 (ISO)",
-2026-11-22,,,,pruebas,[E2][PENDIENTE DE CONFIRMACION DE TIEMPO] tests/test_medicion_iso.py y mediciones focalizadas (ISO),
+2026-11-22,,,,diseno,[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Evaluacion ISO/IEC 25010: metricas y resultados de las ocho caracteristicas (ISO),35
+2026-11-22,,,,codigo,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Evaluacion ISO/IEC 25012: mediciones sobre la capa oro de DataTur y DENUE, pipeline/medicion_iso.py (ISO)",35
+2026-11-22,,,,documentacion,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Antecedentes normativos: ISO/IEC 9126, familia 25000 e ISO 9001 (ISO)",25
+2026-11-22,,,,pruebas,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Pruebas y documentacion: tests/test_medicion_iso.py, mediciones focalizadas y evidencias en docs/E2 (ISO)",25

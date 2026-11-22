@@ -68,9 +68,11 @@ def test_totales_de_a_separan_prototipo_de_desarrollo_formal():
     # E2: 90 min estimados retrospectivamente por A para el trabajo geoespacial; las demás filas esperan confirmación (sin minutos)
     geo = [f for f in e2 if "(GEO)" in f["actividad"]]
     assert suma(geo) == 90 and len(geo) == 5 and all("ESTIMADO RETROSPECTIVO POR LESLIE" in f["actividad"] for f in geo)
-    pendientes = [f for f in e2 if "PENDIENTE DE CONFIRMACION" in f["actividad"]]
-    assert pendientes and all(f["minutos_estimados"] == "" for f in pendientes)
-    assert suma(filas) + suma(mejoras) + suma(e2) == 1800
+    iso = [f for f in e2 if "(ISO)" in f["actividad"]]
+    assert [int(f["minutos_estimados"]) for f in iso] == [35, 35, 25, 25] and all("ESTIMADO RETROSPECTIVO POR LESLIE" in f["actividad"] for f in iso)
+    assert suma(iso) == 120 and suma(e2) == 210                       # Calidad 120 + geoespacial 90
+    assert not [f for f in e2 if "PENDIENTE DE CONFIRMACION" in f["actividad"]]
+    assert suma(filas) + suma(mejoras) + suma(e2) == 1920
 
 
 def test_el_registro_de_mejoras_no_duplica_tiempo_del_principal():

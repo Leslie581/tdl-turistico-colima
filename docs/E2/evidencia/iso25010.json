@@ -1,6 +1,7 @@
 {
   "adecuacion_funcional": {
-    "funciones_de_prueba": 439,
+    "definiciones_de_prueba": 443,
+    "nota_definiciones_de_prueba": "cuenta de def test_* en tests/test_*.py; no incluye la expansión de parametrizaciones ni equivale a los casos ejecutados por pytest",
     "requerimientos_funcionales_por_estado": {
       "CUMPLIDO": 14,
       "PARCIAL": 1
@@ -25,7 +26,7 @@
     },
     "union_espacial_y_agregado_s": {
       "establecimientos": 134,
-      "mejor_de_3": 0.0097,
+      "mejor_de_3": 0.0095,
       "poligonos": 154
     }
   },
@@ -70,9 +71,9 @@
     }
   },
   "mantenibilidad": {
-    "lineas_de_codigo": 7229,
-    "lineas_de_prueba": 4070,
-    "relacion_prueba_codigo": 0.563,
+    "lineas_de_codigo": 7231,
+    "lineas_de_prueba": 4114,
+    "relacion_prueba_codigo": 0.569,
     "ruff": {
       "codigo_de_salida": 0,
       "resumen": "All checks passed!"

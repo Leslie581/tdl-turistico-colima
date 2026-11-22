@@ -46,6 +46,7 @@ def test_los_incumplimientos_se_informan_y_no_se_ocultan():
 def test_la_evidencia_de_25010_trae_las_metricas_y_el_documento_cubre_las_ocho_caracteristicas():
     ev = json.loads((EVID / "iso25010.json").read_text(encoding="utf-8"))
     assert {"adecuacion_funcional", "eficiencia_de_desempeno", "capacidad_de_interaccion", "fiabilidad", "mantenibilidad", "seguridad"} <= set(ev)
+    assert ev["adecuacion_funcional"]["definiciones_de_prueba"] > 400 and "no incluye la expansión" in ev["adecuacion_funcional"]["nota_definiciones_de_prueba"]
     assert ev["eficiencia_de_desempeno"]["experimento_corridas_oficiales"] == 16 and ev["mantenibilidad"]["ruff"]["codigo_de_salida"] == 0
     assert all("sin vulnerabilidades" in v for v in ev["seguridad"]["pip_audit"].values())
     doc = (RAIZ / "docs" / "E2" / "iso25010.md").read_text(encoding="utf-8")
