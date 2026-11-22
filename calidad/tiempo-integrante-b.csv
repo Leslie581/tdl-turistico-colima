@@ -37,3 +37,4 @@ fecha,inicio,fin,interrupcion_min,fase,actividad,minutos_estimados
 2026-11-21,21:49,21:51,0,pruebas,"[E2][ASISTIDO POR CLAUDE CODE] Pruebas del arnés (tests/test_arnes_experimento.py, 16) y ejecución focalizada: 55 pasan; orjson y pyarrow fijados en requirements-lab.txt",
 2026-11-21,21:51,21:52,0,documentacion,"[E2][ASISTIDO POR CLAUDE CODE] docs/E2/experimento_2x3.md: objetivo, factores, respuestas, carga, calibración, aleatorización, bloqueo y reproducción",
 2026-11-21,21:52,21:58,0,pruebas,"[E2][ASISTIDO POR CLAUDE CODE] Suite completa local sin red: 450 pasan, 2 omitidas (red); ruff sin hallazgos",
+2026-11-21,22:16,22:18,0,pruebas,"[E2][ASISTIDO POR CLAUDE CODE] Revisión previa (git diff --check, secretos, PSP), ruff y 93 pruebas focalizadas; commit 8c09877; corrida oficial del bloque dia_1 (8 corridas, 22:16:45-22:17:53) y verificación de resultados, huella del bronce y oro",
