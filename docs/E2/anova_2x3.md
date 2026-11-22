@@ -99,7 +99,7 @@ El arnés registra por separado el procesamiento y la escritura más la lectura.
 - **Commit registrado distinto entre bloques** (`8c09877` en `dia_1` y `2784148` en `dia_2`), con el código del arnés idéntico (verificado con `git diff 8c09877 2784148`, salvo resultados y PSP).
 - **Respuesta secundaria:** la `tasa_error` es constante en 0, así que no se puede analizar.
 
-## 9. Protocolo de confirmación (fijado antes de ejecutar; no se ha corrido)
+## 9. Protocolo de confirmación (fijado antes de ejecutar; ejecutado el 2026-11-22, resultados en §9.1)
 **Qué se compara:** la candidata T8 (4 procesos, orjson, parquet) frente a la configuración de E1, T1 (1 proceso, json, csv).
 
 **Condiciones:**
@@ -109,13 +109,56 @@ El arnés registra por separado el procesamiento y la escritura más la lectura.
 - Código confirmado en git.
 - Equipo conectado a la corriente, sincronización de OneDrive en pausa y sin otras aplicaciones abiertas. Estas condiciones se anotan como medida para reducir el ruido identificado; no se cambia ningún factor.
 
-**Diseño:** 6 corridas de T8 y 6 de T1 (12 en total), en orden aleatorizado con la semilla fija 20261123. Cada corrida usa `arnes.ejecutar_corrida`, igual que en el factorial. Los resultados van a un archivo **aparte**, `laboratorio/experimento/resultados/confirmacion_2x3.jsonl`; `corridas_2x3.jsonl` no se toca. Ejecutarlo requiere un pequeño ejecutor nuevo (fase siguiente).
+**Diseño:** 6 corridas de T8 y 6 de T1 (12 en total), en orden aleatorizado con la semilla fija 20261123. Cada corrida usa `arnes.ejecutar_corrida`, igual que en el factorial. Los resultados van a un archivo **aparte**, `laboratorio/experimento/resultados/confirmacion_2x3.jsonl`; `corridas_2x3.jsonl` no se toca. Ejecutor: [`laboratorio/experimento/confirmacion.py`](../../laboratorio/experimento/confirmacion.py), confirmado en `c5a9ce2` antes de correr.
 
 **Criterios de aceptación** (los dos deben cumplirse):
 1. **Predicción:** la media de las 6 corridas de T8 cae dentro del intervalo de predicción del 95 % del modelo factorial para la media de 6 corridas nuevas: 4.633 ± t₀.₉₇₅;₇·√(CME·(1/2 + 1/6)) = 4.633 ± 3.952, es decir, **[0.68, 8.58] s**. Advertencia: el intervalo no incluye la variación de un día nuevo (un bloque fuera del diseño), así que es optimista.
 2. **Mejora frente a E1:** en la misma sesión, T8 debe ser más rápido que T1 según una prueba t de Welch unilateral al 5 %, con una mejora relativa (T1 − T8)/T1 de **al menos el 20 %**. Si se toma como desviación estándar √CME = 2.05 s y como diferencia los 3.49 s observados, la potencia con n = 6 por grupo es de alrededor de 0.86.
 
 **Interpretación del resultado:** si se cumplen ambos criterios, T8 queda **confirmada como mejor que la configuración de E1 en este equipo y con esta carga**; no como óptimo global. Si no se cumplen, se informa igual, sin repetir corridas ni cambiar los criterios.
+
+### 9.1 Resultado de la confirmación (análisis preestablecido)
+**Ejecución:** 2026-11-22, de 16:00:47 a 16:02:51 (hora local), commit `c5a9ce2` con código sin modificar, sin pilotos.
+- Alimentación verificada antes de correr con WMI (`BatteryStatus = 2`) y .NET (`PowerLineStatus = Online`); `corriente_alterna = true` quedó registrado en las 12 corridas.
+- Declaración guardada en cada registro: «OneDrive en pausa, aplicaciones cerradas, conectado a la corriente».
+- Carga de 16 copias (`b0789202f77d…`) con calentamiento previo no registrado; la huella del bronce se comprobó antes y después.
+- Las 12 corridas terminaron `ok` con `tasa_error = 0`. La evidencia de factores coincide con los niveles: T8 con 4 procesos, `orjson` y Parquet de 50,906 bytes; T1 con 1 proceso, `json` y CSV de 12,035,312 bytes.
+
+| Orden | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Tratamiento | T8 | T1 | T1 | T8 | T8 | T8 | T1 | T8 | T1 | T1 | T8 | T1 |
+| `tiempo_s` | 4.696 | 6.574 | 10.820 | 8.315 | 6.714 | 4.109 | 7.657 | 7.166 | 10.389 | 12.454 | 8.631 | 14.862 |
+
+| | n | Media (s) | DE (s) |
+|---|---|---|---|
+| T1 (1 proceso, json, csv) | 6 | 10.459 | 3.048 |
+| T8 (4 procesos, orjson, parquet) | 6 | 6.605 | 1.856 |
+
+- **Diferencia T1 − T8:** 3.854 s (EE 1.457 s), es decir, una **mejora relativa del 36.8 %**.
+- **IC 95 % de la diferencia (Welch):** [0.51, 7.19] s.
+- **Welch unilateral** (H₁: T1 más lento que T8): t = 2.645, gl = 8.26, **p = 0.0143**.
+- **Complementos**, que no sustituyen a Welch: Mann-Whitney exacto unilateral U = 30, p = 0.032; Shapiro-Wilk p = 0.90 (T1) y p = 0.45 (T8).
+
+| Criterio fijado antes de correr | Resultado | Dictamen |
+|---|---|---|
+| 1. Media de T8 dentro de [0.68, 8.58] s | 6.605 s | **Cumple** |
+| 2a. Welch unilateral con p < 0.05 | p = 0.0143 | **Cumple** |
+| 2b. Mejora (T1 − T8)/T1 de al menos el 20 % | 36.8 % | **Cumple** |
+
+**Conclusión:** T8 queda **confirmada como más rápida que la configuración de E1 (T1) en este equipo y con esta carga**, con una mejora estimada del 37 % (IC de la diferencia: de 0.5 a 7.2 s). No es un óptimo global: el factorial no identificó efectos significativos de los factores por separado (§7).
+
+**Evidencia:**
+- [`resultados/confirmacion_2x3.jsonl`](../../laboratorio/experimento/resultados/confirmacion_2x3.jsonl): 12 registros, semilla 20261123.
+- [`resultados/confirmacion/resumen.json`](../../laboratorio/experimento/resultados/confirmacion/resumen.json): el análisis y los criterios.
+- `corridas_2x3.jsonl` no cambió (SHA-256 `f5167a79…`).
+- Reproducir el análisis: `python -m laboratorio.experimento.confirmacion --analizar`. Pruebas: `tests/test_confirmacion_experimento.py`.
+
+### 9.2 Limitaciones de la confirmación
+1. **Tendencia con el orden de ejecución:** los tiempos crecen a lo largo de la sesión en los dos tratamientos (T1 pasa de 6.57 s en la corrida 2 a 14.86 s en la 12). Por el azar del orden, T1 cayó de media en posiciones más tardías (orden medio 7.2, frente a 5.8 de T8), así que parte de la diferencia observada puede deberse a la deriva y no al tratamiento.
+2. **Ajuste exploratorio, posterior al análisis previsto y fuera del protocolo:** se ajustó una regresión por mínimos cuadrados `tiempo_s ~ T8 + orden` después de ver los datos. Da una pendiente de +0.46 s por corrida (p = 0.023) y un efecto de T8 de −3.24 s (p = 0.021). Sugiere que la conclusión no depende de la deriva, pero **no forma parte de la evaluación confirmatoria** y no cambia ningún dictamen de §9.1. La causa de la deriva (temperatura o gestión de energía, por ejemplo) no se midió.
+3. **Variabilidad entre sesiones:** las dos configuraciones fueron unos 2 s más lentas que en el factorial (T1: 10.46 s frente a 8.13 s; T8: 6.61 s frente a 4.63 s). La media de T8 cae dentro del intervalo de predicción, pero desplazada hacia su extremo superior. Esto es coherente con la advertencia de §9 de que el intervalo no incluye la variación de un día nuevo. La mejora relativa es parecida en las dos sesiones (43 % en el factorial y 37 % aquí).
+4. **Compresión favorable a Parquet:** la carga está formada por 16 copias del mismo bronce, así que es muy repetitiva. Parquet la reduce a 50.9 KB, frente a 12.0 MB en CSV. Con datos más variados la ventaja del formato podría ser menor.
+5. **Un solo equipo:** todas las corridas, del factorial y de la confirmación, se hicieron en la misma computadora. El resultado no se extrapola a otros equipos ni a otros volúmenes.
 
 ## 10. Reproducción
 ```bash
