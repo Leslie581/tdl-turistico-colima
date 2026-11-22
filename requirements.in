@@ -8,5 +8,5 @@ pytest
 pytest-cov
 pyyaml
 pandera
-# laboratorio (requirements-lab.txt): statsmodels, scipy, matplotlib, orjson, pyarrow (experimento E2)
+# laboratorio (requirements-lab.txt): statsmodels, scipy, matplotlib, orjson, pyarrow (experimento E2), geopandas, pyshp (fuente geoespacial E2)
 # desarrollo (requirements-dev.txt): ruff, pip-audit

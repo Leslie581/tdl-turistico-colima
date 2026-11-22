@@ -1,0 +1,22 @@
+{
+  "archivo": "manzanillo_ageb_poligonos.geojson",
+  "atribucion": "Fuente: INEGI, Marco Geoestadístico, Censo de Población y Vivienda 2020. Transformación propia (filtro del municipio 06007 y reproyección a EPSG:4326); no es un producto del INEGI ni está avalada por él.",
+  "bytes_zip": 28976703,
+  "capas_usadas": [
+    "06a (AGEB urbanas)",
+    "06ar (AGEB rurales)"
+  ],
+  "crs_origen": "EPSG:6372 (Mexico ITRF2008 / LCC)",
+  "crs_salida": "EPSG:4326",
+  "edicion": "Marco Geoestadístico, Censo de Población y Vivienda 2020",
+  "ficha_producto": "https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=889463807469",
+  "filtro": "CVE_ENT=06, CVE_MUN=007",
+  "fuente_zip": "https://www.inegi.org.mx/contenidos/productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marcogeo/889463807469/06_colima.zip",
+  "poligonos": 154,
+  "poligonos_rurales": 12,
+  "poligonos_urbanos": 142,
+  "procesado_utc": "2026-11-22T19:17:27+00:00",
+  "sha256_geojson": "82dfb73a1ea790737188fd6613dda714e5264a4d1e47de91f25630a2c985bce4",
+  "sha256_zip": "7f2aea709f5f8c619dad1153cdc9e279a71a4f2c4a4d0d176d6ca76a2941f015",
+  "terminos_de_uso": "https://www.inegi.org.mx/inegi/terminos.html"
+}

@@ -268,6 +268,7 @@ class Datos:
     resumen: dict
     ejecucion: dict
     intervalos: "dict | None" = None   # intervalos sin supuesto de normalidad (bootstrap de bloques), mejora de E1
+    mapa: "dict | None" = None         # oferta DENUE por AGEB (E2)
 
 
 CARPETA_INTERVALOS = CARPETA_RESULTADOS / "intervalos"
@@ -302,10 +303,53 @@ def validar_intervalos(iv: "dict | None", elegido: pd.DataFrame) -> list:
     return problemas
 
 
+RUTA_OFERTA_AGEB = Path("data") / "oro" / "manzanillo_oferta_ageb.csv"
+RUTA_FICHA_OFERTA_AGEB = Path("data") / "oro" / "manzanillo_oferta_ageb.meta.json"
+RUTA_POLIGONOS = Path("data") / "oro" / "manzanillo_ageb_poligonos.geojson"
+RANGOS_MAPA = ["0", "1-2", "3-5", "6-10", "11 o más"]
+COLUMNAS_MAPA = {"fecha_referencia", "cvegeo", "cve_loc", "cve_ageb", "tipo_ageb", "area_km2", "n_establecimientos", "rango",
+                 "establecimientos_por_km2", "sha256_bronce", "sha256_poligonos", "ejecucion"}
+
+
+def _sha256(ruta: Path) -> str:
+    import hashlib
+    return hashlib.sha256(Path(ruta).read_bytes()).hexdigest()
+
+
+def cargar_mapa_oferta(raiz: Path = RAIZ) -> dict:
+    """Oferta de hospedaje DENUE por AGEB y los polígonos del Marco Geoestadístico; valida hashes, claves y que no haya datos individuales."""
+    csv = _ruta(raiz, RUTA_OFERTA_AGEB)
+    df = pd.read_csv(csv, dtype={"cvegeo": str, "cve_loc": str, "cve_ageb": str, "fecha_referencia": str})
+    ficha = _json(raiz, RUTA_FICHA_OFERTA_AGEB)
+    ruta_poligonos = _ruta(raiz, RUTA_POLIGONOS)
+    ficha_poligonos = json.loads(Path(str(ruta_poligonos) + ".meta.json").read_text(encoding="utf-8"))
+    if _sha256(csv) != ficha["sha256_csv"]:
+        raise ErrorDatos("manzanillo_oferta_ageb.csv no coincide con el SHA-256 de su ficha.")
+    if _sha256(ruta_poligonos) != ficha_poligonos["sha256_geojson"]:
+        raise ErrorDatos("El GeoJSON de AGEB no coincide con el SHA-256 de su ficha.")
+    if set(df.columns) != COLUMNAS_MAPA:
+        raise ErrorDatos("El agregado por AGEB debe traer solo las columnas publicadas, sin datos de establecimientos individuales.")
+    if not set(df["rango"]) <= set(RANGOS_MAPA) or df["cvegeo"].duplicated().any():
+        raise ErrorDatos("El agregado por AGEB tiene rangos o claves inválidos.")
+    if (df.loc[df["rango"] == "1-2", "n_establecimientos"].notna()).any():
+        raise ErrorDatos("Las celdas con 1 o 2 establecimientos no deben publicar el conteo exacto.")
+    geo = json.loads(ruta_poligonos.read_text(encoding="utf-8"))
+    por_clave = df.set_index("cvegeo")
+    if {f["properties"]["cvegeo"] for f in geo["features"]} != set(por_clave.index):
+        raise ErrorDatos("Los polígonos y el agregado por AGEB no tienen las mismas claves.")
+    for f in geo["features"]:
+        fila = por_clave.loc[f["properties"]["cvegeo"]]
+        n = fila["n_establecimientos"]
+        f["properties"] = {"cvegeo": f["properties"]["cvegeo"], "ageb": f["properties"]["cve_ageb"], "tipo": f["properties"]["tipo_ageb"], "rango": fila["rango"],
+                           "establecimientos": "menos de 3" if fila["rango"] == "1-2" else str(int(n)),
+                           "densidad": None if pd.isna(fila["establecimientos_por_km2"]) else float(fila["establecimientos_por_km2"])}
+    return {"agebs": df, "geojson": geo, "ficha": ficha, "ficha_poligonos": ficha_poligonos}
+
+
 def cargar_todo(raiz: Path = RAIZ, validar: bool = True) -> Datos:
     """Lee y valida todo lo que muestra el tablero. Si algo no es coherente, lanza ``ErrorDatos`` con el motivo."""
     d = Datos(cargar_oro(raiz), cargar_meta_oro(raiz), cargar_comparacion(raiz), cargar_pronosticos_2024(raiz),
-              cargar_pronostico_elegido(raiz), cargar_resumen(raiz), cargar_ejecucion(raiz), cargar_intervalos_bootstrap(raiz))
+              cargar_pronostico_elegido(raiz), cargar_resumen(raiz), cargar_ejecucion(raiz), cargar_intervalos_bootstrap(raiz), cargar_mapa_oferta(raiz))
     if validar:
         problemas = validar_coherencia(d.oro, d.comparacion, d.por_modelo, d.elegido, d.resumen)
         problemas += validar_intervalos(d.intervalos, d.elegido)

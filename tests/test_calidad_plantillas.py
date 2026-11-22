@@ -75,8 +75,10 @@ def test_defectos_a_usan_tipos_psp_y_no_inventan_minutos():
     _, filas = _leer("defectos-integrante-a.csv")
     assert filas and all(f["tipo"] in TIPOS_PSP for f in filas)
     # minutos_correccion: estimaciones retrospectivas (no mediciones); cada fila lo declara en su descripción
-    assert all(f["minutos_correccion"].isdigit() and "estimacion retrospectiva" in f["descripcion"] for f in filas)
-    assert sum(int(f["minutos_correccion"]) for f in filas) == 440
+    e1 = [f for f in filas if int(f["numero"]) <= 28]
+    assert all(f["minutos_correccion"].isdigit() and "estimacion retrospectiva" in f["descripcion"] for f in e1)
+    assert sum(int(f["minutos_correccion"]) for f in e1) == 440
+    assert all(f["minutos_correccion"] == "" for f in filas if int(f["numero"]) > 28)   # E2: observados, sin minutos medidos ("no registrado")
     assert not any("duplicad" in f["descripcion"].lower() and "fecha" in f["descripcion"].lower() for f in filas)
     assert not any("manova" in f["descripcion"].lower() for f in filas)  # MANOVA es riesgo, no defecto
 
@@ -123,5 +125,5 @@ def test_b_conserva_sus_registros_propios_sin_horarios_inventados():
 
 def test_defectos_de_a_tienen_numeracion_continua_y_sin_duplicados():
     _, filas = _leer("defectos-integrante-a.csv")
-    assert [int(f["numero"]) for f in filas] == list(range(1, len(filas) + 1)) and len(filas) == 28
+    assert [int(f["numero"]) for f in filas] == list(range(1, len(filas) + 1)) and len(filas) == 32
     assert len({f["descripcion"] for f in filas}) == len(filas)
