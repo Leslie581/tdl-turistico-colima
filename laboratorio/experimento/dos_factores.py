@@ -265,7 +265,8 @@ def figuras(df: pd.DataFrame, modelo, carpeta: Path) -> dict:
     ax[2].set_xlabel("secuencia")
     ax[2].set_title("Residuos frente al orden")
     _guardar(fig, carpeta / "residuos.png")
-    (carpeta / "datos_figuras.json").write_text(json.dumps(datos, indent=1) + "\n", encoding="utf-8")
+    # bytes con LF explícito: write_text traduce "\n" a CRLF en Windows y la salida no coincidiría con la versionada
+    (carpeta / "datos_figuras.json").write_bytes((json.dumps(datos, indent=1) + "\n").encode("utf-8"))
     return datos
 
 

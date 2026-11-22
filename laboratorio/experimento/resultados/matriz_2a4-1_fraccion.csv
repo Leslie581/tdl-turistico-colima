@@ -1,0 +1,9 @@
+corrida_estandar,A,B,C,D,procesos,analizador,formato,validacion_r_e07,orden_aleatorio_sugerido,mediciones
+1,-1,-1,-1,-1,1,json,csv,desactivada,2,ninguna (matriz teórica)
+2,1,-1,-1,1,4,json,csv,activada,8,ninguna (matriz teórica)
+3,-1,1,-1,1,1,orjson,csv,activada,4,ninguna (matriz teórica)
+4,1,1,-1,-1,4,orjson,csv,desactivada,6,ninguna (matriz teórica)
+5,-1,-1,1,1,1,json,parquet,activada,3,ninguna (matriz teórica)
+6,1,-1,1,-1,4,json,parquet,desactivada,5,ninguna (matriz teórica)
+7,-1,1,1,-1,1,orjson,parquet,desactivada,7,ninguna (matriz teórica)
+8,1,1,1,1,4,orjson,parquet,activada,1,ninguna (matriz teórica)

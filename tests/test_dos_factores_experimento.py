@@ -162,3 +162,21 @@ def test_los_resultados_anteriores_siguen_intactos():
             pytest.skip("requiere los resultados versionados del 2^3")
         assert ar.sha256_archivo(p) == esperados[p.name], p.name
     assert df2.SALIDA.name == "dos_factores_3x2.jsonl" and df2.SALIDA not in df2.PROTEGIDOS
+
+
+def test_el_analisis_regenerado_coincide_byte_a_byte_con_el_versionado(tmp_path):
+    """Incluye datos_figuras.json, que debe salir con LF también en Windows (antes write_text producía CRLF)."""
+    import subprocess
+    sha = "722c1acb8c4a2b6918ff00bfe7aecf824c2f438c7e25088a7b5ca0a89f3c1913"
+    if not df2.SALIDA.is_file() or ar.sha256_archivo(df2.SALIDA) != sha:
+        pytest.skip("requiere las 24 corridas oficiales")
+    df2.analizar(df2.SALIDA, tmp_path)
+    for n in ("anova.csv", "efectos_simples.csv", "medias_tratamiento.csv", "sensibilidad.csv", "residuos.csv",
+              "resumen.json", "figuras/datos_figuras.json"):
+        rel = (df2.RESUMEN / n).relative_to(ar.RAIZ).as_posix()
+        try:
+            versionado = subprocess.run(["git", "show", f"HEAD:{rel}"], cwd=ar.RAIZ, capture_output=True, check=True).stdout
+        except (OSError, subprocess.CalledProcessError):
+            pytest.skip("requiere git y los resultados confirmados")
+        nuevo = (tmp_path / n).read_bytes()
+        assert b"\r" not in nuevo and nuevo == versionado, n
