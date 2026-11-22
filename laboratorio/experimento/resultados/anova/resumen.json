@@ -1,0 +1,173 @@
+{
+ "entrada": "corridas_2x3.jsonl",
+ "sha256_entrada": "f5167a79d47513af879f990207069c1ebabd1aa1a83d85eebd0c46506ff31811",
+ "n": 16,
+ "formula": "y ~ C(bloque, Sum) + x_proc * x_anal * x_form",
+ "rango_matriz": 9,
+ "columnas_matriz": 9,
+ "gl_residuo": 7,
+ "cme": 4.188923780247109,
+ "r2": 0.5554858603794601,
+ "media_global_s": 7.3622802499999995,
+ "alfa": 0.05,
+ "tasa_error_todas_las_corridas": [
+  0.0
+ ],
+ "supuestos": {
+  "normalidad_shapiro_wilk": {
+   "W": 0.9862744192641102,
+   "p": 0.9944866792958856
+  },
+  "homogeneidad_brown_forsythe": {
+   "procesos": {
+    "brown_forsythe_W": 18.139177141478456,
+    "p": 0.0007941462133432427,
+    "var_residuo_por_nivel": [
+     3.606609657417056,
+     0.5823141228300531
+    ]
+   },
+   "analizador": {
+    "brown_forsythe_W": 0.5416452479705451,
+    "p": 0.47390309915786566,
+    "var_residuo_por_nivel": [
+     2.123708869998267,
+     2.0652149102488417
+    ]
+   },
+   "formato": {
+    "brown_forsythe_W": 0.5259249895914423,
+    "p": 0.48027215434606785,
+    "var_residuo_por_nivel": [
+     1.4315663153059464,
+     2.7573574649411623
+    ]
+   }
+  },
+  "independencia": {
+   "durbin_watson_orden_global": 1.7739894226344697,
+   "spearman_residuo_vs_orden": {
+    "dia_1": {
+     "rho": 0.6666666666666669,
+     "p": 0.07098765432098755
+    },
+    "dia_2": {
+     "rho": -0.09523809523809526,
+     "p": 0.8225054302036114
+    }
+   }
+  },
+  "atipicos": {
+   "max_abs_residuo_studentizado": 2.362826527498011,
+   "corridas_con_abs_rstud_mayor_3": [],
+   "max_cook": 0.48199721013254876,
+   "umbral_cook_4_n": 0.25,
+   "palanca_unica": 0.5625000000000003,
+   "residuos_simetricos_por_tratamiento": true
+  },
+  "no_aditividad_tukey": {
+   "F": 0.061839601362505166,
+   "gl": [
+    1,
+    6
+   ],
+   "p": 0.8119047711651212
+  },
+  "box_cox": {
+   "lambda_max_verosimilitud": -1.24,
+   "ic95_lambda": [
+    -3.37,
+    1.31
+   ],
+   "incluye_1": true,
+   "incluye_0_log": true,
+   "incluye_menos_1_reciproca": true,
+   "limite_de_la_rejilla": false
+  }
+ },
+ "permutacion": {
+  "A procesos": {
+   "F": 2.641140581760025,
+   "p_permutacion": 0.1456427178641068
+  },
+  "B analizador": {
+   "F": 0.05196129500675953,
+   "p_permutacion": 0.8188590570471477
+  },
+  "C formato": {
+   "F": 2.9485505149240008,
+   "p_permutacion": 0.12839358032098394
+  },
+  "AB": {
+   "F": 0.836874776000149,
+   "p_permutacion": 0.3855807209639518
+  },
+  "AC": {
+   "F": 0.1018547414145312,
+   "p_permutacion": 0.7452627368631568
+  },
+  "BC": {
+   "F": 0.47133291850771736,
+   "p_permutacion": 0.503724813759312
+  },
+  "ABC": {
+   "F": 0.024654721381181938,
+   "p_permutacion": 0.8762561871906405
+  },
+  "n_permutaciones": 20000,
+  "semilla": 20261122
+ },
+ "efecto_minimo_detectable": {
+  "ee_efecto_s": 1.0233430241428223,
+  "umbral_significancia_s": 2.4198217325864175,
+  "detectable_con_80pct_potencia_s": 3.3367674185200826
+ },
+ "modelo_reducido_post_hoc": {
+  "gl_residuo": 11,
+  "cme": 3.2120352072624767,
+  "p": {
+   "A procesos": 0.0904345078568447,
+   "B analizador": 0.7994284046302185,
+   "C formato": 0.07569237169990273
+  },
+  "prediccion_T8_media_de_bloques_s": 5.535488500000003
+ },
+ "componentes_exploratorio": {
+  "procesamiento": {
+   "A procesos": {
+    "efecto_s": -1.7326721250000017,
+    "p": 0.12510812884764472
+   },
+   "B analizador": {
+    "efecto_s": -0.27601412500000055,
+    "p": 0.7894543752889974
+   },
+   "C formato": {
+    "efecto_s": -0.995040125,
+    "p": 0.35052913196720803
+   }
+  },
+  "escritura_mas_lectura": {
+   "A procesos": {
+    "efecto_s": 0.06957712500000017,
+    "p": 0.2154853920612094
+   },
+   "B analizador": {
+    "efecto_s": 0.042743124999999896,
+    "p": 0.43047683709738427
+   },
+   "C formato": {
+    "efecto_s": -0.762177125,
+    "p": 1.4593533132160263e-06
+   }
+  }
+ },
+ "figuras": [
+  "datos_figuras.json",
+  "efectos_principales.png",
+  "interacciones.png",
+  "qq_residuos.png",
+  "residuos_vs_ajustados.png",
+  "residuos_vs_orden.png"
+ ]
+}
