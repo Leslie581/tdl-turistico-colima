@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -43,15 +44,25 @@ def listar_capturas(carpeta: Path) -> list[Path]:
     return sorted(Path(carpeta).glob("*/*_02_BuscarAreaAct.json"), key=lambda p: p.name)
 
 
-def _cargar_captura(ruta: Path, raiz_bronce: Path, cuarentena: Cuarentena):
-    """Devuelve (DataFrame de la captura, meta) o None si el lote se rechaza completo."""
+def analizar_json(contenido: bytes):
+    """Analizador de la biblioteca estándar (el del pipeline de E1). Admite BOM UTF-8."""
+    return json.loads(contenido.decode("utf-8-sig"))
+
+
+def _cargar_captura(ruta: Path, raiz_bronce: Path, cuarentena: Cuarentena, analizar: Callable[[bytes], object] = analizar_json):
+    """Devuelve (DataFrame de la captura, meta) o None si el lote se rechaza completo.
+
+    ``analizar`` convierte los bytes del bronce en objetos de Python; por omisión es ``json`` (comportamiento de E1). El
+    experimento de E2 lo sustituye por ``orjson`` para medir su efecto; cualquier analizador debe lanzar ``ValueError``
+    (``json.JSONDecodeError`` y ``orjson.JSONDecodeError`` lo son) o ``UnicodeDecodeError`` ante una entrada inválida.
+    """
     rel = ruta.relative_to(raiz_bronce.parent.parent).as_posix() if raiz_bronce.parent.parent in ruta.parents else ruta.name
     contenido = ruta.read_bytes()
     digest = verificar_integridad(ruta, contenido)  # ErrorPuertaCalidad si no coincide con su ficha
     meta = json.loads(Path(str(ruta) + ".meta.json").read_text(encoding="utf-8"))
     try:
-        registros = json.loads(contenido.decode("utf-8-sig"))
-    except (UnicodeDecodeError, json.JSONDecodeError):
+        registros = analizar(contenido)
+    except (UnicodeDecodeError, ValueError):
         raise ErrorPuertaCalidad("R-E01", f"{ruta.name} no es JSON válido") from None
     if not isinstance(registros, list):
         raise ErrorPuertaCalidad("R-E01", f"{ruta.name} no es una lista JSON")
@@ -77,6 +88,45 @@ def _cargar_captura(ruta: Path, raiz_bronce: Path, cuarentena: Cuarentena):
     return df, meta, rel, digest
 
 
+def procesar_una_captura(ruta: Path, raiz_bronce: Path, cuarentena: Cuarentena,
+                         analizar: Callable[[bytes], object] = analizar_json) -> pd.DataFrame | None:
+    """Bronce de UNA captura -> filas de plata (con ``_capturado_utc``), o None si la puerta rechaza el lote completo.
+
+    Integridad, privacidad (R-E05), esquema (R-E01), completitud (R-E02) y reglas por registro; los rechazos van a la
+    cuarentena. Es la unidad que usan ``procesar_capturas`` y el experimento de E2 (``laboratorio/experimento/arnes.py``).
+    """
+    r = _procesar_una(Path(ruta), Path(raiz_bronce), cuarentena, analizar)
+    return None if r is None else r[0]
+
+
+def _procesar_una(ruta: Path, raiz_bronce: Path, cuarentena: Cuarentena, analizar: Callable[[bytes], object]):
+    cargada = _cargar_captura(ruta, raiz_bronce, cuarentena, analizar)
+    if cargada is None:
+        return None
+    df, meta, rel, digest = cargada
+    utc = datetime.fromisoformat(meta["capturado_utc"])
+    local = utc.astimezone(ZoneInfo(ZONA_LOCAL))
+    mes_captura = local.strftime("%Y-%m")
+    rechazadas = pd.Series(False, index=df.index)
+    for regla, motivo, mascara in re_.aplicar(df, mes_captura):
+        if mascara.any():
+            cuarentena.rechazar(FUENTE, regla, motivo, df[mascara], rel, digest)
+        rechazadas |= mascara
+    ok = df[~rechazadas]
+    rangos = ok.Estrato.map(estrato_a_rango)
+    out = pd.DataFrame({
+        "fecha_captura_local": local.strftime("%Y-%m-%d"), "clee": ok.CLEE, "id": ok.Id,
+        "clase_actividad": ok.Clase_actividad, "scian_clase": ok.CLASE_ACTIVIDAD_ID, "estrato": ok.Estrato,
+        "personal_min": [r[0] for r in rangos], "personal_max": [r[1] for r in rangos],
+        "colonia": ok.Colonia, "cp": ok.CP, "localidad": ok.Ubicacion.str.split(",").str[0].str.strip(),
+        "municipio_clave": ok.AreaGeo.str[:5], "ageb": ok.AGEB, "manzana": ok.Manzana,
+        "tipo_asentamiento": ok.Tipo_Asentamiento, "latitud": pd.to_numeric(ok.Latitud), "longitud": pd.to_numeric(ok.Longitud),
+        "fecha_alta": ok.Fecha_Alta + "-01", "ejecucion": meta.get("ejecucion", ""), "archivo_bronce": rel, "sha256_bronce": digest,
+    })
+    out["_capturado_utc"] = utc.isoformat()
+    return out, utc
+
+
 def procesar_capturas(raiz_bronce: Path, cuarentena: Cuarentena) -> pd.DataFrame:
     raiz_bronce = Path(raiz_bronce)
     capturas = listar_capturas(raiz_bronce)
@@ -84,30 +134,11 @@ def procesar_capturas(raiz_bronce: Path, cuarentena: Cuarentena) -> pd.DataFrame
         raise ErrorPuertaCalidad("R-E01", f"no hay capturas DENUE en {raiz_bronce}")
     filas, aceptadas = [], []
     for ruta in capturas:
-        cargada = _cargar_captura(ruta, raiz_bronce, cuarentena)
-        if cargada is None:
+        r = _procesar_una(ruta, raiz_bronce, cuarentena, analizar_json)
+        if r is None:
             continue
-        df, meta, rel, digest = cargada
-        utc = datetime.fromisoformat(meta["capturado_utc"])
+        out, utc = r
         local = utc.astimezone(ZoneInfo(ZONA_LOCAL))
-        mes_captura = local.strftime("%Y-%m")
-        rechazadas = pd.Series(False, index=df.index)
-        for regla, motivo, mascara in re_.aplicar(df, mes_captura):
-            if mascara.any():
-                cuarentena.rechazar(FUENTE, regla, motivo, df[mascara], rel, digest)
-            rechazadas |= mascara
-        ok = df[~rechazadas]
-        rangos = ok.Estrato.map(estrato_a_rango)
-        out = pd.DataFrame({
-            "fecha_captura_local": local.strftime("%Y-%m-%d"), "clee": ok.CLEE, "id": ok.Id,
-            "clase_actividad": ok.Clase_actividad, "scian_clase": ok.CLASE_ACTIVIDAD_ID, "estrato": ok.Estrato,
-            "personal_min": [r[0] for r in rangos], "personal_max": [r[1] for r in rangos],
-            "colonia": ok.Colonia, "cp": ok.CP, "localidad": ok.Ubicacion.str.split(",").str[0].str.strip(),
-            "municipio_clave": ok.AreaGeo.str[:5], "ageb": ok.AGEB, "manzana": ok.Manzana,
-            "tipo_asentamiento": ok.Tipo_Asentamiento, "latitud": pd.to_numeric(ok.Latitud), "longitud": pd.to_numeric(ok.Longitud),
-            "fecha_alta": ok.Fecha_Alta + "-01", "ejecucion": meta.get("ejecucion", ""), "archivo_bronce": rel, "sha256_bronce": digest,
-        })
-        out["_capturado_utc"] = utc.isoformat()
         filas.append(out)
         aceptadas.append((local.strftime("%Y-%m-%d"), utc.isoformat()))
     if not filas:
