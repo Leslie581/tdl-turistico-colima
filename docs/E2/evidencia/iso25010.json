@@ -1,0 +1,88 @@
+{
+  "adecuacion_funcional": {
+    "funciones_de_prueba": 439,
+    "requerimientos_funcionales_por_estado": {
+      "CUMPLIDO": 14,
+      "PARCIAL": 1
+    },
+    "requerimientos_no_funcionales_por_estado": {
+      "CUMPLIDO": 22,
+      "NO CUMPLIDO": 3,
+      "PARCIAL": 2,
+      "PROPUESTO": 1
+    }
+  },
+  "capacidad_de_interaccion": {
+    "pestanas_del_tablero": 7
+  },
+  "eficiencia_de_desempeno": {
+    "experimento_corridas_oficiales": 16,
+    "tasa_de_error_en_las_corridas": 0.0,
+    "tiempo_por_corrida_s": {
+      "max": 10.382,
+      "media": 7.362,
+      "min": 4.312
+    },
+    "union_espacial_y_agregado_s": {
+      "establecimientos": 134,
+      "mejor_de_3": 0.0097,
+      "poligonos": 154
+    }
+  },
+  "entorno_de_la_medicion": {
+    "ci": "ubuntu-latest (.github/workflows/ci.yml)",
+    "python": "3.13.15",
+    "sistema": "Windows-11-10.0.26200-SP0"
+  },
+  "fiabilidad": {
+    "disponibilidad_exploratoria": 0.99974,
+    "ejecuciones": {
+      "exitosas": 14,
+      "fallidas": 1,
+      "omitidas_duplicadas_excluidas": 4,
+      "programadas_exitosas": 11,
+      "programadas_schedule": 11,
+      "validas": 15
+    },
+    "mtbf_horas_exploratorio": 283.389,
+    "mttr": {
+      "estimable": true,
+      "incidentes_cerrados": 1,
+      "segundos": 268.0
+    },
+    "periodo": {
+      "cumple_dias_requeridos": true,
+      "dias": 11.811,
+      "dias_requeridos": 7,
+      "fin_utc": "2026-11-21T20:07:21+00:00",
+      "inicio_utc": "2026-11-10T00:39:33+00:00"
+    },
+    "tasa_de_exito": {
+      "cumple_objetivo_en_lo_observado": false,
+      "el_intervalo_incluye_el_objetivo": true,
+      "evaluable_como_se_definio_O1": true,
+      "intervalo_95_clopper_pearson": [
+        0.6805,
+        0.9983
+      ],
+      "objetivo": 0.95,
+      "valor": 0.9333
+    }
+  },
+  "mantenibilidad": {
+    "lineas_de_codigo": 7229,
+    "lineas_de_prueba": 4070,
+    "relacion_prueba_codigo": 0.563,
+    "ruff": {
+      "codigo_de_salida": 0,
+      "resumen": "All checks passed!"
+    }
+  },
+  "seguridad": {
+    "pip_audit": {
+      "requirements-dev.txt": "sin vulnerabilidades conocidas",
+      "requirements-lab.txt": "sin vulnerabilidades conocidas",
+      "requirements.txt": "sin vulnerabilidades conocidas"
+    }
+  }
+}

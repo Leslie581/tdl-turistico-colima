@@ -33,8 +33,8 @@ def test_las_plantillas_de_defectos_conservan_las_columnas_del_kit():
 
 def test_tiempos_retrospectivos_no_inventan_horarios():
     _, filas = _leer("tiempo-integrante-a.csv")
-    retro = [f for f in filas if "RETROSPECTIVO" in f["actividad"]]
-    assert len(retro) == len(filas)  # ningún tiempo de A se cronometró
+    retro = [f for f in filas if "RETROSPECTIVO" in f["actividad"] or "PENDIENTE DE CONFIRMACION" in f["actividad"]]
+    assert len(retro) == len(filas)  # ningún tiempo de A se cronometró: son estimaciones o están pendientes de confirmación
     for f in retro:
         assert f["inicio"] == f["fin"] == f["interrupcion_min"] == "" and f["fecha"]
 
@@ -45,7 +45,7 @@ BLOQUES_E1 = {"L0": 45, "L1": 165, "L2": 120, "L3": 105, "SEG": 60, "PCI": 90, "
 def test_tiempos_de_e1_por_bloque_y_suma_coherente():
     """E1 = 870 min en 10 bloques (estimación retrospectiva confirmada por A el 2026-11-14); cada fila lleva su bloque entre paréntesis."""
     _, filas = _leer("tiempo-integrante-a.csv")
-    e1 = [f for f in filas if f["fecha"] >= "2026-11-12"]
+    e1 = [f for f in filas if "2026-11-12" <= f["fecha"] <= "2026-11-15"]
     por_bloque = {b: sum(int(f["minutos_estimados"]) for f in e1 if f["actividad"].rstrip().endswith(f"({b})")) for b in BLOQUES_E1}
     assert por_bloque == BLOQUES_E1
     assert sum(por_bloque.values()) == sum(int(f["minutos_estimados"]) for f in e1) == 870
@@ -55,13 +55,22 @@ def test_tiempos_de_e1_por_bloque_y_suma_coherente():
 def test_totales_de_a_separan_prototipo_de_desarrollo_formal():
     _, filas = _leer("tiempo-integrante-a.csv")
     def suma(fs):
-        return sum(int(f["minutos_estimados"]) for f in fs)
+        return sum(int(f["minutos_estimados"] or 0) for f in fs)
+    e2 = [f for f in filas if f["fecha"] >= "2026-11-22"]
+    filas_e1 = [f for f in filas if f["fecha"] <= "2026-11-15"]
+    filas = filas_e1
     proto = [f for f in filas if "[PROTOTIPO]" in f["actividad"]]
     e0 = [f for f in filas if f["fecha"] < "2026-11-12"]
     _, mejoras = _leer("tiempo-mejoras-e1-integrante-a.csv")
     assert suma(mejoras) == 90 and all("(MEJ)" in f["actividad"] for f in mejoras)
     assert (suma(proto), suma(e0), suma(filas), suma(filas) - suma(proto)) == (480, 750, 1620, 1140)  # sin las mejoras de E1
     assert (suma(filas) + suma(mejoras), suma(filas) + suma(mejoras) - suma(proto), suma(filas) - suma(e0) + suma(mejoras)) == (1710, 1230, 960)
+    # E2: 90 min estimados retrospectivamente por A para el trabajo geoespacial; las demás filas esperan confirmación (sin minutos)
+    geo = [f for f in e2 if "(GEO)" in f["actividad"]]
+    assert suma(geo) == 90 and len(geo) == 5 and all("ESTIMADO RETROSPECTIVO POR LESLIE" in f["actividad"] for f in geo)
+    pendientes = [f for f in e2 if "PENDIENTE DE CONFIRMACION" in f["actividad"]]
+    assert pendientes and all(f["minutos_estimados"] == "" for f in pendientes)
+    assert suma(filas) + suma(mejoras) + suma(e2) == 1800
 
 
 def test_el_registro_de_mejoras_no_duplica_tiempo_del_principal():
@@ -94,7 +103,9 @@ def test_registros_de_tiempo_tienen_formato_y_coherencia(nombre):
     for f in filas:
         date.fromisoformat(f["fecha"])                      # fecha ISO válida
         assert f["fase"] in FASES and f["actividad"].strip()
-        if "RETROSPECTIVO" in f["actividad"]:               # estimación: sin horarios, con minutos > 0
+        if "PENDIENTE DE CONFIRMACION" in f["actividad"]:   # actividad registrada, tiempo aún no confirmado: sin horarios ni minutos
+            assert f["inicio"] == f["fin"] == f["interrupcion_min"] == f["minutos_estimados"] == ""
+        elif "RETROSPECTIVO" in f["actividad"]:             # estimación: sin horarios, con minutos > 0
             assert f["inicio"] == f["fin"] == f["interrupcion_min"] == ""
             assert int(f["minutos_estimados"]) > 0
         else:                                               # medida: horario real y sin minutos estimados
