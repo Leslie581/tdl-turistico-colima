@@ -115,3 +115,12 @@ def test_la_verificacion_exige_datos(pasos):
 def test_las_pruebas_listan_omitidas(pasos):
     p = next(p for p in pasos if p.get("name") == "Pruebas sin red")
     assert "-rs" in p["run"]
+
+
+def test_validacion_previa_de_configuracion_sin_registrar_ejecucion(wf, pasos):
+    on = wf.get("on", wf.get(True))
+    assert on["workflow_dispatch"]["inputs"]["solo_validar"]["default"] is False
+    captura = _por_id(pasos, "captura")["run"]
+    assert captura.index("--validar-configuracion") < captura.index("--forzar")        # la validación va antes de capturar
+    assert 'if [ "$SOLO_VALIDAR" = "true" ]' in captura and "exit $?" in captura        # con solo_validar no se captura ni se registra
+    assert '--validar-configuracion || echo "::warning::' in captura                    # en una captura normal solo avisa: el fallo queda en la bitácora

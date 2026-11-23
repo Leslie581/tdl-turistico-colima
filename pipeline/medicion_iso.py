@@ -182,6 +182,71 @@ def _lineas(carpetas: list[Path]) -> int:
     return total
 
 
+def _posterior_a_la_correccion(validas: list[dict], ventanas: list[dict], objetivo: float) -> dict:
+    """Indicador COMPLEMENTARIO, separado del histórico: las mismas ventanas de 7 días, pero solo las que empiezan en el primer éxito posterior
+    al último fallo (el cierre del incidente). No sustituye ni modifica el dictamen histórico de O1 y no se extrapola: describe lo observado."""
+    orden = sorted(validas, key=lambda f: f["inicio_utc"])
+    ultimo_fallo = max((i for i, f in enumerate(orden) if f["resultado"] == "fallo"), default=None)
+    if ultimo_fallo is None:
+        return {"aplica": False, "motivo": "no hay fallos: el histórico ya es el indicador"}
+    cierre = next((f for f in orden[ultimo_fallo + 1:] if f["resultado"] == "exito"), None)
+    if cierre is None:
+        return {"aplica": False, "motivo": "el último fallo sigue abierto (sin éxito posterior)"}
+    desde = [w for w in ventanas if w["inicio_utc"] >= cierre["inicio_utc"]]
+    if not desde:
+        return {"aplica": False, "motivo": "aún no hay una ventana completa de 7 días posterior a la corrección"}
+    peor = min(desde, key=lambda x: (x["tasa"], x["inicio_utc"]))
+    bajo = [w for w in desde if w["tasa"] < objetivo]
+    return {"aplica": True, "referencia_de_la_correccion_utc": cierre["inicio_utc"], "ventanas_completas_posteriores": len(desde), "ventanas_por_debajo_del_objetivo": len(bajo),
+            "peor_ventana_posterior": peor, "resultado_observado": "todas las ventanas completas posteriores alcanzan el objetivo" if not bajo else "hay ventanas posteriores por debajo del objetivo",
+            "nota": "Complementario: no cambia el dictamen histórico (NO CUMPLE). Son ventanas traslapadas de un solo régimen y pocas ejecuciones; no demuestra que la tasa verdadera sea >= 95 % ni se extrapola al futuro."}
+
+
+def _o1_por_ventanas(filas: list[dict], dias: int = 7, objetivo: float = 0.95) -> dict:
+    """Objetivo O1 (calidad/objetivos.md): éxitos / (éxitos + fallos) >= 95 % en CUALQUIER ventana de 7 días, sin contar las omitidas por duplicado.
+
+    Se evalúan las ventanas de 7 × 24 h que empiezan en cada ejecución válida y caben completas en la bitácora. Distinto de la tasa global de
+    toda la bitácora (que es el criterio de ``verificar_e0 --solo disponibilidad``): aquí basta una ventana por debajo de 95 % para no cumplir.
+    """
+    from datetime import datetime, timedelta
+    v = [f for f in filas if f.get("resultado") in ("exito", "fallo")]
+    t = lambda x: datetime.fromisoformat(x)  # noqa: E731
+    fin = max(t(f["fin_utc"]) for f in v)
+    ventanas = []
+    for f in v:
+        a = t(f["inicio_utc"])
+        if a + timedelta(days=dias) > fin:
+            continue
+        w = [g for g in v if a <= t(g["inicio_utc"]) < a + timedelta(days=dias)]
+        e = sum(g["resultado"] == "exito" for g in w)
+        ventanas.append({"inicio_utc": a.isoformat(), "exitos": e, "fallos": len(w) - e, "tasa": round(e / len(w), 4)})
+    peor = min(ventanas, key=lambda x: (x["tasa"], x["inicio_utc"]))
+    bajo = [x for x in ventanas if x["tasa"] < objetivo]
+    ex = sum(f["resultado"] == "exito" for f in v)
+    return {"posterior_a_la_correccion": _posterior_a_la_correccion(v, ventanas, objetivo), "criterio": f"tasa de éxito >= {objetivo:.0%} en cualquier ventana de {dias} días (se excluyen las omitidas por duplicado)",
+            "dictamen": "NO CUMPLE" if bajo else "CUMPLE", "ventanas_evaluadas": len(ventanas), "ventanas_por_debajo_del_objetivo": len(bajo), "peor_ventana": peor,
+            "tasa_global_de_la_bitacora": {"exitos": ex, "validas": len(v), "tasa": round(ex / len(v), 4), "cumple_el_objetivo": ex / len(v) >= objetivo},
+            "nota": "las ventanas son de 7 x 24 h desde cada ejecución válida; con ventanas por día local la ventana inicial daría 8 de 9 (88.9 %), también por debajo del objetivo"}
+
+
+def _rf01_desde_bitacora(filas: list[dict], dias_requeridos: int = 7) -> dict:
+    """RF-01 (docs/E1/requerimientos.md): al menos 1 captura exitosa por día local, ejecuciones por ``schedule`` y ventana >= 7 días."""
+    from datetime import datetime
+    v = [f for f in filas if f.get("resultado") in ("exito", "fallo")]
+    dias = {f["fecha_local"] for f in v}
+    con_exito = {f["fecha_local"] for f in v if f["resultado"] == "exito"}
+    ventana = (max(datetime.fromisoformat(f["fin_utc"]) for f in v) - min(datetime.fromisoformat(f["inicio_utc"]) for f in v)).total_seconds() / 86400
+    sched = sum(f["resultado"] == "exito" and f.get("disparador") == "schedule" for f in v)
+    return {"dias_locales_con_ejecucion": len(dias), "dias_locales_con_captura_exitosa": len(con_exito), "ejecuciones_schedule_exitosas": sched,
+            "ventana_dias": round(ventana, 2), "cumple": con_exito == dias and sched > 0 and ventana >= dias_requeridos}
+
+
+def _duracion_captura(filas: list[dict]) -> dict:
+    d = pd.Series([f["duracion_s"] for f in filas if f.get("resultado") == "exito"], dtype=float)
+    return {"n": int(len(d)), "mediana_s": round(float(d.median()), 2), "p90_s": round(float(d.quantile(0.9)), 2), "min_s": round(float(d.min()), 2),
+            "max_s": round(float(d.max()), 2), "nota": "duracion_s de cada captura exitosa en calidad/bitacora_capturas.jsonl; p90 por interpolación lineal"}
+
+
 def medir_25010(raiz: Path = RAIZ, herramientas: bool = False) -> dict:
     """Métricas de ISO/IEC 25010 que se calculan sobre el repositorio; el resto de la evaluación está en docs/E2/iso25010.md."""
     raiz = Path(raiz)
@@ -196,11 +261,20 @@ def medir_25010(raiz: Path = RAIZ, herramientas: bool = False) -> dict:
     corridas = [json.loads(x) for x in (raiz / "laboratorio" / "experimento" / "resultados" / "corridas_2x3.jsonl").read_text(encoding="utf-8").splitlines()]
     oficiales = [c for c in corridas if not c.get("piloto")]
     tiempos = [c["tiempo_s"] for c in oficiales if "tiempo_s" in c]
+    res = raiz / "laboratorio" / "experimento" / "resultados"
+    conf = json.loads((res / "confirmacion" / "resumen.json").read_text(encoding="utf-8"))
+    anova2 = pd.read_csv(res / "dos_factores" / "anova.csv", index_col=0)
+    simples = pd.read_csv(res / "dos_factores" / "efectos_simples.csv")
+    corridas2 = [json.loads(x) for x in (res / "dos_factores_3x2.jsonl").read_text(encoding="utf-8").splitlines()]
     from . import geoespacial as geo
     ageb = geo.cargar_ageb(raiz / "data" / "oro" / "manzanillo_ageb_poligonos.geojson")
     from .calidad.cuarentena import Cuarentena
     from .plata_denue import procesar_capturas
-    plata = procesar_capturas(raiz / "data" / "bronce" / "denue", Cuarentena("2026-11-22T00:00:00+00:00"))
+    tp = []
+    for _ in range(3):
+        t0 = time.perf_counter()
+        plata = procesar_capturas(raiz / "data" / "bronce" / "denue", Cuarentena("2026-11-22T00:00:00+00:00"))
+        tp.append(time.perf_counter() - t0)
     ref = geo.referencia(plata)
     ts = []
     for _ in range(3):
@@ -212,21 +286,50 @@ def medir_25010(raiz: Path = RAIZ, herramientas: bool = False) -> dict:
     pestanas = re.search(r"st\.tabs\(\s*\[(.*?)\]\)", app, flags=re.S).group(1).count('"') // 2
     codigo = _lineas([raiz / c for c in ("pipeline", "extractores", "laboratorio", "tablero")])
     pruebas = _lineas([raiz / "tests"])
+    bitacora = [json.loads(x) for x in (raiz / "calidad" / "bitacora_capturas.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    from laboratorio.pronosticos import datos as lab_datos
+    from tablero import cargador as tab_cargador
+    oro_lab, oro_tab = lab_datos.cargar_oro(raiz / "data" / "oro" / "manzanillo_ocupacion_mensual.csv"), tab_cargador.cargar_oro(raiz)
+    from . import verificar_e0
+    bronce = raiz / "data" / "bronce"
+    e0 = {n: getattr(verificar_e0, n)(bronce) for n in ("historico", "integridad", "privacidad")}
+    rf01 = _rf01_desde_bitacora(bitacora)
+    rf = estados["RF"]
+    rf_cumplidos = rf.get("CUMPLIDO", 0) + (rf.get("PARCIAL", 0) if rf01["cumple"] and rf.get("PARCIAL", 0) == 1 else 0)
     fiab = json.loads(subprocess.run([sys.executable, "-m", "pipeline.fiabilidad"], cwd=raiz, capture_output=True, text=True, check=True).stdout)
     out = {
         "entorno_de_la_medicion": {"sistema": platform.platform(), "python": platform.python_version(), "ci": "ubuntu-latest (.github/workflows/ci.yml)"},
         "adecuacion_funcional": {"requerimientos_funcionales_por_estado": estados["RF"], "requerimientos_no_funcionales_por_estado": estados["RNF"],
+                                 "rf01_recalculado_con_la_bitacora": rf01,
+                                 "requerimientos_funcionales_cumplidos_recalculados": {"cumplidos": rf_cumplidos, "total": sum(rf.values()),
+                                                                                       "nota": "RF-01 figuraba PARCIAL en E1 solo porque la ventana era de 3.83 de 7 días; se recalcula con su propio criterio y la bitácora actual (docs/E1/requerimientos.md no se modifica)"},
                                  "definiciones_de_prueba": _definiciones_de_prueba(raiz),
                                  "nota_definiciones_de_prueba": "cuenta de def test_* en tests/test_*.py; no incluye la expansión de parametrizaciones ni equivale a los casos ejecutados por pytest"},
         "eficiencia_de_desempeno": {
             "experimento_corridas_oficiales": len(oficiales), "tiempo_por_corrida_s": {"min": round(min(tiempos), 3), "media": round(sum(tiempos) / len(tiempos), 3), "max": round(max(tiempos), 3)},
             "tasa_de_error_en_las_corridas": [c["capturas_con_error"] for c in oficiales if "capturas_con_error" in c] and sum(c["capturas_con_error"] for c in oficiales) / sum(c["capturas"] for c in oficiales),
+            "carga_tecnica_confirmacion_t8_frente_t1": {
+                "corridas": conf["corridas_registradas"], "tasa_de_error": conf["tasa_error"], "media_t1_s": round(conf["por_tratamiento"]["T1"]["media_s"], 3),
+                "media_t8_s": round(conf["por_tratamiento"]["T8"]["media_s"], 3), "mejora_relativa": round(conf["mejora_relativa"], 4),
+                "ic95_diferencia_s": [round(x, 2) for x in conf["ic95_diferencia_s"]], "p_welch_unilateral": round(conf["welch_unilateral"]["p"], 4), "confirmada": conf["confirmada"]},
+            "carga_tecnica_dos_factores_carga_x_procesos": {
+                "corridas": len(corridas2), "tasa_de_error_maxima": max(c["tasa_error"] for c in corridas2), "f_interaccion": round(float(anova2.loc["AB carga x procesos", "F"]), 2),
+                "p_interaccion": round(float(anova2.loc["AB carga x procesos", "p"]), 4),
+                "efectos_simples_p_holm": {f"{int(r.carga)}x": round(float(r.p_holm), 4) for r in simples.itertuples()}},
+            "operativa_captura_diaria_duracion": _duracion_captura(bitacora),
+            "operativa_pipeline_bronce_a_plata_denue_s": {"repeticiones": 3, "min": round(min(tp), 2), "max": round(max(tp), 2), "capturas_en_la_plata": int(plata["archivo_bronce"].nunique()),
+                                                          "nota": "procesar_capturas en memoria (sin escribir), esta máquina; no es el experimento estadístico ni la carga técnica de 16 copias"},
             "union_espacial_y_agregado_s": {"establecimientos": int(len(ref)), "poligonos": int(len(ageb)), "mejor_de_3": round(min(ts), 4)}},
+        "compatibilidad": {"consumidores_de_la_capa_oro_de_datatur": {"consumidores": ["tablero.cargador.cargar_oro", "laboratorio.pronosticos.datos.cargar_oro"], "meses": [int(len(oro_tab)), int(len(oro_lab))],
+                                                                       "misma_ocupacion_pct": bool((oro_tab["ocupacion_pct"].to_numpy() == oro_lab["ocupacion_pct"].to_numpy()).all()),
+                                                                       "mismos_periodos": bool(list(oro_tab["periodo"]) == list(oro_lab.index.astype(str)))}},
         "capacidad_de_interaccion": {"pestanas_del_tablero": pestanas},
         "fiabilidad": {"periodo": fiab["ventana"], "tasa_de_exito": fiab["tasa_exito"], "mttr": fiab["mttr"], "mtbf_horas_exploratorio": fiab["estimacion_exploratoria"].get("mtbf_horas"),
-                       "disponibilidad_exploratoria": fiab["estimacion_exploratoria"].get("disponibilidad_observada_por_tiempo"), "ejecuciones": fiab["ejecuciones"]},
+                       "disponibilidad_exploratoria": fiab["estimacion_exploratoria"].get("disponibilidad_observada_por_tiempo"), "ejecuciones": fiab["ejecuciones"],
+                       "objetivo_o1_por_ventanas_de_7_dias": _o1_por_ventanas(bitacora)},
         "mantenibilidad": {"lineas_de_codigo": codigo, "lineas_de_prueba": pruebas, "relacion_prueba_codigo": round(pruebas / codigo, 3)},
     }
+    out["seguridad"] = {"verificar_e0": {n: {"estado": r["estado"], "ok": r["ok"]} for n, r in e0.items()}}
     if herramientas:
         ruff = subprocess.run([sys.executable, "-m", "ruff", "check", "."], cwd=raiz, capture_output=True, text=True)
         out["mantenibilidad"]["ruff"] = {"codigo_de_salida": ruff.returncode, "resumen": ruff.stdout.strip().splitlines()[-1] if ruff.stdout.strip() else ""}
@@ -234,7 +337,7 @@ def medir_25010(raiz: Path = RAIZ, herramientas: bool = False) -> dict:
         for archivo in ("requirements.txt", "requirements-lab.txt", "requirements-dev.txt"):
             r = subprocess.run([sys.executable, "-m", "pip_audit", "-r", archivo, "--no-deps", "--disable-pip"], cwd=raiz, capture_output=True, text=True)
             audit[archivo] = "sin vulnerabilidades conocidas" if r.returncode == 0 else r.stdout.strip()[-200:] or "error"
-        out["seguridad"] = {"pip_audit": audit}
+        out["seguridad"]["pip_audit"] = audit
     return out
 
 

@@ -21,6 +21,7 @@ GDAL no es necesario: los polígonos se leen con `pyshp` y se guardan como GeoJS
 - **134 de 134 establecimientos ubicados** (sin ninguno fuera de las AGEB); 41 AGEB con establecimientos, 22 de ellas con el conteo oculto.
 - **Concordancia de 134 de 134** entre la AGEB que resulta de la unión espacial y la clave AGEB que trae el propio DENUE (validación independiente de la unión).
 - El agregado se regenera idéntico, byte a byte, desde el bronce (prueba `test_el_agregado_se_regenera_identico_desde_el_bronce`).
+- **Nota sobre la captura del 2026-11-22:** el agregado no se regeneró y el mapa mantiene el 2026-11-21 como fecha de referencia. La captura del 22 trae los mismos 134 establecimientos (mismos registros y campos, comprobado comparando cada registro) y difiere de la del 21 solo en el orden de los registros y, por tanto, en su SHA-256 (`d3ce38ae…` frente a `5f247698…`). Son equivalentes en contenido: regenerar no cambiaría los conteos, la supresión de celdas de 1–2 ni el mapa, solo la fecha y el hash de referencia.
 
 ## 4. Linaje (`python -m pipeline.linaje`)
 | Capa oro | Cadena verificada contra los archivos reales |

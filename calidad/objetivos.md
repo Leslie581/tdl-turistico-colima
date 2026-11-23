@@ -10,3 +10,7 @@ Cada objetivo tiene métrica, umbral, fuente de datos y forma de verificar. Se e
 
 Justificación de pertinencia: O1 es el ejemplo del propio Kit y sustenta la medición de fiabilidad de E1; O2 protege la serie y el pronóstico de datos corruptos o incompletos; O3 cumple la regla de ética (LFPDPPP) y el registro PSP.
 Los umbrales se fijan hoy y **no se ajustan después de ver los resultados** sin dejar constancia en el registro de cambios.
+
+**Registro de cambios.**
+- **2026-11-22 (E2, A):** se añade un indicador **complementario** de O1, «posterior a la corrección» (`pipeline/medicion_iso.py`, `evidencia/iso25010.json`): las mismas ventanas de 7 días, solo las que empiezan en el primer éxito posterior al último fallo (2026-11-10 00:43 UTC). **No cambia la métrica, el umbral ni el dictamen histórico de O1**: sigue **NO CUMPLE** (peor ventana: 9 éxitos y 1 fallo, 9 de 10 = 90 %). Las 8 ventanas completas posteriores observadas alcanzan 100 %; es una descripción de lo observado, sin extrapolar. El único fallo (2026-11-10, `sin_token`, puesta en marcha sin `INEGI_TOKEN`) permanece en la bitácora y cuenta en el histórico; las 15 ejecuciones válidas posteriores fueron exitosas.
+- **2026-11-22 (E2, A):** la captura diaria admite una validación previa de configuración (`--validar-configuracion`, y la opción `solo_validar` del workflow manual) que no escribe en la bitácora y, por tanto, no altera ninguna métrica de O1.

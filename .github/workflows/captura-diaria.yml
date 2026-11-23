@@ -12,6 +12,10 @@ on:
         description: "Capturar aunque ya exista la captura de hoy"
         type: boolean
         default: false
+      solo_validar:
+        description: "Solo validar la configuración (token y contacto): no captura ni escribe en la bitácora"
+        type: boolean
+        default: false
 
 # Un solo escritor a la vez: evita capturas simultáneas y conflictos al hacer push.
 concurrency:
@@ -33,6 +37,7 @@ jobs:
       PYTHONUNBUFFERED: "1"
       TDL_CONTACTO: ${{ vars.TDL_CONTACTO }}
       FORZAR: ${{ inputs.forzar }}
+      SOLO_VALIDAR: ${{ inputs.solo_validar }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
@@ -60,6 +65,10 @@ jobs:
         env:
           INEGI_TOKEN: ${{ secrets.INEGI_TOKEN }}
         run: |
+          # Validación previa (sin red; no escribe en la bitácora). Con solo_validar el paso termina aquí con su código;
+          # en una captura normal solo avisa: la captura sigue y deja su registro de fallo (RNF-FIA-01).
+          if [ "$SOLO_VALIDAR" = "true" ]; then python -m extractores.captura_denue --validar-configuracion; exit $?; fi
+          python -m extractores.captura_denue --validar-configuracion || echo "::warning::Configuración incompleta; la captura registrará el fallo."
           if [ "$FORZAR" = "true" ]; then python -m extractores.captura_denue --forzar
           else python -m extractores.captura_denue; fi
 

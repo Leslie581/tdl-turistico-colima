@@ -10,15 +10,15 @@
       "cumple": true,
       "umbral": "hueco máximo de 3 días",
       "valor": {
-        "capturas": 13,
+        "capturas": 14,
         "hueco_max_dias": 1
       }
     },
     "denue_rezago_en_dias": {
       "cumple": true,
-      "nota": "última captura 2026-11-21",
+      "nota": "última captura 2026-11-22",
       "umbral": 2,
-      "valor": 1
+      "valor": 0
     }
   },
   "completitud": {
@@ -47,7 +47,7 @@
       "cumple": true,
       "umbral": "0.98 a 1.02 (regla R-E02)",
       "valor": {
-        "capturas": 14,
+        "capturas": 15,
         "razon_max": 1.0,
         "razon_min": 1.0
       }
@@ -161,7 +161,7 @@
     },
     "denue_fichas_de_origen_oficial_con_http_200": {
       "cumple": true,
-      "nota": "28 fichas de bronce",
+      "nota": "30 fichas de bronce",
       "umbral": 1.0,
       "valor": 1.0
     }
@@ -196,7 +196,7 @@
     },
     "denue_coordenadas_en_la_caja_de_colima": {
       "cumple": true,
-      "nota": "134 establecimientos de la captura 2026-11-21",
+      "nota": "134 establecimientos de la captura 2026-11-22",
       "umbral": 1.0,
       "valor": 1.0
     }
