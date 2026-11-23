@@ -164,8 +164,37 @@ def test_los_resultados_anteriores_siguen_intactos():
     assert df2.SALIDA.name == "dos_factores_3x2.jsonl" and df2.SALIDA not in df2.PROTEGIDOS
 
 
-def test_el_analisis_regenerado_coincide_byte_a_byte_con_el_versionado(tmp_path):
-    """Incluye datos_figuras.json, que debe salir con LF también en Windows (antes write_text producía CRLF)."""
+# Tolerancia de los JSON: las versiones de numpy, scipy y statsmodels están fijadas, pero el BLAS y el sistema cambian
+# entre Windows (local) y Ubuntu (CI); eso altera los últimos dígitos de float64 (épsilon 2.2e-16) en OLS, Shapiro y
+# Box-Cox. rel = 1e-9 deja margen de varios órdenes sobre ese ruido y queda muy por debajo de la precisión con la que se
+# informan los resultados (3 o 4 decimales). abs = 1e-12 cubre los valores cercanos a cero.
+REL, ABS = 1e-9, 1e-12
+
+
+def _comparar_json(nuevo, versionado, ruta="$"):
+    """Igualdad exacta de estructura, claves, cadenas, booleanos y enteros; floats con tolerancia; sin NaN/inf nuevos."""
+    import math
+    if isinstance(versionado, dict):
+        assert isinstance(nuevo, dict), ruta
+        assert set(nuevo) == set(versionado), f"{ruta}: claves faltantes {set(versionado) - set(nuevo)}, "                                               f"sobrantes {set(nuevo) - set(versionado)}"
+        for k in versionado:
+            _comparar_json(nuevo[k], versionado[k], f"{ruta}.{k}")
+    elif isinstance(versionado, list):
+        assert isinstance(nuevo, list) and len(nuevo) == len(versionado), ruta
+        for i, (a, b) in enumerate(zip(nuevo, versionado)):
+            _comparar_json(a, b, f"{ruta}[{i}]")
+    elif isinstance(versionado, float) and not isinstance(versionado, bool):
+        assert isinstance(nuevo, (int, float)) and not isinstance(nuevo, bool), ruta
+        if not math.isfinite(versionado) or not math.isfinite(nuevo):
+            assert repr(float(nuevo)) == repr(versionado), f"{ruta}: valor no finito inesperado ({nuevo})"
+        else:
+            assert nuevo == pytest.approx(versionado, rel=REL, abs=ABS), ruta
+    else:                                                   # str, bool, int y None: idénticos (claves, conteos, niveles)
+        assert type(nuevo) is type(versionado) and nuevo == versionado, ruta
+
+
+def test_el_analisis_regenerado_coincide_con_el_versionado(tmp_path):
+    """CSV (redondeados a 6 decimales) byte a byte; JSON con estructura exacta y floats con tolerancia; todo con LF."""
     import subprocess
     sha = "722c1acb8c4a2b6918ff00bfe7aecf824c2f438c7e25088a7b5ca0a89f3c1913"
     if not df2.SALIDA.is_file() or ar.sha256_archivo(df2.SALIDA) != sha:
@@ -179,4 +208,17 @@ def test_el_analisis_regenerado_coincide_byte_a_byte_con_el_versionado(tmp_path)
         except (OSError, subprocess.CalledProcessError):
             pytest.skip("requiere git y los resultados confirmados")
         nuevo = (tmp_path / n).read_bytes()
-        assert b"\r" not in nuevo and nuevo == versionado, n
+        assert b"\r" not in nuevo, f"{n}: saltos CRLF"     # LF en todo sistema (defecto 21)
+        if n.endswith(".json"):
+            _comparar_json(json.loads(nuevo), json.loads(versionado), n)
+        else:
+            assert nuevo == versionado, n
+
+
+def test_la_comparacion_json_detecta_diferencias_reales():
+    _comparar_json({"a": [1, 0.5, "x"], "b": None}, {"a": [1, 0.5 + 1e-14, "x"], "b": None})
+    for nuevo in ({"a": [1, 0.5001, "x"], "b": None}, {"a": [1, 0.5, "x"]}, {"a": [1, 0.5, "x"], "b": None, "c": 1},
+                  {"a": [2, 0.5, "x"], "b": None}, {"a": [1, float("nan"), "x"], "b": None}, {"a": [1, 0.5], "b": None},
+                  {"a": [1, 0.5, "y"], "b": None}, {"a": [True, 0.5, "x"], "b": None}):
+        with pytest.raises(AssertionError):
+            _comparar_json(nuevo, {"a": [1, 0.5, "x"], "b": None})
