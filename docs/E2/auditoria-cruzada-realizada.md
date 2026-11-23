@@ -18,7 +18,7 @@ Este informe no es una certificación ISO ni otorga el Sello TDL. Los enlaces a 
 - **Reproducibilidad comprobada:** en un entorno nuevo, el pipeline Bronce → Plata → Oro dio exactamente lo que el equipo documenta (2,140 registros SNIIV, 258 SHF, 0 rechazados y 131 comparaciones), las 12 pruebas pasan una vez generado el Oro y las métricas ISO/IEC 25012 que publicó el equipo se regeneran sin ninguna diferencia.
 - **ISO/IEC 25010:** de las 8 características, **2 cumplen** (eficiencia de desempeño y compatibilidad) y **6 son parciales** (adecuación funcional, capacidad de interacción, fiabilidad, seguridad, mantenibilidad y portabilidad); en los criterios, 28 criterios: 13 CUMPLE, 11 PARCIAL, 1 NO CUMPLE y 3 NO VERIFICABLE.
 - **ISO/IEC 25012:** en los criterios, 17 criterios: 11 CUMPLE, 3 PARCIAL, 0 NO CUMPLE y 3 NO VERIFICABLE; los parciales son la completitud temporal de SNIIV, la fecha de captura de SHF y el diccionario.
-- **Hallazgos:** **0 críticos, 2 mayores y 7 menores** (sección 6). Los dos mayores son la fiabilidad de la captura (objetivo de disponibilidad no cumplido y métricas MTBF, MTTR y disponibilidad sin calcular, aunque el historial público permite calcularlas) y la completitud temporal de SNIIV, no diagnosticada.
+- **Hallazgos:** **0 críticos, 1 mayor y 8 menores** (sección 6). El único mayor es la fiabilidad de la captura: objetivo de disponibilidad no cumplido y métricas MTBF, MTTR y disponibilidad sin calcular, aunque el historial público permite calcularlas. La completitud temporal de SNIIV, no diagnosticada, es un hallazgo menor: lo comprobado es la falta de diagnóstico, no un error demostrado en los cálculos.
 - **Fortalezas comprobadas:** ocho (sección 7), entre ellas la reproducibilidad, el linaje por hash verificado, el CI en verde y una documentación ética sólida.
 - **Sospechas previas:** la etiqueta `e2` desactualizada **se descarta** (apunta al último commit); las evaluaciones ISO incompletas **se confirman** como limitación declarada de su entregable E2; la ausencia de Plata y Oro en el ZIP **está justificada** (sección 8).
 
@@ -151,7 +151,7 @@ Ningún hallazgo es crítico. La columna «Declarado» indica si el propio equip
 | ID | Severidad | Hallazgo | Declarado |
 |---|---|---|---|
 | IN-01 | **MAYOR** | Fiabilidad de la captura: objetivo no cumplido y métricas MTBF, MTTR y disponibilidad sin calcular | Parcialmente |
-| IN-02 | **MAYOR** | Completitud temporal y semántica de las ausencias de SNIIV sin diagnosticar | No |
+| IN-02 | Menor | Completitud temporal y semántica de las ausencias de SNIIV sin diagnosticar | No |
 | IN-03 | Menor | Capturas diarias de SNIIV redundantes: contenido idéntico en las 21 | No |
 | IN-04 | Menor | Extractores sin reintentos ni identificación de contacto, y workflow que guarda antes de validar | No |
 | IN-05 | Menor | Cobertura baja, pruebas dependientes del orden y alcance parcial del linter | Parcialmente |
@@ -171,13 +171,14 @@ Ningún hallazgo es crítico. La columna «Declarado» indica si el propio equip
 - **Causa probable.** El fallo del 18-nov ocurrió en la petición a la API de SNIIV; su duración de 79 s es compatible con el límite de 60 s del extractor, pero **sin los registros de la ejecución (requieren sesión) la causa no está confirmada**. Los fallos 3 y 6 fueron defectos del validador, ya corregidos, que el equipo documenta.
 - **Recomendación.** Calcular y publicar MTBF, MTTR y disponibilidad con el método anterior; exportar y versionar la bitácora de ejecuciones; documentar el incidente del 18-nov; y medir el objetivo por ventanas móviles.
 
-### IN-02 · MAYOR · Completitud temporal de SNIIV sin diagnosticar
+### IN-02 · Menor · Completitud temporal de SNIIV sin diagnosticar
 
 - **Descripción.** La documentación afirma que no hay nulos en SNIIV y la puerta de calidad solo mira nulos por celda, lo que es cierto. Pero el panel es disperso: de los 383 agregados trimestrales del Oro, **191 (49.9 %) se calculan con menos de 3 meses observados**, y solo 8 de los 10 municipios de Colima tienen registros (faltan Ixtlahuacán y Minatitlán). Por ejemplo, Armería tiene registros en 35 de los 198 meses entre 2010-01 y 2026-06. La puerta de calidad no evalúa continuidad temporal ni cobertura, y los agregados no indican cuántos meses los componen.
 - **Evidencia.** Análisis de la Plata generada por E4 (cuentas en [`metricas_auditoria_externa.json`](evidencia/auditoria_cruzada/metricas_auditoria_externa.json)); [`CIERRE_E1.md` L15](https://github.com/chareyesjaramillo17801-rgb/trusted-data-lab-colima/blob/65c80cc0f7bd9b82706ece7ac7bcc1bad3cf7522/docs/E1/CIERRE_E1.md#L15); [`pipeline/validacion.py`](https://github.com/chareyesjaramillo17801-rgb/trusted-data-lab-colima/blob/65c80cc0f7bd9b82706ece7ac7bcc1bad3cf7522/pipeline/validacion.py).
 - **Requisito afectado.** Rúbrica E1, «Valores faltantes» (mecanismo diagnosticado y tratamiento justificado); ISO/IEC 25012, completitud.
 - **Impacto.** El tablero publica sumas trimestrales de «viviendas» y una suma histórica por municipio sin advertir que muchos trimestres están parcialmente observados. Si una ausencia significa «cero registros», las sumas son correctas; si significa «dato faltante», están subestimadas.
-- **Causa probable.** El cubo de SNIIV solo devuelve filas con registros. **La semántica de la ausencia no está verificada**, por eso el hallazgo es el diagnóstico faltante y no un error de cálculo.
+- **Por qué es menor.** Lo comprobado es la **falta de diagnóstico y de documentación** de la completitud temporal; no hay un error demostrado en los cálculos. Se mantiene como hallazgo porque la rúbrica de E1 exige ese diagnóstico.
+- **Causa probable.** El cubo de SNIIV solo devuelve filas con registros. Ninguna de las 2,140 filas tiene 0 viviendas (el mínimo es 1) ni nulos, lo que es coherente con un cubo que omite los ceros, **pero no lo demuestra**. **La semántica de la ausencia no está verificada** ni con la documentación de la fuente ni con otra consulta; por eso el hallazgo es el diagnóstico faltante y no un error de cálculo.
 - **Recomendación.** Documentar con la fuente qué significa una ausencia, añadir a la puerta de calidad un control de cobertura temporal y un campo `meses_observados` en los agregados, y declarar los municipios sin registros.
 
 ### IN-03 · Menor · Capturas diarias redundantes
@@ -280,7 +281,7 @@ Además, los objetivos de calidad de E0 sobre completitud (≥ 98 %) y trazabili
 | Prioridad | Acción | Hallazgos |
 |---|---|---|
 | **1** (antes de E3) | Calcular y publicar MTBF, MTTR y disponibilidad, versionar la bitácora de ejecuciones y documentar el incidente del 18-nov | IN-01 |
-| **1** | Diagnosticar y documentar la semántica de las ausencias de SNIIV, y añadir el control de cobertura temporal y `meses_observados` | IN-02 |
+| **2** | Diagnosticar y documentar la semántica de las ausencias de SNIIV, y añadir el control de cobertura temporal y `meses_observados` | IN-02 |
 | **2** | Reintentos y contacto del User-Agent en los extractores; validar antes de guardar; deduplicar por contenido | IN-03, IN-04 |
 | **2** | Pruebas con *fixtures*, cobertura mínima y linter en todo el repositorio | IN-05 |
 | **3** | Reconciliar cifras y textos, regenerar el diccionario, adoptar el formato PSP del Kit y reforzar la seguridad operativa | IN-06 a IN-09 |
