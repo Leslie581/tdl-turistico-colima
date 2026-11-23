@@ -1,0 +1,224 @@
+{
+  "actions_api_publica": {
+    "calidad_e1_calidad": {
+      "duracion_s": {
+        "max": 74,
+        "mediana": 60,
+        "min": 33
+      },
+      "ejecuciones": 16,
+      "exitosas": 16
+    },
+    "captura_de_fuentes": {
+      "ejecuciones": 23,
+      "exitosas": 20,
+      "fallidas": 3,
+      "peor_ventana": "2026-11-09 16:04 UTC: 12 exitos y 2 fallos (85.7 %)",
+      "programadas": 13,
+      "programadas_exitosas": 12,
+      "programadas_tasa_pct": 92.31,
+      "tasa_pct": 86.96,
+      "ventanas_7_dias_completas": 16,
+      "ventanas_bajo_95_pct": 10
+    },
+    "disponibilidad": 0.92337,
+    "duracion_captura_exitosa_s": {
+      "maximo": 31,
+      "mediana": 26
+    },
+    "incidentes": [
+      {
+        "inicio_utc": "2026-11-09T16:04:45",
+        "paso_fallido": "Validar Registro SNIIV",
+        "reparacion_min": 8.6,
+        "run": 3
+      },
+      {
+        "inicio_utc": "2026-11-09T16:29:25",
+        "paso_fallido": "Validar Registro SNIIV",
+        "reparacion_min": 5.8,
+        "run": 6
+      },
+      {
+        "inicio_utc": "2026-11-18T21:26:22",
+        "nota": "limitada por la cadencia diaria: es el tiempo hasta el siguiente exito programado",
+        "paso_fallido": "Registro SNIIV",
+        "reparacion_min": 1444.4,
+        "run": 19
+      }
+    ],
+    "mtbf_horas": 97.7,
+    "mttr_min": 486.3,
+    "periodo_observado_horas": 317.3
+  },
+  "auditado": {
+    "commit": "65c80cc0f7bd9b82706ece7ac7bcc1bad3cf7522",
+    "etiquetas": {
+      "e0": "769b7f3",
+      "e1": "5c67a0c",
+      "e2": "65c80cc"
+    },
+    "fuente_del_commit": "comentario del ZIP trusted-data-lab-colima-main.zip; coincide con main y con el tag e2 consultados por la API publica de GitHub el 2026-11-23",
+    "repositorio": "https://github.com/chareyesjaramillo17801-rgb/trusted-data-lab-colima"
+  },
+  "ejecutado": {
+    "anova_2_3_recomputado": {
+      "max_abs_diferencia_F": 7.7e-12,
+      "mejora_confirmacion_pct": 47.73,
+      "welch_p": 1.9e-07
+    },
+    "calidad_evaluacion_e2": {
+      "diferencias_con_metricas_publicadas": 0,
+      "productos": 7
+    },
+    "cobertura_pytest_cov": {
+      "extractores": 0,
+      "pipeline_ejecutar": 20,
+      "pipeline_validacion": 100,
+      "porcentaje": 31,
+      "sentencias": 860,
+      "sin_cubrir": 597
+    },
+    "cruce_espacial": "10 municipios validados (comprobacion circular: puntos derivados de los mismos poligonos)",
+    "experimentos_e2_estadistica": {
+      "mejora_de_confirmacion_pct": {
+        "publicada": 47.73,
+        "reejecucion": 44.71
+      },
+      "mismo_tratamiento_ganador_2_3": true,
+      "mismos_terminos_significativos_en_4_anova": true,
+      "segundos": 18.9
+    },
+    "pip_audit_requirements_e1": "No known vulnerabilities found",
+    "pip_install_requirements_e1": "exit 0",
+    "pipeline_ejecutar": {
+      "comparaciones_oro": 131,
+      "rechazados": 0,
+      "segundos": 3.0,
+      "shf_validos": 258,
+      "sniiv_validos": 2140
+    },
+    "pipeline_ejecutar_analisis": {
+      "adf_p_primera_diferencia": {
+        "Manzanillo": 0.920482,
+        "Villa de Alvarez": 0.990787
+      },
+      "ljung_box_p_holt_villa_de_alvarez": 0.000284,
+      "mae_manzanillo_arima": 1.270821,
+      "mae_villa_de_alvarez_holt": 2.165961,
+      "segundos": 3.9
+    },
+    "pytest_clon_limpio": {
+      "aprobadas": 10,
+      "fallidas": 2,
+      "motivo": "tests/test_analisis_e1.py y tests/test_linaje_analitico_e2.py requieren data/plata/shf_colima.parquet, que se genera con pipeline.ejecutar"
+    },
+    "pytest_tras_pipeline": {
+      "aprobadas": 12,
+      "fallidas": 0,
+      "segundos": 3.7
+    },
+    "ruff_pipeline_tests": "All checks passed",
+    "ruff_repositorio_completo": {
+      "archivos": "extractores/ (I001, UP017, SIM118: estilo)",
+      "hallazgos": 10
+    }
+  },
+  "entorno_de_ejecucion": {
+    "entorno_virtual": "aislado, fuera del repositorio auditado",
+    "nota": "el CI del equipo auditado usa Python 3.11 sobre Ubuntu",
+    "paquetes": {
+      "geopandas": "1.2.0",
+      "numpy": "2.5.5",
+      "pandas": "2.3.3",
+      "pandera": "0.36.0",
+      "pyogrio": "0.13.0",
+      "pytest": "9.2.0",
+      "ruff": "0.17.6",
+      "shapely": "2.2.0",
+      "statsmodels": "0.15.0",
+      "streamlit": "1.67.0"
+    },
+    "python": "3.13.15",
+    "sistema": "Windows 11 Home 10.0.26200"
+  },
+  "metodo_de_calculo": "MTTR, MTBF y disponibilidad con las definiciones de docs/E1/fiabilidad.md de este repositorio: incidente = racha de fallos; reparacion = fin del primer exito posterior - inicio del primer fallo; MTBF = (tiempo observado - reparacion total) / incidentes; A = MTBF / (MTBF + MTTR). Marcas de tiempo: run_started_at y updated_at de la API publica de Actions.",
+  "observado_en_archivos": {
+    "bronce_inegi": {
+      "capturas": 3,
+      "sha256_coincide": 3
+    },
+    "bronce_sniiv": {
+      "capturas": 21,
+      "con_metadatos": 21,
+      "dia_sin_captura": "2026-11-18",
+      "dias_con_captura": [
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22"
+      ],
+      "diferencias_de_contenido_entre_capturas": 0,
+      "hashes_distintos": 21
+    },
+    "completitud_temporal_sniiv": {
+      "agregados_trimestrales": 383,
+      "con_menos_de_3_meses": 191,
+      "municipios_con_registros": 8,
+      "municipios_sin_registros": [
+        "Ixtlahuacan",
+        "Minatitlan"
+      ],
+      "porcentaje": 49.9
+    },
+    "diccionario_oro_md": {
+      "columnas_documentadas_comparacion_municipal": "5 de 16",
+      "columnas_documentadas_registros_trimestrales": "4 de 10",
+      "productos_sin_documentar": [
+        "variables_analiticas_sniiv",
+        "comparacion_modelos",
+        "pronosticos_exploratorios",
+        "diagnostico_ampliado"
+      ]
+    },
+    "lineas_mas_largas_pipeline": {
+      "archivo": "pipeline/ejecutar.py",
+      "maximo_caracteres": 495
+    },
+    "oro_hashes_recomputados": {
+      "comparacion_municipal": true,
+      "indice_shf_colima": true,
+      "registros_trimestrales": true
+    },
+    "shf": {
+      "columna_Global_nula": 258,
+      "niveles": {
+        "estatal": 86,
+        "municipal": 172
+      },
+      "registros": 258
+    }
+  },
+  "tablero_publico": {
+    "excepciones": 0,
+    "metricas_visibles": {
+      "SHF rechazados": 0,
+      "SHF validos": 258,
+      "SNIIV rechazados": 0,
+      "SNIIV validos": 2140
+    },
+    "secciones": 8,
+    "tablas": 6,
+    "url": "https://trusted-data-lab-colima-8dbknfsg2lhzub8uvrrhqo.streamlit.app/",
+    "verificado": "2026-11-23"
+  }
+}

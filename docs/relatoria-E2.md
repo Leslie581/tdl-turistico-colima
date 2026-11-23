@@ -1,6 +1,6 @@
 # Relatoría E2 · Observatorio de Ocupación Hotelera de Colima — Manzanillo
 
-Equipo: Leslie Valadez Macías (A) y Eimy Melissa Urbina Meza (B) · Periodo documentado: 2026-11-21 a 2026-11-23 (entrega: 2026-11-23) · **Estado: revisión final; auditoría cruzada pendiente.** No hay conformidad registrada de A ni de B.
+Equipo: Leslie Valadez Macías (A) y Eimy Melissa Urbina Meza (B) · Periodo documentado: 2026-11-21 a 2026-11-23 (entrega: 2026-11-23) · **Estado: revisión final; auditoría cruzada documentada, pendiente de revisión y entrega.** No hay conformidad registrada de A ni de B.
 Horas de la Ciudad de México (UTC−6). Los tiempos de B tienen horario de inicio y fin en su PSP; los de A son estimaciones retrospectivas confirmadas por Leslie.
 
 ## 1. Qué nos propusimos
@@ -20,6 +20,7 @@ Integrar una fuente geoespacial visible en el tablero, sin datos personales y co
 | 22-nov | Corrección del CI de `a38ccb0` | B | 12 min | `9abfaa9` |
 | 22-nov y 23-nov | Aclaración del p90, cierre documental, revisión y aprobación de los PR de B (#26, #28 y #29), integración de los PR #23, #24, #25, #27 y #28, verificación del tablero, auditoría interna final y correcciones finales | A | 120 min | PR #25, #27 y #30; aprobaciones de #26, #28 y #29 |
 | 23-nov | Corrección de `experimento_2x3.md` y revisión del PSP | B | 3 min | PR #28, #29 |
+| 23-nov | Auditoría cruzada: valoración de la que recibimos y auditoría de su observatorio (borrador) | A, con apoyo de IA | sin registrar | [recibida](E2/auditoria-cruzada-recibida.md), [realizada](E2/auditoria-cruzada-realizada.md) |
 
 Total en el PSP: A, 443 min (estimaciones retrospectivas confirmadas por Leslie, no cronometraje); B, 73 min en E2 (incluye 8 min de un borrador de ISO que no se integró).
 
