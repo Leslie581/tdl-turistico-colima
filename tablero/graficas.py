@@ -125,6 +125,20 @@ def grafica_modelos_2024(por_modelo: pd.DataFrame, observado: pd.DataFrame, fami
 
 
 # ---------------------------------------------------------------- 4. proyección 2025 (histórica)
+def mapa_oferta_ageb(geojson: dict) -> alt.Chart:
+    """Mapa por AGEB: color por rango de establecimientos de hospedaje (DENUE). No representa ocupación."""
+    colores = ["#f3f4f6", "#dbeafe", "#93c5fd", "#3b82f6", "#1e3a8a"]
+    dominio = ["0", "1-2", "3-5", "6-10", "11 o más"]
+    return (alt.Chart(alt.Data(values=geojson["features"]))
+            .mark_geoshape(stroke="#6b7280", strokeWidth=0.4)
+            .encode(color=alt.Color("properties.rango:N", scale=alt.Scale(domain=dominio, range=colores),
+                                    legend=alt.Legend(title="Establecimientos por AGEB", orient="bottom")),
+                    tooltip=[alt.Tooltip("properties.ageb:N", title="AGEB"), alt.Tooltip("properties.tipo:N", title="Tipo"),
+                             alt.Tooltip("properties.establecimientos:N", title="Establecimientos"),
+                             alt.Tooltip("properties.rango:N", title="Rango")])
+            .project(type="mercator", center=[-104.32, 19.11], scale=230000).properties(height=520))
+
+
 def grafica_intervalos_comparados(df: pd.DataFrame, con_observado: bool) -> alt.LayerChart:
     """Franja gaussiana (supone residuos normales) frente a las líneas del bootstrap de bloques (no lo supone); mismo pronóstico central."""
     x = alt.X("fecha:T", axis=_eje_mes())

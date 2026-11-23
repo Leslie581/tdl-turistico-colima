@@ -1,0 +1,21 @@
+{
+  "agebs_con_conteo_oculto": 22,
+  "agebs_con_establecimientos": 41,
+  "archivo": "manzanillo_oferta_ageb.csv",
+  "atribucion": "Fuente: INEGI, Marco Geoestadístico, Censo de Población y Vivienda 2020. Transformación propia (filtro del municipio 06007 y reproyección a EPSG:4326); no es un producto del INEGI ni está avalada por él. Establecimientos: Fuente: INEGI, DENUE (términos de libre uso del INEGI).",
+  "concordancia_ageb_denue_poligono": 1.0,
+  "establecimientos_con_ageb": 134,
+  "establecimientos_en_plata": 134,
+  "establecimientos_sin_ageb": 0,
+  "fecha_referencia": "2026-11-21",
+  "filas": 154,
+  "fuentes": {
+    "denue": "plata de DENUE, captura 2026-11-21 (data/bronce/denue/2026-11-21/)",
+    "poligonos": "manzanillo_ageb_poligonos.geojson",
+    "sha256_bronce": "d3ce38ae06fe7e614defa142f7d497c5b164c772ae9a366e30fa5c307338cb0b",
+    "sha256_poligonos": "82dfb73a1ea790737188fd6613dda714e5264a4d1e47de91f25630a2c985bce4"
+  },
+  "nota": "Conteo de establecimientos del DENUE por AGEB; no es ocupación hotelera ni mide demanda. Sin CLEE, nombres ni coordenadas.",
+  "sha256_csv": "40a94a84a9631bd7c6fbec9c081ef4b669a23b75855f601a636c704a308e0751",
+  "umbral_celda": 3
+}
