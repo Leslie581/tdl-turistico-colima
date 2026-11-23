@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Equipo auditor** | TDL de Ocupación Hotelera de Colima: Leslie Valadez Macías (A) y Eimy Melissa Urbina Meza (B). Informe elaborado por A con asistencia de Claude Code; **borrador para revisión de A y B, sin firma y aún no entregado al equipo auditado** |
+| **Equipo auditor** | TDL de Ocupación Hotelera de Colima: Leslie Valadez Macías (A) y Eimy Melissa Urbina Meza (B). Informe elaborado por A con asistencia de Claude Code; **revisado en conjunto por A y B, aprobado por B en el [PR #33](https://github.com/Leslie581/tdl-turistico-colima/pull/33) y enviado al equipo auditado; la recepción y la respuesta de ese equipo siguen pendientes de confirmar; no hay firmas** (sección 13) |
 | **Equipo auditado** | Observatorio inmobiliario de Colima (trabajo individual) · [repositorio](https://github.com/chareyesjaramillo17801-rgb/trusted-data-lab-colima) · [tablero](https://trusted-data-lab-colima-8dbknfsg2lhzub8uvrrhqo.streamlit.app/) |
 | **Versión auditada** | Commit `65c80cc0f7bd9b82706ece7ac7bcc1bad3cf7522` (lo declara el comentario del ZIP recibido, y coincide con `main` y con la etiqueta `e2` que consultó la API pública de GitHub el 2026-11-23) |
 | **Objeto auditado** | El observatorio **en su estado E1** (PDF, pág. 18), evaluado con ISO/IEC 25010 e ISO/IEC 25012 |
@@ -273,7 +273,7 @@ Además, los objetivos de calidad de E0 sobre completitud (≥ 98 %) y trazabili
 - **No ejecutados:** las capturas contra las fuentes reales (para no cargar las API de terceros ni cambiar su bronce) ni el contraste de exactitud con la API viva de SNIIV.
 - **Entorno distinto al del CI:** las pruebas corrieron con Python 3.13 y no con 3.11.
 - **Tablero:** se verificó el estado de un instante y no su disponibilidad en el tiempo.
-- **Alcance de la IA:** el informe se elaboró con asistencia de IA; no cuenta como revisión humana independiente hasta que A y B lo revisen.
+- **Alcance de la IA:** el informe se elaboró con asistencia de IA; no cuenta como revisión independiente de IA; A y B lo revisaron en conjunto (sección 13).
 - **Sin pruebas destructivas:** no se atacó ni se estresó ningún sistema del equipo auditado.
 
 ## 11. Recomendaciones priorizadas
@@ -288,7 +288,22 @@ Además, los objetivos de calidad de E0 sobre completitud (≥ 98 %) y trazabili
 
 ## 12. Dictamen final
 
-El observatorio inmobiliario de Colima, en su estado E1, **cumple de forma comprobada** con la reproducibilidad, el linaje por hash, el CI y la honestidad sobre sus límites, y **cumple parcialmente** con el resto de las características de ISO/IEC 25010. **No alcanza** su objetivo de disponibilidad de la captura y no ha diagnosticado la completitud temporal de SNIIV. No se identificó ningún defecto crítico. Este dictamen **no es una certificación ISO ni el Sello TDL**, y está sujeto a la revisión de A y B antes de entregarlo al equipo auditado.
+El observatorio inmobiliario de Colima, en su estado E1, **cumple de forma comprobada** con la reproducibilidad, el linaje por hash, el CI y la honestidad sobre sus límites, y **cumple parcialmente** con el resto de las características de ISO/IEC 25010. **No alcanza** su objetivo de disponibilidad de la captura y no ha diagnosticado la completitud temporal de SNIIV. No se identificó ningún defecto crítico. Este dictamen **no es una certificación ISO ni el Sello TDL**, y su estado de revisión, aprobación y envío se detalla en la sección 13.
+
+## 13. Revisión conjunta, aprobación y envío
+
+Esta sección separa lo que consta en GitHub de lo que se comunica por otros medios.
+
+| Hito | Estado | Evidencia | Observación |
+|---|---|---|---|
+| Informe realizado | Hecho | [`auditoria-cruzada-realizada.md`](auditoria-cruzada-realizada.md) y [`evidencia/auditoria_cruzada/`](evidencia/auditoria_cruzada/) | Resultado vigente: 0 críticos, 1 mayor y 8 menores |
+| Revisión conjunta de A y B | Hecha | Tiempo registrado en los PSP: unos 45 min por integrante, **aproximados, no cronometrados** | No hay acta; el dato lo comunica A. Eimy debe confirmar el suyo |
+| Aprobación de B | **Real, en GitHub** | [Aprobación de `eimymuz` en el PR #33](https://github.com/Leslie581/tdl-turistico-colima/pull/33#pullrequestreview-6027166554), enviada el 2026-11-23 a las 18:24:26 UTC (12:24 hora local); el PR lo fusionó `Leslie581` a las 18:29:51 UTC | El PR no tiene comentarios; no hay firmas |
+| Informe enviado al equipo externo | **Hecho, según A** | No hay constancia en el repositorio | El canal y la fecha no están registrados |
+| **Recepción confirmada** | **PENDIENTE** | — | No hay respuesta ni acuse del equipo externo |
+| Respuesta y revalidación del equipo externo | **PENDIENTE** | — | No hay respuesta |
+
+**Informe enviado no equivale a recepción confirmada.** Mientras el equipo externo no responda, la recepción se mantiene como pendiente y no se asume.
 
 ## Anexo A. Cómo reproducir las comprobaciones
 
