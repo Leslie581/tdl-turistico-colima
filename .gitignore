@@ -71,3 +71,7 @@ build/
 dist/
 .hypothesis/
 .cache
+
+# E2: capa de referencia geoespacial (poligonos AGEB de INEGI, agregada y publica)
+!data/oro/*.geojson
+!data/oro/*.geojson.meta.json

@@ -3,6 +3,7 @@
 Uso local:
     python -m extractores.captura_denue            # una captura por día (idempotente)
     python -m extractores.captura_denue --forzar   # repite aunque ya exista la de hoy
+    python -m extractores.captura_denue --validar-configuracion   # solo comprueba la configuración; no escribe en la bitácora
 
 Qué hace una ejecución (5 solicitudes HTTP como máximo, pausa >= 1.5 s):
 1. Comprueba si ya existe la captura del día (hora de Ciudad de México) y, si es así,
@@ -58,6 +59,26 @@ def captura_existente(fecha: str, bronce: Path = BRONCE) -> bool:
     carpeta = Path(bronce) / "denue" / fecha
     return (carpeta.is_dir() and any(carpeta.glob("*_Cuantificar.json"))
             and any(carpeta.glob("*_BuscarAreaAct.json")))
+
+
+def validar_configuracion(env: dict | None = None) -> dict:
+    """Comprobación previa de la configuración de la captura, SIN red y SIN escribir en la bitácora ni en el bronce.
+
+    Solo verifica lo que se puede saber sin llamar a INEGI: que ``INEGI_TOKEN`` exista y no tenga espacios ni saltos de línea (error común al
+    pegar un secreto) y que ``TDL_CONTACTO`` esté definida (User-Agent identificable). NO comprueba que INEGI acepte el token ni que la API
+    responda: eso solo lo prueba una captura real. Nunca devuelve ni imprime el valor del token.
+    """
+    env = os.environ if env is None else env
+    token = env.get(denue.ENV_TOKEN, "")
+    problemas = []
+    if not token.strip():
+        problemas.append(f"falta {denue.ENV_TOKEN}")
+    elif token != token.strip() or any(c.isspace() for c in token):
+        problemas.append(f"{denue.ENV_TOKEN} contiene espacios o saltos de línea")
+    if not env.get("TDL_CONTACTO", "").strip():
+        problemas.append("falta TDL_CONTACTO (User-Agent identificable)")
+    return {"ok": not problemas, "token_configurado": bool(token.strip()), "contacto_configurado": bool(env.get("TDL_CONTACTO", "").strip()),
+            "problemas": problemas, "alcance": "solo presencia y forma; no se consultó la API ni se escribió en la bitácora"}
 
 
 def registrar_ejecucion(fila: dict, ruta: Path = BITACORA_EJECUCIONES) -> dict:
@@ -140,8 +161,13 @@ def main(argv=None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     p = argparse.ArgumentParser(description="Captura diaria del DENUE (hospedaje en Manzanillo)")
     p.add_argument("--forzar", action="store_true", help="Capturar aunque ya exista la captura de hoy")
+    p.add_argument("--validar-configuracion", action="store_true", help="Solo comprobar token y contacto; sin red y sin escribir en la bitácora")
     args = p.parse_args(argv)
     cargar_env()
+    if args.validar_configuracion:
+        informe = validar_configuracion()
+        print(json.dumps(informe, ensure_ascii=False, indent=2))
+        return 0 if informe["ok"] else 1
     sys.path.insert(0, str(RAIZ))
     fila = ejecutar(forzar=args.forzar)
     print(json.dumps({k: fila.get(k) for k in ("ejecucion", "fecha_local", "resultado", "registros",

@@ -109,3 +109,26 @@ def test_error_de_red_se_registra_sin_token(tmp_path, monkeypatch):
     assert fila["resultado"] == "fallo"
     assert "TOKEN-DE-PRUEBA-123" not in json.dumps(fila)
     assert "TOKEN-DE-PRUEBA-123" not in (tmp_path / "ej.jsonl").read_text(encoding="utf-8")
+
+
+def test_validar_configuracion_detecta_problemas_sin_exponer_el_token():
+    assert captura_denue.validar_configuracion({"INEGI_TOKEN": "TOKEN-DE-PRUEBA-123", "TDL_CONTACTO": "equipo@example.org"})["ok"] is True
+    sin = captura_denue.validar_configuracion({})
+    assert sin["ok"] is False and not sin["token_configurado"] and len(sin["problemas"]) == 2
+    espacios = captura_denue.validar_configuracion({"INEGI_TOKEN": "TOKEN-DE-PRUEBA-123\n", "TDL_CONTACTO": "equipo@example.org"})
+    assert espacios["ok"] is False and espacios["token_configurado"] and "espacios" in espacios["problemas"][0]
+    assert "TOKEN-DE-PRUEBA-123" not in json.dumps(espacios)
+
+
+def test_validar_configuracion_por_linea_de_comandos_no_escribe_en_la_bitacora(tmp_path, monkeypatch, capsys):
+    bitacora = tmp_path / "calidad" / "bitacora_capturas.jsonl"
+    monkeypatch.setattr(captura_denue, "BITACORA_EJECUCIONES", bitacora)
+    monkeypatch.setattr(captura_denue, "cargar_env", lambda *a, **k: None)
+    monkeypatch.delenv("INEGI_TOKEN", raising=False)
+    monkeypatch.setenv("TDL_CONTACTO", "equipo@example.org")
+    assert captura_denue.main(["--validar-configuracion"]) == 1           # sin token: sale en rojo y no registra ninguna ejecución
+    monkeypatch.setenv("INEGI_TOKEN", "TOKEN-DE-PRUEBA-123")
+    assert captura_denue.main(["--validar-configuracion"]) == 0
+    salida = capsys.readouterr().out
+    assert "TOKEN-DE-PRUEBA-123" not in salida and '"ok": true' in salida
+    assert not bitacora.exists() and not (tmp_path / "data").exists()      # ni bitácora de ejecuciones ni bronce

@@ -1,0 +1,208 @@
+{
+  "adecuacion_funcional": {
+    "definiciones_de_prueba": 474,
+    "nota_definiciones_de_prueba": "cuenta de def test_* en tests/test_*.py; no incluye la expansión de parametrizaciones ni equivale a los casos ejecutados por pytest",
+    "requerimientos_funcionales_cumplidos_recalculados": {
+      "cumplidos": 15,
+      "nota": "RF-01 figuraba PARCIAL en E1 solo porque la ventana era de 3.83 de 7 días; se recalcula con su propio criterio y la bitácora actual (docs/E1/requerimientos.md no se modifica)",
+      "total": 15
+    },
+    "requerimientos_funcionales_por_estado": {
+      "CUMPLIDO": 14,
+      "PARCIAL": 1
+    },
+    "requerimientos_no_funcionales_por_estado": {
+      "CUMPLIDO": 22,
+      "NO CUMPLIDO": 3,
+      "PARCIAL": 2,
+      "PROPUESTO": 1
+    },
+    "rf01_recalculado_con_la_bitacora": {
+      "cumple": true,
+      "dias_locales_con_captura_exitosa": 14,
+      "dias_locales_con_ejecucion": 14,
+      "ejecuciones_schedule_exitosas": 12,
+      "ventana_dias": 12.82
+    }
+  },
+  "capacidad_de_interaccion": {
+    "pestanas_del_tablero": 7
+  },
+  "compatibilidad": {
+    "consumidores_de_la_capa_oro_de_datatur": {
+      "consumidores": [
+        "tablero.cargador.cargar_oro",
+        "laboratorio.pronosticos.datos.cargar_oro"
+      ],
+      "meses": [
+        108,
+        108
+      ],
+      "misma_ocupacion_pct": true,
+      "mismos_periodos": true
+    }
+  },
+  "eficiencia_de_desempeno": {
+    "carga_tecnica_confirmacion_t8_frente_t1": {
+      "confirmada": true,
+      "corridas": 12,
+      "ic95_diferencia_s": [
+        0.51,
+        7.19
+      ],
+      "media_t1_s": 10.459,
+      "media_t8_s": 6.605,
+      "mejora_relativa": 0.3685,
+      "p_welch_unilateral": 0.0143,
+      "tasa_de_error": {
+        "T1": [
+          0.0
+        ],
+        "T8": [
+          0.0
+        ]
+      }
+    },
+    "carga_tecnica_dos_factores_carga_x_procesos": {
+      "corridas": 24,
+      "efectos_simples_p_holm": {
+        "10x": 0.6706,
+        "1x": 0.0,
+        "5x": 0.0034
+      },
+      "f_interaccion": 15.19,
+      "p_interaccion": 0.0002,
+      "tasa_de_error_maxima": 0.0
+    },
+    "experimento_corridas_oficiales": 16,
+    "operativa_captura_diaria_duracion": {
+      "max_s": 6.91,
+      "mediana_s": 3.36,
+      "min_s": 3.17,
+      "n": 15,
+      "nota": "duracion_s de cada captura exitosa en calidad/bitacora_capturas.jsonl; p90 por interpolación lineal",
+      "p90_s": 4.98
+    },
+    "operativa_pipeline_bronce_a_plata_denue_s": {
+      "capturas_en_la_plata": 14,
+      "max": 0.26,
+      "min": 0.21,
+      "nota": "procesar_capturas en memoria (sin escribir), esta máquina; no es el experimento estadístico ni la carga técnica de 16 copias",
+      "repeticiones": 3
+    },
+    "tasa_de_error_en_las_corridas": 0.0,
+    "tiempo_por_corrida_s": {
+      "max": 10.382,
+      "media": 7.362,
+      "min": 4.312
+    },
+    "union_espacial_y_agregado_s": {
+      "establecimientos": 134,
+      "mejor_de_3": 0.0088,
+      "poligonos": 154
+    }
+  },
+  "entorno_de_la_medicion": {
+    "ci": "ubuntu-latest (.github/workflows/ci.yml)",
+    "python": "3.13.15",
+    "sistema": "Windows-11-10.0.26200-SP0"
+  },
+  "fiabilidad": {
+    "disponibilidad_exploratoria": 0.99976,
+    "ejecuciones": {
+      "exitosas": 15,
+      "fallidas": 1,
+      "omitidas_duplicadas_excluidas": 4,
+      "programadas_exitosas": 12,
+      "programadas_schedule": 12,
+      "validas": 16
+    },
+    "mtbf_horas_exploratorio": 307.631,
+    "mttr": {
+      "estimable": true,
+      "incidentes_cerrados": 1,
+      "segundos": 268.0
+    },
+    "objetivo_o1_por_ventanas_de_7_dias": {
+      "criterio": "tasa de éxito >= 95% en cualquier ventana de 7 días (se excluyen las omitidas por duplicado)",
+      "dictamen": "NO CUMPLE",
+      "nota": "las ventanas son de 7 x 24 h desde cada ejecución válida; con ventanas por día local la ventana inicial daría 8 de 9 (88.9 %), también por debajo del objetivo",
+      "peor_ventana": {
+        "exitos": 9,
+        "fallos": 1,
+        "inicio_utc": "2026-11-10T00:39:33+00:00",
+        "tasa": 0.9
+      },
+      "posterior_a_la_correccion": {
+        "aplica": true,
+        "nota": "Complementario: no cambia el dictamen histórico (NO CUMPLE). Son ventanas traslapadas de un solo régimen y pocas ejecuciones; no demuestra que la tasa verdadera sea >= 95 % ni se extrapola al futuro.",
+        "peor_ventana_posterior": {
+          "exitos": 9,
+          "fallos": 0,
+          "inicio_utc": "2026-11-10T00:43:57+00:00",
+          "tasa": 1.0
+        },
+        "referencia_de_la_correccion_utc": "2026-11-10T00:43:57+00:00",
+        "resultado_observado": "todas las ventanas completas posteriores alcanzan el objetivo",
+        "ventanas_completas_posteriores": 8,
+        "ventanas_por_debajo_del_objetivo": 0
+      },
+      "tasa_global_de_la_bitacora": {
+        "cumple_el_objetivo": false,
+        "exitos": 15,
+        "tasa": 0.9375,
+        "validas": 16
+      },
+      "ventanas_evaluadas": 9,
+      "ventanas_por_debajo_del_objetivo": 1
+    },
+    "periodo": {
+      "cumple_dias_requeridos": true,
+      "dias": 12.821,
+      "dias_requeridos": 7,
+      "fin_utc": "2026-11-22T20:21:53+00:00",
+      "inicio_utc": "2026-11-10T00:39:33+00:00"
+    },
+    "tasa_de_exito": {
+      "cumple_objetivo_en_lo_observado": false,
+      "el_intervalo_incluye_el_objetivo": true,
+      "evaluable_como_se_definio_O1": true,
+      "intervalo_95_clopper_pearson": [
+        0.6977,
+        0.9984
+      ],
+      "objetivo": 0.95,
+      "valor": 0.9375
+    }
+  },
+  "mantenibilidad": {
+    "lineas_de_codigo": 7870,
+    "lineas_de_prueba": 4539,
+    "relacion_prueba_codigo": 0.577,
+    "ruff": {
+      "codigo_de_salida": 0,
+      "resumen": "All checks passed!"
+    }
+  },
+  "seguridad": {
+    "pip_audit": {
+      "requirements-dev.txt": "sin vulnerabilidades conocidas",
+      "requirements-lab.txt": "sin vulnerabilidades conocidas",
+      "requirements.txt": "sin vulnerabilidades conocidas"
+    },
+    "verificar_e0": {
+      "historico": {
+        "estado": "satisfactoria",
+        "ok": true
+      },
+      "integridad": {
+        "estado": "satisfactoria",
+        "ok": true
+      },
+      "privacidad": {
+        "estado": "satisfactoria",
+        "ok": true
+      }
+    }
+  }
+}

@@ -117,16 +117,17 @@ def test_la_app_arranca_sin_errores_desde_otro_directorio_y_muestra_lo_pedido(tm
     at = _app().run()
     assert not at.exception and not at.error
     assert at.title[0].value == "Observatorio de Ocupación Hotelera de Colima — Manzanillo"
-    assert [t.label for t in at.tabs] == ["Resumen", "Pronóstico 2024", "Comparación de modelos", "Proyección 2025–2027", "Cómo leerlo", "Fuentes y datos"]
+    assert [t.label for t in at.tabs] == ["Resumen", "Pronóstico 2024", "Comparación de modelos", "Proyección 2025–2027", "Mapa de oferta", "Cómo leerlo", "Fuentes y datos"]
     assert dict((m.label.split(" (")[0], m.value) for m in at.metric) == {
         "Ocupación media 2016–2024": "45.9 %", "Ocupación media 2024": "54.7 %", "Mes más bajo": "1.5 %", "Meses de 2024 dentro del intervalo": "12 de 12",
         "Media del periodo seleccionado": "45.9 %", "Mínimo del periodo": "1.5 %", "Máximo del periodo": "66.3 %",
+        "Establecimientos ubicados": "134 de 134", "AGEB con establecimientos": "41 de 154", "Fecha de referencia": "2026-11-21",
         "MAE del SARIMA": "2.38 pp", "RMSE del SARIMA": "2.64 pp", "MAPE del SARIMA": "4.36 %", "Meses dentro del intervalo del 95 %": "12 de 12"}
     texto = " ".join(x.value for x in [*at.markdown, *at.info, *at.warning, *at.caption])
     assert "proyección histórica" in texto and "no es un pronóstico vigente" in texto and "TDL de Ocupación Hotelera de Colima" in texto
     assert "Referencia ingenua estacional" in texto or "referencia ingenua estacional" in texto
     assert "no son normales" in texto and "No es más preciso" in texto and "no supone normalidad" in texto and "la elección no es firme" in texto   # intervalos bootstrap publicados con su limitación
-    assert "StayMetrics" not in texto and "DENUE" not in texto and "pronóstico para 2025" not in texto.lower()
+    assert "StayMetrics" not in texto and "CLEE" not in texto and "pronóstico para 2025" not in texto.lower()
 
 
 def test_la_app_muestra_un_error_claro_y_no_cifras_si_los_datos_no_son_coherentes(monkeypatch):
@@ -233,3 +234,15 @@ def test_la_app_no_presenta_2025_ni_2026_como_pronostico_vigente_y_explica_las_f
     assert "Último mes con datos observados" in texto and "Resultados estadísticos generados" in texto
     assert "no muestra una fecha de actualización propia" in texto
     assert "Resumen ejecutivo" in texto and "95 de cada 100" in texto and "StayMetrics" not in texto
+
+
+def test_el_mapa_de_oferta_dibuja_una_figura_por_ageb_con_escala_de_rangos(d):
+    espec = gr.mapa_oferta_ageb(d.mapa["geojson"]).to_dict()
+    assert len(espec["data"]["values"]) == 154 and espec["mark"]["type"] == "geoshape"
+    assert espec["encoding"]["color"]["scale"]["domain"] == ["0", "1-2", "3-5", "6-10", "11 o más"]
+
+
+def test_la_pestana_del_mapa_aclara_que_es_oferta_y_no_ocupacion():
+    at = _app().run()
+    texto = " ".join(x.value for x in [*at.markdown, *at.info, *at.caption])
+    assert "oferta registrada, no ocupación hotelera" in texto and "Marco Geoestadístico" in texto and "no incluye nombres ni coordenadas" in texto

@@ -73,8 +73,8 @@ with st.container(border=True):
     st.caption("Fechas tomadas de los archivos versionados. El tablero no muestra una fecha de actualización propia porque no puede verificarla "
                "desde sus archivos.")
 
-tab_resumen, tab_2024, tab_modelos, tab_2025, tab_leer, tab_fuentes = st.tabs(
-    ["Resumen", "Pronóstico 2024", "Comparación de modelos", "Proyección 2025–2027", "Cómo leerlo", "Fuentes y datos"])
+tab_resumen, tab_2024, tab_modelos, tab_2025, tab_mapa, tab_leer, tab_fuentes = st.tabs(
+    ["Resumen", "Pronóstico 2024", "Comparación de modelos", "Proyección 2025–2027", "Mapa de oferta", "Cómo leerlo", "Fuentes y datos"])
 
 def seccion_sin_normalidad(df, con_observado: bool, titulo: str):
     """Intervalo sin supuesto de normalidad (bootstrap de bloques) junto al gaussiano; la cobertura sale del origen móvil versionado."""
@@ -220,6 +220,29 @@ with tab_leer:
     st.markdown("**Limitaciones**")
     st.markdown("\n".join(f"- {t}" for t in cg.LIMITACIONES))
 
+# ------------------------------------------------------------------ Mapa de oferta (E2)
+with tab_mapa:
+    mp = d.mapa
+    ficha = mp["ficha"]
+    st.subheader("Oferta de hospedaje por AGEB, Manzanillo")
+    st.info(
+        "**Qué muestra.** Cuántos establecimientos del subsector 721 (alojamiento temporal) registra el DENUE del INEGI en cada AGEB "
+        "(área geoestadística básica) de Manzanillo. **Es oferta registrada, no ocupación hotelera ni demanda.** Una AGEB con más "
+        "establecimientos no tiene necesariamente más huéspedes. Las AGEB con 1 o 2 establecimientos no muestran el conteo exacto.", icon=None)
+    st.altair_chart(gr.mapa_oferta_ageb(mp["geojson"]), width="stretch")
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Establecimientos ubicados", f"{ficha['establecimientos_con_ageb']} de {ficha['establecimientos_en_plata']}")
+    m2.metric("AGEB con establecimientos", f"{ficha['agebs_con_establecimientos']} de {ficha['filas']}")
+    m3.metric("Fecha de referencia", ficha["fecha_referencia"])
+    st.caption(
+        f"Fuentes: establecimientos, captura del DENUE del {ficha['fecha_referencia']} (INEGI); polígonos, Marco Geoestadístico, Censo de Población y Vivienda 2020 (INEGI). "
+        "Unión espacial propia (punto dentro de polígono, GeoPandas); el agregado no incluye nombres ni coordenadas de establecimientos. "
+        "No es un producto del INEGI ni está avalado por él. El mapa se centra en la zona urbana de Manzanillo; el municipio incluye además AGEB rurales y las islas oceánicas, fuera de este encuadre.")
+    with st.expander("Ver la tabla por AGEB"):
+        t = mp["agebs"][["cve_ageb", "tipo_ageb", "rango", "n_establecimientos", "area_km2"]].rename(columns={
+            "cve_ageb": "AGEB", "tipo_ageb": "Tipo", "rango": "Rango", "n_establecimientos": "Establecimientos", "area_km2": "Área (km²)"})
+        st.dataframe(t[t["Rango"] != "0"], hide_index=True)
+
 # ------------------------------------------------------------------ Fuentes y datos
 with tab_fuentes:
     st.subheader("Fuentes de datos y cobertura")
@@ -243,7 +266,8 @@ with tab_fuentes:
             "- `data/oro/manzanillo_ocupacion_mensual.csv` y su ficha `.meta.json` (capa oro)\n"
             "- `laboratorio/pronosticos/resultados/`: `comparacion_modelos_2024.csv`, `pronosticos_2024_por_modelo.csv`, "
             "`pronostico_modelo_elegido.csv`, `resumen.json` y `ejecucion.json`\n\n"
-            "El tablero **no** reentrena modelos, no ejecuta el procesamiento de datos, no consulta servicios externos y no muestra datos de establecimientos.")
+            "El tablero **no** reentrena modelos, no ejecuta el procesamiento de datos, no consulta servicios externos y no muestra establecimientos individuales (solo conteos por AGEB).\n\n"
+            "Mapa de oferta: `data/oro/manzanillo_oferta_ageb.csv` y `data/oro/manzanillo_ageb_poligonos.geojson`, con sus fichas.")
 
 st.divider()
 st.caption("Observatorio de Ocupación Hotelera de Colima — Manzanillo · Proyecto Integrador Trusted Data Lab · Entrega E1 · Los modelos son estadísticos y las proyecciones no son datos observados.")

@@ -18,7 +18,8 @@ import cargador as cg  # noqa: E402
 
 ARCHIVOS = [cg.RUTA_ORO, cg.RUTA_META_ORO, *(cg.CARPETA_RESULTADOS / n for n in (
     "comparacion_modelos_2024.csv", "pronosticos_2024_por_modelo.csv", "pronostico_modelo_elegido.csv", "resumen.json", "ejecucion.json")),
-    *(cg.CARPETA_INTERVALOS / n for n in ("intervalos_2024_mensual.csv", "proyeccion_2025_2027.csv", "intervalos_origen_movil_resumen.csv", "origen_movil_modelos.csv"))]
+    *(cg.CARPETA_INTERVALOS / n for n in ("intervalos_2024_mensual.csv", "proyeccion_2025_2027.csv", "intervalos_origen_movil_resumen.csv", "origen_movil_modelos.csv")),
+    cg.RUTA_OFERTA_AGEB, cg.RUTA_FICHA_OFERTA_AGEB, cg.RUTA_POLIGONOS, Path(str(cg.RUTA_POLIGONOS) + ".meta.json")]
 
 
 @pytest.fixture
@@ -207,7 +208,7 @@ def test_el_tablero_no_lee_denue_bronce_plata_ni_usa_secretos_ni_rutas_absolutas
         assert not re.search(r"(?i)\b(bronce|plata|oferta_hospedaje|clee)\b", re.sub(r'""".*?"""', "", codigo, flags=re.S)), nombre
         assert not re.search(r"st\.secrets|os\.environ|getenv|requests|urllib|subprocess|import statsmodels|from statsmodels|pipeline\.ejecutar", codigo), nombre
         assert not re.search(r"[A-Za-z]:\\\\|[A-Za-z]:/Users|/Users/|/home/", codigo), nombre
-    assert all("denue" not in str(r).lower() and "bronce" not in str(r) for r in ARCHIVOS)  # solo capa oro y resultados versionados
+    assert all("denue" not in str(r).lower() and "bronce" not in str(r) for r in ARCHIVOS)  # solo capa oro y resultados versionados (también el mapa)
 
 
 def test_el_nombre_definitivo_se_usa_y_no_aparece_el_nombre_anterior():
@@ -433,3 +434,35 @@ def test_un_intervalo_gaussiano_distinto_del_publicado_se_detecta(copia):
     df.to_csv(ruta, index=False)
     with pytest.raises(cg.ErrorDatos, match="no coincide"):
         cg.cargar_todo(copia)
+
+
+# ---------------------------------------------------------------- mapa de oferta por AGEB (E2)
+def test_el_mapa_de_oferta_se_carga_sin_datos_individuales_y_con_claves_iguales():
+    mp = cg.cargar_todo().mapa
+    assert set(mp["agebs"].columns) == cg.COLUMNAS_MAPA and len(mp["agebs"]) == len(mp["geojson"]["features"]) == 154
+    assert (mp["agebs"].loc[mp["agebs"]["rango"] == "1-2", "n_establecimientos"].isna()).all()
+    propiedades = {k for f in mp["geojson"]["features"] for k in f["properties"]}
+    assert propiedades == {"cvegeo", "ageb", "tipo", "rango", "establecimientos", "densidad"}      # sin nombres ni coordenadas de establecimientos
+    assert "menos de 3" in {f["properties"]["establecimientos"] for f in mp["geojson"]["features"]}
+
+
+def test_un_agregado_o_poligonos_alterados_se_rechazan(copia):
+    ruta = copia / cg.RUTA_OFERTA_AGEB
+    ruta.write_text(ruta.read_text(encoding="utf-8").replace("11 o más", "12 o más", 1), encoding="utf-8")
+    with pytest.raises(cg.ErrorDatos, match="SHA-256"):
+        cg.cargar_mapa_oferta(copia)
+
+
+def test_un_conteo_exacto_en_una_celda_de_1_o_2_se_rechaza(copia):
+    ficha_ruta = copia / cg.RUTA_FICHA_OFERTA_AGEB
+    csv_ruta = copia / cg.RUTA_OFERTA_AGEB
+    df = pd.read_csv(csv_ruta, dtype=str)
+    df.loc[df["rango"] == "1-2", "n_establecimientos"] = "2"
+    df.to_csv(csv_ruta, index=False, lineterminator="\n")
+    import hashlib
+    import json
+    ficha = json.loads(ficha_ruta.read_text(encoding="utf-8"))
+    ficha["sha256_csv"] = hashlib.sha256(csv_ruta.read_bytes()).hexdigest()       # la ficha coincide: debe fallar por la regla, no por el hash
+    ficha_ruta.write_text(json.dumps(ficha), encoding="utf-8")
+    with pytest.raises(cg.ErrorDatos, match="1 o 2"):
+        cg.cargar_mapa_oferta(copia)

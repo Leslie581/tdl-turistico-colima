@@ -1,0 +1,212 @@
+{
+  "actualidad": {
+    "datatur_rezago_en_meses": {
+      "cumple": false,
+      "nota": "último periodo 2024-12; la fuente abierta se actualizó por última vez en mayo de 2025 (docs/fuentes/datatur.md)",
+      "umbral": 12,
+      "valor": 23
+    },
+    "denue_capturas_distintas_y_hueco_maximo_en_dias": {
+      "cumple": true,
+      "umbral": "hueco máximo de 3 días",
+      "valor": {
+        "capturas": 14,
+        "hueco_max_dias": 1
+      }
+    },
+    "denue_rezago_en_dias": {
+      "cumple": true,
+      "nota": "última captura 2026-11-22",
+      "umbral": 2,
+      "valor": 0
+    }
+  },
+  "completitud": {
+    "datatur_celdas_no_nulas": {
+      "cumple": true,
+      "umbral": 1.0,
+      "valor": 1.0
+    },
+    "datatur_periodos_presentes": {
+      "cumple": true,
+      "umbral": "108 de 108",
+      "valor": "108 de 108"
+    },
+    "denue_ageb_vacios_no_intencionales": {
+      "cumple": true,
+      "nota": "los vacíos esperados son el conteo y la densidad de las celdas de 1-2 (privacidad) y la localidad de las AGEB rurales (no aplica)",
+      "umbral": 0,
+      "valor": 0
+    },
+    "denue_oferta_celdas_no_nulas": {
+      "cumple": true,
+      "umbral": 1.0,
+      "valor": 1.0
+    },
+    "denue_registros_frente_a_cuantificar": {
+      "cumple": true,
+      "umbral": "0.98 a 1.02 (regla R-E02)",
+      "valor": {
+        "capturas": 15,
+        "razon_max": 1.0,
+        "razon_min": 1.0
+      }
+    }
+  },
+  "comprensibilidad": {
+    "columnas_documentadas_en_el_diccionario": {
+      "manzanillo_ocupacion_mensual": {
+        "cumple": true,
+        "umbral": 1.0,
+        "valor": 1.0
+      },
+      "manzanillo_oferta_ageb": {
+        "cumple": false,
+        "umbral": 1.0,
+        "valor": 0.0
+      },
+      "manzanillo_oferta_hospedaje": {
+        "cumple": true,
+        "umbral": 1.0,
+        "valor": 1.0
+      }
+    }
+  },
+  "confidencialidad": {
+    "ageb_con_1_o_2_establecimientos_con_conteo_exacto": {
+      "cumple": true,
+      "umbral": 0,
+      "valor": 0
+    },
+    "columnas_de_datos_personales_o_de_establecimientos_individuales": {
+      "cumple": true,
+      "umbral": [],
+      "valor": []
+    }
+  },
+  "conformidad": {
+    "datatur_esquema_del_contrato_1_0_0": {
+      "cumple": true,
+      "nota": "20 columnas, 108 filas",
+      "umbral": "sin errores",
+      "valor": "validado con pandera (ESQUEMA_ORO)"
+    }
+  },
+  "conjuntos": {
+    "DENUE": [
+      "data/oro/manzanillo_oferta_hospedaje.csv",
+      "data/oro/manzanillo_oferta_ageb.csv"
+    ],
+    "DataTur": "data/oro/manzanillo_ocupacion_mensual.csv"
+  },
+  "consistencia": {
+    "datatur_reglas_de_dominio": {
+      "ocupados_mayor_que_disponibles": {
+        "cumple": true,
+        "umbral": 0,
+        "valor": 0
+      },
+      "periodos_repetidos_o_desordenados": {
+        "cumple": true,
+        "umbral": 0,
+        "valor": 0
+      },
+      "residentes_mas_no_residentes_distinto_de_ocupados": {
+        "cumple": true,
+        "umbral": 0,
+        "valor": 0
+      },
+      "version_de_contrato_distinta": {
+        "cumple": true,
+        "umbral": 0,
+        "valor": 0
+      }
+    },
+    "denue_ageb_claves_unicas": {
+      "cumple": true,
+      "umbral": 0,
+      "valor": 0
+    },
+    "denue_ageb_total_compatible_con_la_captura": {
+      "cumple": true,
+      "umbral": "visibles + [1, 2] por celda oculta incluye el total",
+      "valor": {
+        "celdas_ocultas": 22,
+        "total_de_la_captura": 134,
+        "visibles": 106
+      }
+    },
+    "denue_oferta_clases_en_el_catalogo": {
+      "cumple": true,
+      "umbral": [],
+      "valor": []
+    },
+    "denue_oferta_un_solo_municipio": {
+      "cumple": true,
+      "umbral": [
+        "06007"
+      ],
+      "valor": [
+        "06007"
+      ]
+    }
+  },
+  "corte": "2026-11-22",
+  "credibilidad": {
+    "datatur_archivo_identico_al_oficial": {
+      "cumple": true,
+      "nota": "comparación por SHA-256 con la descarga oficial del 2026-11-09",
+      "umbral": true,
+      "valor": true
+    },
+    "denue_fichas_de_origen_oficial_con_http_200": {
+      "cumple": true,
+      "nota": "30 fichas de bronce",
+      "umbral": 1.0,
+      "valor": 1.0
+    }
+  },
+  "exactitud": {
+    "datatur_frente_a_derivacion_independiente_desde_el_bronce": {
+      "cumple": true,
+      "nota": "máxima diferencia absoluta en puntos porcentuales, 108 meses",
+      "umbral": 1e-05,
+      "valor": 4.919455491858571e-07
+    },
+    "datatur_ocupacion_recalculada": {
+      "cumple": true,
+      "umbral": 1e-05,
+      "valor": 4.919455491858571e-07
+    },
+    "datatur_valores_fuera_de_0_100": {
+      "cumple": true,
+      "umbral": 0,
+      "valor": 0
+    },
+    "denue_ageb_espacial_frente_a_ageb_del_denue": {
+      "cumple": true,
+      "nota": "134 de 134 ubicados",
+      "umbral": 1.0,
+      "valor": 1.0
+    },
+    "denue_clase_scian_en_el_catalogo": {
+      "cumple": true,
+      "umbral": 1.0,
+      "valor": 1.0
+    },
+    "denue_coordenadas_en_la_caja_de_colima": {
+      "cumple": true,
+      "nota": "134 establecimientos de la captura 2026-11-22",
+      "umbral": 1.0,
+      "valor": 1.0
+    }
+  },
+  "trazabilidad": {
+    "cadenas_verificadas_frente_a_registros": {
+      "cumple": true,
+      "nota": "266 cadenas: 108 meses, 4 capturas y 154 AGEB",
+      "umbral": 1.0,
+      "valor": 1.0
+    }
+  }
+}

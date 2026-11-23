@@ -12,6 +12,7 @@ Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Esta
 | [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) | Ficha de entrega de E1, con enlaces a evidencias |
 | [`docs/relatoria-E1.md`](docs/relatoria-E1.md) | Relatoría (2 páginas): qué hicimos, tiempo por bloque, desviaciones y aprendizajes |
 | [`docs/E1/matriz_cumplimiento.md`](docs/E1/matriz_cumplimiento.md) | Matriz de cumplimiento: requisito del PDF, implementación, pruebas, evidencias y limitaciones |
+| [`docs/E2/geoespacial.md`](docs/E2/geoespacial.md), [`docs/etica-datos.md`](docs/etica-datos.md) | E2: fuente geoespacial (DENUE por AGEB), linaje de datos y declaración de ética y legalidad |
 | [`docs/E1/pipeline.md`](docs/E1/pipeline.md), [`contrato_datos.md`](docs/E1/contrato_datos.md) | Pipeline bronce → plata → oro, reglas de calidad y contrato de datos 1.0.0 |
 | [`docs/E1/pronostico.md`](docs/E1/pronostico.md), [`exploracion.md`](docs/E1/exploracion.md) | Pronóstico, modelos y exploración |
 | [`docs/E1/plan_sqa.md`](docs/E1/plan_sqa.md), [`seguridad.md`](docs/E1/seguridad.md), [`fiabilidad.md`](docs/E1/fiabilidad.md) | Plan de calidad (con las 12 desviaciones), seguridad y fiabilidad de la captura |
