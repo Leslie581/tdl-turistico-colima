@@ -1,8 +1,22 @@
 # Experimento factorial 2³ de E2: procedimiento de ejecución y medición
 
-Corte 2026-11-21 · Redacta: integrante B (Eimy). Diseño heredado de [`docs/E1/ruta_experimento_e2.md`](../E1/ruta_experimento_e2.md) (ruta ingeniería) y de [`laboratorio/experimento/matriz.py`](../../laboratorio/experimento/matriz.py). Código: [`laboratorio/experimento/arnes.py`](../../laboratorio/experimento/arnes.py). Pruebas: [`tests/test_arnes_experimento.py`](../../tests/test_arnes_experimento.py).
+Corte del procedimiento 2026-11-21; corte experimental 2026-11-22 (última corrida oficial, bloque `dia_2`); actualización documental 2026-11-23 · Redacta: integrante B (Eimy). Diseño heredado de [`docs/E1/ruta_experimento_e2.md`](../E1/ruta_experimento_e2.md) (ruta ingeniería) y de [`laboratorio/experimento/matriz.py`](../../laboratorio/experimento/matriz.py). Código: [`laboratorio/experimento/arnes.py`](../../laboratorio/experimento/arnes.py). Pruebas: [`tests/test_arnes_experimento.py`](../../tests/test_arnes_experimento.py).
 
-**Estado:** el arnés está implementado y probado. **Todavía no hay corridas oficiales.** Los tiempos del §6 son de un piloto de calibración: no son datos del experimento y no entran en el análisis. Este documento no contiene resultados estadísticos.
+**Estado: experimento ejecutado.** Hay **16 corridas oficiales**: 8 tratamientos × 2 réplicas, una por bloque. Están en [`resultados/corridas_2x3.jsonl`](../../laboratorio/experimento/resultados/corridas_2x3.jsonl) (SHA-256 `f5167a79…`), con la semilla 20261113 y el orden de `matriz.py`. Las 16 terminaron con `estado = ok`, sin pilotos en el archivo.
+
+| Bloque | Fecha local | Corridas | Commit del código |
+|---|---|---|---|
+| `dia_1` | 2026-11-21, de 22:16:57 a 22:17:53 | 8 (réplica 1) | `8c09877` |
+| `dia_2` | 2026-11-22, de 12:06:59 a 12:08:06 | 8 (réplica 2) | `2784148` |
+
+El código del experimento es idéntico en los dos commits.
+
+**Tres evidencias distintas:**
+- **Piloto técnico (§6):** calibración; no cuenta como corrida oficial ni entra en el análisis.
+- **Corridas oficiales:** los 16 registros de arriba.
+- **ANOVA y confirmación:** evidencias posteriores, documentadas por separado en [`anova_2x3.md`](anova_2x3.md). La confirmación de T8 frente a T1 está en su §9.1 y usa un archivo aparte, `confirmacion_2x3.jsonl`.
+
+Este documento describe el procedimiento y no repite los resultados estadísticos.
 
 ## 1. Objetivo
 Determinar qué configuración de nuestro propio procesamiento da **menor tiempo** con **cero errores**, sobre una copia local de las capturas reales del DENUE. La pregunta es causal **sobre el procesamiento**, no sobre el turismo: asignamos los niveles y aleatorizamos el orden.
@@ -38,7 +52,7 @@ Para que el factor B fuera intercambiable, `pipeline/plata_denue.py` recibe el a
   - `SALIDA`: sus filas no se recuperan idénticas al releer el archivo de salida.
 
   Los registros que una regla manda a cuarentena son calidad del dato, no errores de procesamiento, y se informan aparte (`registros_en_cuarentena`).
-- **Previsión (observación O1 de la Auditoría 8):** sobre copias íntegras se espera `tasa_error = 0` en todas las corridas oficiales. Si es así, la tasa no se analiza con ANOVA porque no tiene variación, y se informa como restricción cumplida. El arnés sí sabe contar errores: lo demuestran las pruebas con fallos sintéticos (`--fallos`), que nunca se usan en corridas oficiales.
+- **Previsión (observación O1 de la Auditoría 8):** sobre copias íntegras se espera `tasa_error = 0` en todas las corridas oficiales. Si es así, la tasa no se analiza con ANOVA porque no tiene variación, y se informa como restricción cumplida. El arnés sí sabe contar errores: lo demuestran las pruebas con fallos sintéticos (`--fallos`), que nunca se usan en corridas oficiales. **Resultado:** las 16 corridas oficiales dieron `tasa_error = 0`, así que se cumplió la previsión.
 
 ## 5. Carga de trabajo
 - **Qué es:** copias byte a byte de todas las capturas reales de `data/bronce/denue/` (`*_02_BuscarAreaAct.json`, con sus fichas y el `_01_Cuantificar`), repetidas **16 veces** (`COPIAS = 16`, fijado con el piloto del §6).
@@ -69,6 +83,7 @@ Este piloto no se usa para estimar efectos.
 - **Replicación:** 2 réplicas completas (16 corridas); cada tratamiento aparece una vez por bloque (`replica` = 1 o 2).
 - **Bloqueo:** el bloque es la **sesión de ejecución en un día distinto** (`dia_1`, `dia_2`) en el mismo equipo (`equipo_id`, un hash del nombre de la máquina, que no se publica). Las fuentes reales de variación que se bloquean son el estado del equipo (otros procesos, temperatura, caché del disco) y la fecha. Se registran `fecha_local` y `entorno` para comprobarlo.
 - **Calendario previsto:** `dia_1` el 2026-11-21 o el 2026-11-22 y `dia_2` el día siguiente, siempre antes de la entrega del 2026-11-23.
+- **Calendario ejecutado:** `dia_1` el 2026-11-21 y `dia_2` el 2026-11-22 (ver la tabla del inicio).
 
 ## 8. Registro de cada corrida
 Archivo: `laboratorio/experimento/resultados/corridas_2x3.jsonl`, una línea JSON por corrida que se agrega al terminar. Cada línea trae:
@@ -99,5 +114,8 @@ python -m laboratorio.experimento.arnes --bloque dia_1 --piloto --salida /tmp/pi
 - **Un solo equipo:** los resultados valen para esta máquina (12 CPU lógicas, Windows). En Linux el arranque de los trabajadores con `spawn` cuesta distinto. Se fuerza `spawn` en ambos sistemas para que el tratamiento sea el mismo.
 - **La carga repite datos reales:** mide rendimiento, no calidad del dato.
 - **La tarea excluye** la deduplicación diaria y `validar_plata` (§2).
-- **Tasa de error:** probablemente constante en cero (§4).
-- **Fuera de esta fase:** el ANOVA, el diseño de dos factores, la comparación 2⁴ frente a 2⁴⁻¹ y la corrida de confirmación (fases siguientes de E2).
+- **Tasa de error:** constante en cero en las 16 corridas (§4).
+- **Documentado aparte:**
+  - el ANOVA y la confirmación: [`anova_2x3.md`](anova_2x3.md);
+  - el diseño de dos factores: [`dos_factores_3x2.md`](dos_factores_3x2.md);
+  - la comparación 2⁴ frente a 2⁴⁻¹: [`diseno_completo_fraccionado.md`](diseno_completo_fraccionado.md).
