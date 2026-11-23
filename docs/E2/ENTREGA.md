@@ -1,0 +1,58 @@
+# Entrega E2 · Observatorio de Ocupación Hotelera de Colima — Manzanillo (también: TDL de Ocupación Hotelera de Colima)
+
+Equipo: Leslie Valadez Macías (integrante A, `Leslie581`) y Eimy Melissa Urbina Meza (integrante B, `eimymuz`) · Etiqueta: `e2` (**pendiente: no está creada**) · Tablero: https://tdl-turistico-colima.streamlit.app
+Repositorio: https://github.com/Leslie581/tdl-turistico-colima · Corte: **2026-11-23** · `main` en `26f7ee0` (los cuatro checks del CI en verde, según la API de GitHub)
+
+## Resumen en tres líneas
+1. Fuente geoespacial integrada y visible en el tablero: 134 de 134 establecimientos DENUE ubicados en 154 AGEB del Marco Geoestadístico (INEGI), sin datos personales ni conteos exactos de 1 o 2 establecimientos, con linaje verificado en 266 de 266 cadenas ([`geoespacial.md`](geoespacial.md)).
+2. Experimento 2³ con bloques (16 corridas, sin efectos significativos), confirmación de T8 frente a T1 (mejora de 36.8 %, p = 0.0143), diseño 3×2 con interacción significativa (p = 0.0002) y matrices 2⁴ y 2⁴⁻¹ (resolución IV, ahorro de 8 corridas).
+3. Evaluación ISO/IEC 25010 y 25012 con métricas medidas, y resultados que **no cumplen** todo: el objetivo O1 de disponibilidad (peor ventana de 7 días: 9 de 10), la actualidad de DataTur y las columnas AGEB sin diccionario. **La auditoría cruzada con otro equipo está pendiente** y no hay evidencia de ella en el repositorio.
+
+> Esta ficha enlaza evidencias que existen en el repositorio. Lo que no se pudo comprobar o no está hecho figura como tal en «Pendientes y limitaciones».
+
+## Ingeniería de Datos
+| Criterio de la rúbrica E2 | Evidencia (enlace) | Estado | Nota del equipo |
+|---|---|---|---|
+| **Fuente especializada** (45): integrada al pipeline, visible en el tablero, sin datos personales | [`geoespacial.md`](geoespacial.md), [`pipeline/geoespacial.py`](../../pipeline/geoespacial.py), [`manzanillo_oferta_ageb.csv`](../../data/oro/manzanillo_oferta_ageb.csv), [`manzanillo_ageb_poligonos.geojson`](../../data/oro/manzanillo_ageb_poligonos.geojson), [`test_geoespacial.py`](../../tests/test_geoespacial.py) | Cumple, con una limitación | Unión espacial con GeoPandas (`within`); 41 de 154 AGEB con establecimientos, 22 con conteo oculto («1-2»). Pestaña «Mapa de oferta» leída en la URL pública el 2026-11-23: 134 de 134, 41 de 154, referencia 2026-11-21 y sin excepciones. **Limitación:** la etapa es un comando aparte (`python -m pipeline.geoespacial agregar`); no corre en `pipeline.ejecutar` ni en la captura diaria |
+| **Declaración de ética y legalidad** (30): base legal, licencia, riesgos y sesgos por fuente | [`etica-datos.md`](../etica-datos.md) | Cumple | Tres fuentes (DataTur, DENUE y Marco Geoestadístico): base legal, licencia o términos, acceso, privacidad, sesgos y mitigación. Los términos del INEGI se verificaron el 2026-11-22 |
+| **Linaje de datos** (15): cada registro rastreable hasta su origen | [`pipeline/linaje.py`](../../pipeline/linaje.py), [`geoespacial.md`](geoespacial.md) §4 | Cumple | `python -m pipeline.linaje`: 266 de 266 cadenas (108 meses de DataTur, 4 capturas de oferta y 154 AGEB) hasta el bronce y el zip oficial. La captura del 2026-11-22 trae los mismos 134 establecimientos que la del 21 (otro orden y otro SHA-256), así que el agregado conserva el 21 |
+
+## Análisis Estadístico para Ciencia de Datos
+| Criterio de la rúbrica E2 | Evidencia (enlace) | Estado | Nota del equipo |
+|---|---|---|---|
+| **Diseño y principios** (25): 2³ con aleatorización, réplicas y bloqueo | [`experimento_2x3.md`](experimento_2x3.md), [`matriz_2x3.csv`](../../laboratorio/experimento/resultados/matriz_2x3.csv), [`corridas_2x3.jsonl`](../../laboratorio/experimento/resultados/corridas_2x3.jsonl) | Cumple, con una observación | 16 corridas oficiales: 8 tratamientos, 2 réplicas, 2 bloques (un día cada uno), orden aleatorizado. **Observación:** las líneas 3 y 5 de `experimento_2x3.md` (corte y «Estado») aún dicen que no hay corridas oficiales; ver «Pendientes» |
+| **Dos factores con interacción** (20) | [`dos_factores_3x2.md`](dos_factores_3x2.md), [`anova.csv`](../../laboratorio/experimento/resultados/dos_factores/anova.csv), [`efectos_simples.csv`](../../laboratorio/experimento/resultados/dos_factores/efectos_simples.csv), [`interaccion.png`](../../laboratorio/experimento/resultados/dos_factores/figuras/interaccion.png) | Cumple | Carga × procesos, 3×2 en bloques, 24 corridas: interacción F = 15.19, p = 0.0002, interpretada con efectos simples y corrección de Holm |
+| **Completo frente a fraccionado** (20) | [`diseno_completo_fraccionado.md`](diseno_completo_fraccionado.md), [`matriz_2a4_completa.csv`](../../laboratorio/experimento/resultados/matriz_2a4_completa.csv), [`matriz_2a4-1_fraccion.csv`](../../laboratorio/experimento/resultados/matriz_2a4-1_fraccion.csv) | Cumple | 2⁴ (16 corridas) y 2⁴⁻¹ con D = ABC (8 corridas, resolución IV, ahorro del 50 %), con alias. Son matrices teóricas: no hay mediciones del factor D |
+| **Análisis y confirmación** (25): efectos, supuestos y corrida de confirmación | [`anova_2x3.md`](anova_2x3.md) (§2 a §5 y §9.1), [`confirmacion/resumen.json`](../../laboratorio/experimento/resultados/confirmacion/resumen.json), [`interacciones.png`](../../laboratorio/experimento/resultados/anova/figuras/interacciones.png) | Cumple, con limitaciones | Ningún efecto significativo al 5 % en el 2³ (baja potencia); la homogeneidad falla para procesos (p = 0.0008) y se informa. Confirmación T8 frente a T1 con 12 corridas: criterios fijados antes de correr, los tres cumplidos; limitaciones en §9.2 |
+
+## Calidad en los Sistemas de Información
+| Criterio de la rúbrica E2 | Evidencia (enlace) | Estado | Nota del equipo |
+|---|---|---|---|
+| **Evaluación ISO/IEC 25010** (30): métrica medida para cada característica | [`iso25010.md`](iso25010.md), [`iso25010.json`](evidencia/iso25010.json), [`pipeline/medicion_iso.py`](../../pipeline/medicion_iso.py) | Cumple | Ocho características con métrica: 3 comprobadas y 5 parciales. El experimento es la evidencia de eficiencia de desempeño, separado del rendimiento del tablero. Fiabilidad: el objetivo O1 **no se cumple** (peor ventana 9 de 10); el indicador posterior (8 de 8 ventanas al 100 %) está aparte y no lo sustituye |
+| **Evaluación ISO/IEC 25012** (25): características medidas sobre la capa oro | [`iso25012.md`](iso25012.md), [`iso25012.json`](evidencia/iso25012.json) | Cumple, con incumplimientos declarados | DataTur y DENUE. No cumplen la actualidad de DataTur (23 meses) ni la comprensibilidad del agregado AGEB (0 de 12 columnas en el diccionario). Precisión, accesibilidad y eficiencia no se evaluaron |
+| **Antecedentes normativos** (10): ISO/IEC 9126, SQuaRE e ISO 9001 | [`antecedentes_normativos.md`](antecedentes_normativos.md) | Cumple | Se basa en el temario, el PDF y descripciones públicas; no se consultó el texto de pago de las normas |
+| **Auditoría cruzada** (PDF, obligatoria) | — | **PENDIENTE** | No hay en el repositorio un reporte de otro equipo sobre nuestro observatorio ni uno nuestro sobre el de otro equipo. Hasta tener esa evidencia no se da por cumplida ni se crea la etiqueta `e2` |
+| **Registros PSP** de ambas integrantes | [`tiempo-integrante-a.csv`](../../calidad/tiempo-integrante-a.csv), [`defectos-integrante-a.csv`](../../calidad/defectos-integrante-a.csv), [`tiempo-integrante-b.csv`](../../calidad/tiempo-integrante-b.csv), [`defectos-integrante-b.csv`](../../calidad/defectos-integrante-b.csv), [`calidad/README.md`](../../calidad/README.md) | Cumple, con tiempos de A estimados | E2: A, 323 min (estimaciones retrospectivas; defectos 29 a 33, sin minutos medidos); B, 70 min con horario de inicio y fin (defectos 15 a 26, 12 min de corrección; incluye 8 min y los defectos 24 a 26 de un borrador de ISO que no se integró) |
+| **Revisión de PR y CI** | PR [#23](https://github.com/Leslie581/tdl-turistico-colima/pull/23), [#24](https://github.com/Leslie581/tdl-turistico-colima/pull/24), [#25](https://github.com/Leslie581/tdl-turistico-colima/pull/25) y [#26](https://github.com/Leslie581/tdl-turistico-colima/pull/26); [`ci.yml`](../../.github/workflows/ci.yml) | Cumple | Cada PR fue aprobado por la otra integrante antes de fusionarse; los cuatro checks (`calidad`, `secretos`, `bloqueo-tablero`, `auditoria-dependencias`) pasan en `main` (`26f7ee0`) |
+
+## Relatoría de etapa
+[`docs/relatoria-E2.md`](../relatoria-E2.md) (máximo dos páginas; exportada a PDF A4 con márgenes de 2 cm, cuerpo de 10.5 pt y tablas de 9 pt ocupa 2 páginas). **Conformidad de A y B: pendiente.**
+
+## Tablero
+- URL: https://tdl-turistico-colima.streamlit.app. Lectura del 2026-11-23 (UTC), después de reactivar la aplicación en reposo: siete pestañas, sin excepciones, incluida «Mapa de oferta».
+- No verificado: vista en teléfono y seguimiento de `main` en cada cambio futuro; Streamlit Community Cloud puede dejar la aplicación en reposo.
+
+## Issues de la entrega anterior
+La API pública de GitHub (2026-11-23) devuelve 0 issues. No hay observaciones de los docentes registradas.
+
+## Uso de IA generativa
+Ambas integrantes usaron Claude Code (Anthropic) para código, pruebas, análisis, documentación y verificaciones; los PSP de B lo marcan fila por fila. La asistencia no cuenta como revisión independiente.
+
+## Pendientes y limitaciones vigentes
+1. **Auditoría cruzada** (obligatoria): sin reporte; es lo que falta para cerrar E2.
+2. **Objetivo O1 no cumplido** (histórico): el único fallo fue el 2026-11-10, en la puesta en marcha, y permanece en la bitácora. Detalle y límites del indicador posterior en [`iso25010.md`](iso25010.md). La validación previa (`--validar-configuracion`, `solo_validar`) no se ha ejecutado en GitHub.
+3. El diccionario de datos no incluye las columnas del agregado AGEB (acción correctiva de E3).
+4. La etapa geoespacial no forma parte de `pipeline.ejecutar`.
+5. **Encabezado de `experimento_2x3.md` por corregir (integrante B):** la línea 3 dice «Corte 2026-11-21» y la línea 5 dice «**Estado:** el arnés está implementado y probado. **Todavía no hay corridas oficiales.** … Este documento no contiene resultados estadísticos.». Ya hay 16 corridas oficiales (`corridas_2x3.jsonl`, `dia_1` el 2026-11-21 y `dia_2` el 2026-11-22), analizadas en `anova_2x3.md`. Hay que actualizar el corte y el estado; el piloto del §6 sigue siendo válido como calibración. No se modificó ese documento.
+6. RNF-PRI-03 (ninguna celda publicada con menos de 3 establecimientos) figuraba NO CUMPLIDO para `manzanillo_oferta_hospedaje.csv` en [`requerimientos.md`](../E1/requerimientos.md) (estado de E1; no se re-midió). El agregado por AGEB sí oculta las celdas de 1 y 2.
+7. Conformidad de A y B con la relatoría y creación de la etiqueta `e2`, solo cuando exista la evidencia de la auditoría cruzada.

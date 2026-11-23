@@ -4,7 +4,7 @@ Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Esta
 
 **Qué observa:** ocupación hotelera mensual de Manzanillo (SECTUR/DataTur, 2016–2024) y la oferta de hospedaje (INEGI, DENUE, captura diaria).
 **Para quién:** propietarios, administradores, gerentes e inversionistas hoteleros (hipótesis por validar).
-**Estado:** **E1 entregada** (etiqueta `e1` sobre `134c333`; no se mueve). Tablero: <https://tdl-turistico-colima.streamlit.app>. Las **mejoras de E1** (fortalecimiento y correcciones) están en la rama `e1/mejoras-postentrega`: se resumen al final de [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) y figuran con su fecha en cada documento técnico. Siguen vigentes las limitaciones declaradas: la disponibilidad de la captura (85.7 %, 6 de 7 ejecuciones) **no** alcanza el objetivo de 95 %, y la copia externa del bronce es puntual (al 2026-11-14) y no se actualiza sola.
+**Estado:** **E2 en cierre** (fuente geoespacial, experimentos y evaluación ISO fusionados en `main`; **la auditoría cruzada con otro equipo sigue pendiente** y la etiqueta `e2` no está creada: [`docs/E2/ENTREGA.md`](docs/E2/ENTREGA.md)). **E1 entregada** (etiqueta `e1` sobre `134c333`; no se mueve). Tablero: <https://tdl-turistico-colima.streamlit.app>. Las **mejoras de E1** (fortalecimiento y correcciones) se fusionaron a `main` (PR #20): se resumen al final de [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) y figuran con su fecha en cada documento técnico. Siguen vigentes las limitaciones declaradas: el objetivo O1 de disponibilidad de la captura **no se cumple** (85.7 % con 6 de 7 ejecuciones al corte de E1; en E2, peor ventana de 7 días 9 de 10 y tasa global 93.8 % al 2026-11-22; [`iso25010.md`](docs/E2/iso25010.md)), y la copia externa del bronce es puntual (al 2026-11-14) y no se actualiza sola.
 
 ## Documentación
 | Documento | Contenido |
@@ -12,7 +12,10 @@ Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Esta
 | [`docs/E1/ENTREGA.md`](docs/E1/ENTREGA.md) | Ficha de entrega de E1, con enlaces a evidencias |
 | [`docs/relatoria-E1.md`](docs/relatoria-E1.md) | Relatoría (2 páginas): qué hicimos, tiempo por bloque, desviaciones y aprendizajes |
 | [`docs/E1/matriz_cumplimiento.md`](docs/E1/matriz_cumplimiento.md) | Matriz de cumplimiento: requisito del PDF, implementación, pruebas, evidencias y limitaciones |
+| [`docs/E2/ENTREGA.md`](docs/E2/ENTREGA.md), [`docs/relatoria-E2.md`](docs/relatoria-E2.md) | Ficha de entrega de E2 (criterio por criterio, con pendientes) y relatoría de la etapa |
 | [`docs/E2/geoespacial.md`](docs/E2/geoespacial.md), [`docs/etica-datos.md`](docs/etica-datos.md) | E2: fuente geoespacial (DENUE por AGEB), linaje de datos y declaración de ética y legalidad |
+| [`anova_2x3.md`](docs/E2/anova_2x3.md), [`dos_factores_3x2.md`](docs/E2/dos_factores_3x2.md), [`diseno_completo_fraccionado.md`](docs/E2/diseno_completo_fraccionado.md) | E2: experimento factorial 2³ con confirmación, diseño de dos factores y diseños 2⁴ y 2⁴⁻¹ |
+| [`iso25010.md`](docs/E2/iso25010.md), [`iso25012.md`](docs/E2/iso25012.md), [`antecedentes_normativos.md`](docs/E2/antecedentes_normativos.md) | E2: evaluación ISO/IEC 25010 y 25012 y antecedentes normativos |
 | [`docs/E1/pipeline.md`](docs/E1/pipeline.md), [`contrato_datos.md`](docs/E1/contrato_datos.md) | Pipeline bronce → plata → oro, reglas de calidad y contrato de datos 1.0.0 |
 | [`docs/E1/pronostico.md`](docs/E1/pronostico.md), [`exploracion.md`](docs/E1/exploracion.md) | Pronóstico, modelos y exploración |
 | [`docs/E1/plan_sqa.md`](docs/E1/plan_sqa.md), [`seguridad.md`](docs/E1/seguridad.md), [`fiabilidad.md`](docs/E1/fiabilidad.md) | Plan de calidad (con las 12 desviaciones), seguridad y fiabilidad de la captura |
@@ -23,7 +26,7 @@ Proyecto integrador **Trusted Data Lab** (Ingeniería de Datos · Análisis Esta
 ```
 .github/workflows/   ci.yml (pruebas, seguridad, dependencias) y captura-diaria.yml (DENUE: programada + manual)
 .github/rulesets/    proteger-main.json (protección de main, activa)
-docs/                E0/, E1/ (entrega), fuentes/; E2/ a E4/ reservadas
+docs/                E0/, E1/ y E2/ (entregas), fuentes/; E3/ y E4/ reservadas
 calidad/             PSP (tiempo y defectos por integrante), auditorías, riesgos, bitácora de capturas
 extractores/         captura ética de DENUE y DataTur
 pipeline/            bronce → plata → oro con cuarentena, verificaciones y respaldo del bronce
