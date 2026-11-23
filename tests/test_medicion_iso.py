@@ -39,8 +39,11 @@ def test_los_incumplimientos_se_informan_y_no_se_ocultan():
     r = mi.medir_25012(corte="2026-11-22")
     assert r["actualidad"]["datatur_rezago_en_meses"]["valor"] == 23 and not r["actualidad"]["datatur_rezago_en_meses"]["cumple"]
     assert not r["comprensibilidad"]["columnas_documentadas_en_el_diccionario"]["manzanillo_oferta_ageb"]["cumple"]
+    celdas = r["confidencialidad"]["oferta_municipal_celdas_con_menos_de_3_establecimientos"]                 # RNF-PRI-03: incumplimiento real, no se oculta
+    assert not celdas["cumple"] and celdas["valor"] == {"celdas": 28, "con_1": 12, "con_2": 16, "total_de_celdas": 88}
     texto = (RAIZ / "docs" / "E2" / "iso25012.md").read_text(encoding="utf-8")
     assert "23 meses" in texto and "0 de 12 columnas" in texto               # el documento declara lo mismo que mide el código
+    assert "28 de 88 celdas" in texto and "RNF-PRI-03" in texto and "**Oferta municipal: No**" in texto
 
 
 def test_la_evidencia_de_25010_trae_las_metricas_y_el_documento_cubre_las_ocho_caracteristicas():

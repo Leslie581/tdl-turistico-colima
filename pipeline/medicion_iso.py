@@ -154,9 +154,13 @@ def medir_25012(raiz: Path = RAIZ, corte: str = CORTE_POR_OMISION) -> dict:
     columnas = [c for nombre in ("manzanillo_ocupacion_mensual", "manzanillo_oferta_hospedaje", "manzanillo_oferta_ageb") for c in _oro(raiz, nombre + ".csv").columns]
     con_dato = [c for c in columnas if any(p in c.lower() for p in PERSONALES)]
     exactos = int((~ocultas & (ag["rango"] == "1-2")).sum())
+    n_ofe = pd.to_numeric(ofe["establecimientos"])
     out["confidencialidad"] = {
         "columnas_de_datos_personales_o_de_establecimientos_individuales": _m(con_dato, [], not con_dato),
         "ageb_con_1_o_2_establecimientos_con_conteo_exacto": _m(exactos, 0, exactos == 0),
+        "oferta_municipal_celdas_con_menos_de_3_establecimientos": _m(
+            {"celdas": int((n_ofe < 3).sum()), "con_1": int((n_ofe == 1).sum()), "con_2": int((n_ofe == 2).sum()), "total_de_celdas": int(len(n_ofe))}, 0, not (n_ofe < 3).any(),
+            "RNF-PRI-03 (docs/E1/requerimientos.md): ninguna celda publicada con menos de 3; el archivo publica el conteo exacto de esas celdas"),
     }
     # --- Comprensibilidad
     dic = pd.read_csv(raiz / "data" / "oro" / "diccionario_datos.csv", dtype=str)

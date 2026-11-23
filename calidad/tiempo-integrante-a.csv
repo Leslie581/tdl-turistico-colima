@@ -61,3 +61,9 @@ fecha,inicio,fin,interrupcion_min,fase,actividad,minutos_estimados
 2026-11-22,,,,documentacion,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Comparacion de las capturas DENUE del 21 y 22 de noviembre y documentacion de su equivalencia en docs/E2/geoespacial.md e iso25012.md (CAP)",15
 2026-11-22,,,,documentacion,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Integracion de las aportaciones ISO 25010 de Eimy y revision del objetivo O1 (recalculo del objetivo O1 por ventanas de 7 dias, RF-01 con la bitacora, mediciones operativas, compatibilidad, verificar_e0 y criterios de aceptacion en ISO 25010) (O1)",35
 2026-11-22,,,,codigo,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Validacion previa de configuracion de la captura (--validar-configuracion y solo_validar en el workflow) e indicador de disponibilidad posterior a la correccion de O1 (VAL)",18
+2026-11-22,,,,documentacion,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Correccion y verificacion del metodo del p90 de captura en docs/E2/iso25010.md (PR #25, commit 206a35c) (P90)",15
+2026-11-22,,,,documentacion,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Cierre documental de E2: relatoria, ficha ENTREGA y estado en el README (PR #27, commit 6b028af) (CIE)",35
+2026-11-23,,,,revision,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Revision y aprobacion de los PR de B (PR #26 el 2026-11-22; PR #28 y #29 el 2026-11-23) e integracion de los PR #23, #24, #25, #27 y #28 (REV)",25
+2026-11-23,,,,revision,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Verificacion del tablero publico: siete pestanas y mapa operativo (TAB)",10
+2026-11-23,,,,revision,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Auditoria interna final de E2 contra la rubrica y el repositorio (AUD)",20
+2026-11-23,,,,documentacion,"[E2][ESTIMADO RETROSPECTIVO POR LESLIE] Correcciones finales de privacidad (RNF-PRI-03), ISO 25010 y 25012, ENTREGA y README (COR)",15

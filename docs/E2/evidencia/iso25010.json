@@ -85,8 +85,8 @@
     },
     "operativa_pipeline_bronce_a_plata_denue_s": {
       "capturas_en_la_plata": 14,
-      "max": 0.26,
-      "min": 0.21,
+      "max": 0.2,
+      "min": 0.18,
       "nota": "procesar_capturas en memoria (sin escribir), esta máquina; no es el experimento estadístico ni la carga técnica de 16 copias",
       "repeticiones": 3
     },
@@ -98,7 +98,7 @@
     },
     "union_espacial_y_agregado_s": {
       "establecimientos": 134,
-      "mejor_de_3": 0.0088,
+      "mejor_de_3": 0.0072,
       "poligonos": 154
     }
   },
@@ -176,9 +176,9 @@
     }
   },
   "mantenibilidad": {
-    "lineas_de_codigo": 7870,
-    "lineas_de_prueba": 4539,
-    "relacion_prueba_codigo": 0.577,
+    "lineas_de_codigo": 7874,
+    "lineas_de_prueba": 4550,
+    "relacion_prueba_codigo": 0.578,
     "ruff": {
       "codigo_de_salida": 0,
       "resumen": "All checks passed!"
