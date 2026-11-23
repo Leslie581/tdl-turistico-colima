@@ -70,7 +70,7 @@ def test_totales_de_a_separan_prototipo_de_desarrollo_formal():
     assert suma(geo) == 90 and len(geo) == 5 and all("ESTIMADO RETROSPECTIVO POR LESLIE" in f["actividad"] for f in geo)
     iso = [f for f in e2 if "(ISO)" in f["actividad"]]
     assert [int(f["minutos_estimados"]) for f in iso] == [35, 35, 25, 25] and all("ESTIMADO RETROSPECTIVO POR LESLIE" in f["actividad"] for f in iso)
-    assert suma(iso) == 120 and suma(e2) == 443                       # Calidad 120 + geoespacial 90 + integración 45 + comparación de capturas 15 + O1 35 + validación e indicador posterior 18 + cierre de E2 120
+    assert suma(iso) == 120 and suma(e2) == 533                       # Calidad 120 + geoespacial 90 + integración 45 + comparación de capturas 15 + O1 35 + validación e indicador posterior 18 + cierre de E2 120 + auditoría cruzada 90
     cap = [f for f in e2 if "(CAP)" in f["actividad"]]
     assert len(cap) == 1 and suma(cap) == 15 and "ESTIMADO RETROSPECTIVO POR LESLIE" in cap[0]["actividad"]
     assert not [f for f in e2 if "PENDIENTE DE CONFIRMACION" in f["actividad"]]
@@ -81,13 +81,16 @@ def test_totales_de_a_separan_prototipo_de_desarrollo_formal():
         assert len(fs) == 1 and int(fs[0]["minutos_estimados"]) == minutos and "ESTIMADO RETROSPECTIVO POR LESLIE" in fs[0]["actividad"], etiqueta
         assert fs[0]["inicio"] == fs[0]["fin"] == fs[0]["interrupcion_min"] == ""                     # sin horarios inventados
     assert sum(cierre.values()) == 120
+    xau = [f for f in e2 if "(XAU)" in f["actividad"]]
+    assert len(xau) == 1 and suma(xau) == 90 and "ESTIMADO RETROSPECTIVO POR LESLIE" in xau[0]["actividad"]   # auditoría cruzada E2 (aproximada, con ~45 min de revisión conjunta)
+    assert xau[0]["inicio"] == xau[0]["fin"] == xau[0]["interrupcion_min"] == ""
     o1 = [f for f in e2 if "(O1)" in f["actividad"]]
     assert len(o1) == 1 and suma(o1) == 35 and "ESTIMADO RETROSPECTIVO POR LESLIE" in o1[0]["actividad"]   # aportaciones ISO 25010 de Eimy y revisión de O1
     val = [f for f in e2 if "(VAL)" in f["actividad"]]
     assert len(val) == 1 and suma(val) == 18 and "ESTIMADO RETROSPECTIVO POR LESLIE" in val[0]["actividad"]   # validación previa e indicador posterior de O1
     integ = [f for f in e2 if "(INT)" in f["actividad"]]
     assert len(integ) == 1 and suma(integ) == 45 and "ESTIMADO RETROSPECTIVO POR LESLIE" in integ[0]["actividad"]   # integración de ISO 25010 con Estadística
-    assert suma(filas) + suma(mejoras) + suma(e2) == 2153
+    assert suma(filas) + suma(mejoras) + suma(e2) == 2243
 
 
 def test_el_registro_de_mejoras_no_duplica_tiempo_del_principal():
@@ -149,6 +152,12 @@ def test_b_conserva_sus_registros_propios_sin_horarios_inventados():
     for f in filas:
         if "RETROSPECTIVO" in f["actividad"]:
             assert f["inicio"] == f["fin"] == ""
+    # E2 de B: 73 min con horario + 45 min aproximados de la revisión conjunta de la auditoría cruzada = 118 (sin duplicar actividades)
+    from datetime import datetime
+    e2 = [f for f in filas if f["actividad"].startswith("[E2]")]
+    medidos = sum((datetime.strptime(f["fin"], "%H:%M") - datetime.strptime(f["inicio"], "%H:%M")).seconds // 60 - int(f["interrupcion_min"] or 0) for f in e2 if f["inicio"])
+    aprox = [f for f in e2 if "RETROSPECTIVO" in f["actividad"]]
+    assert medidos == 73 and len(aprox) == 1 and int(aprox[0]["minutos_estimados"]) == 45 and medidos + 45 == 118
 
 
 def test_defectos_de_a_tienen_numeracion_continua_y_sin_duplicados():

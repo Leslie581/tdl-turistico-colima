@@ -1,6 +1,6 @@
 # Relatoría E2 · Observatorio de Ocupación Hotelera de Colima — Manzanillo
 
-Equipo: Leslie Valadez Macías (A) y Eimy Melissa Urbina Meza (B) · Periodo documentado: 2026-11-21 a 2026-11-23 (entrega: 2026-11-23) · **Estado: revisión final; auditoría cruzada documentada, pendiente de revisión y entrega.** No hay conformidad registrada de A ni de B.
+Equipo: Leslie Valadez Macías (A) y Eimy Melissa Urbina Meza (B) · Periodo documentado: 2026-11-21 a 2026-11-23 (entrega: 2026-11-23) · **Estado: revisión final; auditoría cruzada enviada, recepción por confirmar.** Sin conformidad registrada de A ni de B.
 Horas de la Ciudad de México (UTC−6). Los tiempos de B tienen horario de inicio y fin en su PSP; los de A son estimaciones retrospectivas confirmadas por Leslie.
 
 ## 1. Qué nos propusimos
@@ -20,9 +20,9 @@ Integrar una fuente geoespacial visible en el tablero, sin datos personales y co
 | 22-nov | Corrección del CI de `a38ccb0` | B | 12 min | `9abfaa9` |
 | 22-nov y 23-nov | Aclaración del p90, cierre documental, revisión y aprobación de los PR de B (#26, #28 y #29), integración de los PR #23, #24, #25, #27 y #28, verificación del tablero, auditoría interna final y correcciones finales | A | 120 min | PR #25, #27 y #30; aprobaciones de #26, #28 y #29 |
 | 23-nov | Corrección de `experimento_2x3.md` y revisión del PSP | B | 3 min | PR #28, #29 |
-| 23-nov | Auditoría cruzada: valoración de la que recibimos y auditoría de su observatorio (borrador) | A, con apoyo de IA | sin registrar | [recibida](E2/auditoria-cruzada-recibida.md), [realizada](E2/auditoria-cruzada-realizada.md) |
+| 23-nov | Auditoría cruzada: informe, revisión conjunta y envío | A 90 min y B 45 min (aprox.; 45 conjuntos) | PR #33 |
 
-Total en el PSP: A, 443 min (estimaciones retrospectivas confirmadas por Leslie, no cronometraje); B, 73 min en E2 (incluye 8 min de un borrador de ISO que no se integró).
+Total en el PSP: A, 533 min (estimaciones retrospectivas confirmadas por Leslie, no cronometraje); B, 118 min en E2 (73 con horario, 45 aproximados de la revisión conjunta y 8 de un borrador de ISO no integrado).
 
 ## 3. Qué decidimos y por qué
 1. **Fuente geoespacial:** DENUE ya capturado en E1 unido a las AGEB del Marco Geoestadístico, con conteos por AGEB. En el **agregado por AGEB** se descartó publicar coordenadas o conteos exactos de 1 o 2 establecimientos, siguiendo el criterio de RNF-PRI-03 (ninguna celda con menos de 3), y se oculta ese rango; la oferta municipal no lo aplica y conserva el incumplimiento (§4). Los polígonos se leen con `pyshp` porque Windows bloquea GDAL (defecto 29).
@@ -49,7 +49,7 @@ Total en el PSP: A, 443 min (estimaciones retrospectivas confirmadas por Leslie,
 **Calidad.** Con una captura diaria, una ventana de 7 días trae unas 7 ejecuciones y un solo fallo la lleva bajo 95 %; medir por ventanas no es lo mismo que la tasa global. El p90 depende del método: con las mismas 14 capturas da 4.26 s con `lower` y 5.10 s con interpolación lineal; con la bitácora posterior (n = 15), el lineal da 4.98 s.
 
 ## 6. Evidencias
-PR #23 a #30 (aprobaciones, la observación sobre el #23 y el estado del CI en [`ENTREGA.md`](E2/ENTREGA.md), que enlaza cada evidencia por criterio) · Ingeniería de Datos: [`geoespacial.md`](E2/geoespacial.md) · Estadística: [`anova_2x3.md`](E2/anova_2x3.md), [`dos_factores_3x2.md`](E2/dos_factores_3x2.md) y su gráfica de interacción [`interaccion.png`](../laboratorio/experimento/resultados/dos_factores/figuras/interaccion.png) · Calidad: [`iso25010.md`](E2/iso25010.md), [`iso25012.md`](E2/iso25012.md) y [`calidad/`](../calidad/README.md).
+PR #23 a #33 (aprobaciones, observación sobre el #23 y CI: [`ENTREGA.md`](E2/ENTREGA.md)) · Auditoría cruzada: [recibida](E2/auditoria-cruzada-recibida.md) y [realizada](E2/auditoria-cruzada-realizada.md) (enviada; recepción por confirmar) · Ingeniería de Datos: [`geoespacial.md`](E2/geoespacial.md) · Estadística: [`anova_2x3.md`](E2/anova_2x3.md), [`dos_factores_3x2.md`](E2/dos_factores_3x2.md) y su gráfica de interacción [`interaccion.png`](../laboratorio/experimento/resultados/dos_factores/figuras/interaccion.png) · Calidad: [`iso25010.md`](E2/iso25010.md), [`iso25012.md`](E2/iso25012.md) y [`calidad/`](../calidad/README.md).
 
 ## Uso de IA generativa
 Claude Code (Anthropic), en ambas cuentas: código, pruebas, análisis, documentación y verificaciones. Los PSP de B lo marcan fila por fila. No cuenta como revisión independiente.

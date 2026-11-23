@@ -7,7 +7,7 @@
 | **Versión de nuestro proyecto que auditaron** | `73e741ca3bc9130ad63bb0bb2f6a1a865210b359`: nuestro `main` tras el PR #32 |
 | **Fecha del informe** | 2026-11-23 |
 | **Estado del informe** | Borrador del equipo auditor, «listo para revisión y firma»; sin firma ni acta de entrega. Este documento lo registra, lo verifica y lo valora; **no es su respuesta formal** |
-| **Quién lo valora** | Equipo TDL de Ocupación Hotelera de Colima. Valoración elaborada por A con asistencia de Claude Code; pendiente de revisión de A y B |
+| **Quién lo valora** | Equipo TDL de Ocupación Hotelera de Colima. Valoración elaborada por A con asistencia de Claude Code; revisada en conjunto por A y B (ver [`auditoria-cruzada-realizada.md`](auditoria-cruzada-realizada.md), sección 13); sin firmas |
 
 Este documento separa tres cosas: lo que **dice** el informe recibido (sección 1), lo que **verificamos** contra nuestro repositorio (sección 3) y lo que **concluimos** (secciones 2, 4 y 5). La auditoría que **realizamos** al otro equipo está en [`auditoria-cruzada-realizada.md`](auditoria-cruzada-realizada.md).
 
@@ -75,4 +75,4 @@ Es un borrador **sujeto a la validación de A y B**; solo recoge decisiones y do
 
 - Es documental: se contrastó el informe con nuestro repositorio y no se contactó al equipo auditor.
 - No consta cómo ni cuándo se nos entregó formalmente el informe; lo conocimos por su repositorio.
-- La respuesta de la sección 4 no está aprobada por A ni por B.
+- La respuesta de la sección 4 no consta como aprobada ni enviada al equipo auditor; no hay revalidación de su parte.
