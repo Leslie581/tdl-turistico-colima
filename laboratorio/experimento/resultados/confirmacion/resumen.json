@@ -1,0 +1,81 @@
+{
+ "corridas_registradas": 12,
+ "corridas_fallidas": 0,
+ "tasa_error": {
+  "T1": [
+   0.0
+  ],
+  "T8": [
+   0.0
+  ]
+ },
+ "por_tratamiento": {
+  "T1": {
+   "n": 6,
+   "media_s": 10.459222666666667,
+   "de_s": 3.047671488451645,
+   "tiempos_s": [
+    6.57367,
+    10.819709,
+    7.657497,
+    10.388983,
+    12.453905,
+    14.861572
+   ]
+  },
+  "T8": {
+   "n": 6,
+   "media_s": 6.605317833333333,
+   "de_s": 1.856097947014803,
+   "tiempos_s": [
+    4.696483,
+    8.314764,
+    6.714404,
+    4.109149,
+    7.166445,
+    8.630662
+   ]
+  }
+ },
+ "evaluable": true,
+ "diferencia_T1_menos_T8_s": 3.853904833333334,
+ "mejora_relativa": 0.3684695274358821,
+ "ee_diferencia_s": 1.4567887681720613,
+ "gl_welch": 8.260517034488046,
+ "ic95_diferencia_s": [
+  0.5128962367508412,
+  7.194913429915827
+ ],
+ "welch_unilateral": {
+  "t": 2.6454795077594593,
+  "p": 0.014331054521630079
+ },
+ "complementario_mann_whitney_unilateral": {
+  "U": 30.0,
+  "p": 0.032467532467532464,
+  "nota": "no sustituye a Welch; sin supuesto de normalidad"
+ },
+ "normalidad_shapiro": {
+  "T1": 0.8953471134551332,
+  "T8": 0.4473806737877544
+ },
+ "criterios": {
+  "1_media_T8_en_intervalo_de_prediccion": {
+   "intervalo_s": [
+    0.68,
+    8.58
+   ],
+   "media_T8_s": 6.605317833333333,
+   "cumple": true
+  },
+  "2a_welch_unilateral_p_menor_005": {
+   "p": 0.014331054521630079,
+   "cumple": true
+  },
+  "2b_mejora_al_menos_20pct": {
+   "mejora": 0.3684695274358821,
+   "cumple": true
+  }
+ },
+ "confirmada": true
+}

@@ -1,0 +1,95 @@
+{
+ "sha256_entrada": "722c1acb8c4a2b6918ff00bfe7aecf824c2f438c7e25088a7b5ca0a89f3c1913",
+ "n": 24,
+ "formula": "y ~ C(bloque, Sum) + C(carga, Sum) * C(procesos, Sum)",
+ "rango_matriz": 9,
+ "gl_residuo": 15,
+ "tasa_error_max": 0.0,
+ "medias_carga": [
+  {
+   "carga": 1,
+   "n": 8,
+   "media_s": 1.758348,
+   "de_s": 1.404403
+  },
+  {
+   "carga": 5,
+   "n": 8,
+   "media_s": 3.127985,
+   "de_s": 1.013425
+  },
+  {
+   "carga": 10,
+   "n": 8,
+   "media_s": 5.367193,
+   "de_s": 0.951303
+  }
+ ],
+ "medias_procesos": [
+  {
+   "procesos": 1,
+   "n": 12,
+   "media_s": 2.808608,
+   "de_s": 2.257525
+  },
+  {
+   "procesos": 4,
+   "n": 12,
+   "media_s": 4.027076,
+   "de_s": 1.185716
+  }
+ ],
+ "supuestos": {
+  "normalidad_shapiro_residuos": {
+   "W": 0.9742119681195781,
+   "p": 0.770372940801292
+  },
+  "homogeneidad_brown_forsythe_celdas": {
+   "F": 1.593005674589977,
+   "p": 0.2125014942277447
+  },
+  "de_por_celda_s": {
+   "1x/1p": 0.15610075640538493,
+   "1x/4p": 0.6251670353937416,
+   "5x/1p": 0.7951264248078205,
+   "5x/4p": 0.8014501119164663,
+   "10x/1p": 1.253747736454022,
+   "10x/4p": 0.7246725135919444
+  },
+  "razon_varianzas_max_min": 64.5075145325429,
+  "independencia_durbin_watson": 2.0363616814127132,
+  "residuo_vs_secuencia": {
+   "pendiente_s_por_corrida": -0.0010913860869566075,
+   "r": -0.019820722524219708,
+   "p": 0.9267565284370205
+  },
+  "atipicos": {
+   "max_abs_residuo_studentizado": 3.167987366414519,
+   "secuencias_abs_mayor_3": [
+    3
+   ],
+   "max_cook": 0.41754384451467763,
+   "umbral_cook_4_n": 0.16666666666666666,
+   "secuencias_cook_mayor_4_n": [
+    1,
+    3,
+    19
+   ]
+  },
+  "adecuacion": {
+   "r2": 0.9566511632708029,
+   "r2_ajustado": 0.9335317836818978,
+   "cme": 0.2324472667831555,
+   "gl_residuo": 15
+  },
+  "box_cox": {
+   "lambda_max_verosimilitud": 0.15,
+   "ic95_lambda": [
+    -0.04,
+    0.4
+   ],
+   "incluye_1": false,
+   "incluye_0_log": true
+  }
+ }
+}
