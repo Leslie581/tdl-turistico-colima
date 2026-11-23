@@ -1,0 +1,8 @@
+analisis,termino,F,p
+log(tiempo_s),A carga,307.783555,0.0
+log(tiempo_s),B procesos,229.860395,0.0
+log(tiempo_s),AB carga x procesos,123.364958,0.0
+tiempo_s con HC3,A carga,47.457123,0.0
+tiempo_s con HC3,B procesos,45.07863,7e-06
+tiempo_s con HC3,AB carga x procesos,7.674044,0.005066
+Kruskal-Wallis (6 celdas),tratamiento,19.13,0.001818

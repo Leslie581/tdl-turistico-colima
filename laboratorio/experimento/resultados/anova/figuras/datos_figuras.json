@@ -1,0 +1,58 @@
+{
+ "principales": {
+  "procesos": [
+   8.193827625,
+   6.530732875
+  ],
+  "analizador": [
+   7.478915875,
+   7.245644625
+  ],
+  "formato": [
+   8.240889,
+   6.4836715
+  ]
+ },
+ "interacciones": {
+  "procesosxanalizador|analizador=json": [
+   7.84238175,
+   7.11545
+  ],
+  "procesosxanalizador|analizador=orjson": [
+   8.5452735,
+   5.94601575
+  ],
+  "procesosxformato|formato=csv": [
+   8.909137999999999,
+   7.572640000000001
+  ],
+  "procesosxformato|formato=parquet": [
+   7.4785172499999994,
+   5.48882575
+  ],
+  "analizadorxformato|formato=csv": [
+   8.00624325,
+   8.475534750000001
+  ],
+  "analizadorxformato|formato=parquet": [
+   6.9515885,
+   6.0157545
+  ],
+  "ABC|json/csv": [
+   8.126069000000001,
+   7.8864175
+  ],
+  "ABC|orjson/csv": [
+   9.692207,
+   7.2588625
+  ],
+  "ABC|json/parquet": [
+   7.5586945,
+   6.3444825
+  ],
+  "ABC|orjson/parquet": [
+   7.398339999999999,
+   4.6331690000000005
+  ]
+ }
+}
