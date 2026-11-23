@@ -82,6 +82,17 @@
       "cumple": true,
       "umbral": [],
       "valor": []
+    },
+    "oferta_municipal_celdas_con_menos_de_3_establecimientos": {
+      "cumple": false,
+      "nota": "RNF-PRI-03 (docs/E1/requerimientos.md): ninguna celda publicada con menos de 3; el archivo publica el conteo exacto de esas celdas",
+      "umbral": 0,
+      "valor": {
+        "celdas": 28,
+        "con_1": 12,
+        "con_2": 16,
+        "total_de_celdas": 88
+      }
     }
   },
   "conformidad": {

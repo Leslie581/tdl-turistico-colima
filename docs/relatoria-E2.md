@@ -18,9 +18,10 @@ Integrar una fuente geoespacial visible en el tablero, sin datos personales y co
 | 22-nov | ISO 25010 y 25012, antecedentes normativos | A | 120 min | `d79f387`, `99047e8` |
 | 22-nov | Integración de la evidencia estadística, objetivo O1 y validación previa de la captura | A | 113 min | PR #24 (`c3bea67`) |
 | 22-nov | Corrección del CI de `a38ccb0` | B | 12 min | `9abfaa9` |
-| 22-nov | Aclaración del p90 y revisión cruzada de los PR #23 a #26 | A y B | sin registrar | PR #25, #26 |
+| 22-nov y 23-nov | Aclaración del p90, cierre documental, revisión e integración de PR, verificación del tablero, auditoría interna final y correcciones | A | 120 min | PR #25, #27 |
+| 23-nov | Corrección de `experimento_2x3.md` y revisión del PSP | B | 3 min | PR #28, #29 |
 
-Total en el PSP: A, 323 min (estimados); B, 70 min en E2 (incluye 8 min de un borrador de ISO que no se integró).
+Total en el PSP: A, 443 min (estimaciones retrospectivas confirmadas por Leslie, no cronometraje); B, 73 min en E2 (incluye 8 min de un borrador de ISO que no se integró).
 
 ## 3. Qué decidimos y por qué
 1. **Fuente geoespacial:** DENUE ya capturado en E1 unido a las AGEB del Marco Geoestadístico, con conteos por AGEB. Se descartó publicar coordenadas o conteos exactos de 1 o 2 establecimientos, siguiendo el criterio de RNF-PRI-03 (ninguna celda con menos de 3), y se oculta ese rango. Los polígonos se leen con `pyshp` porque Windows bloquea GDAL (defecto 29).
@@ -29,8 +30,8 @@ Total en el PSP: A, 323 min (estimados); B, 70 min en E2 (incluye 8 min de un bo
 
 ## 4. Qué salió mal y cómo lo corregimos
 - **O1 no se cumple:** la peor ventana de 7 días tiene 9 éxitos y 1 fallo (90 %); la tasa global es 93.8 % (15 de 16). El único fallo fue el **10-nov**, en la puesta en marcha, sin `INEGI_TOKEN` configurado, y sigue en la bitácora. Las 8 ventanas completas posteriores dan 100 % (observado, sin extrapolar). Se añadió `--validar-configuracion`; no se ha probado en GitHub.
-- **ISO 25012:** no cumplen la actualidad de DataTur (23 meses) ni la comprensibilidad del agregado AGEB (0 de 12 columnas en el diccionario; queda para E3).
-- **Defectos de A (sin minutos medidos):** 29 (GDAL bloqueado), 30 (clave de AGEB rural rechazada), 32 (encuadre del mapa con islas) y 33 (columna inexistente en el medidor).
+- **ISO 25012:** no cumplen la actualidad de DataTur (23 meses), la comprensibilidad del agregado AGEB (0 de 12 columnas en el diccionario; queda para E3) ni RNF-PRI-03: la oferta municipal publica 28 de 88 celdas con menos de 3 establecimientos. Decisión del 23-nov: mantener y documentar, sin suprimir; NO CUMPLE (riesgo y mitigación en `etica-datos.md`).
+- **Defectos de A (sin minutos medidos):** 29 (GDAL bloqueado), 30 (clave de AGEB rural rechazada), 32 (encuadre del mapa con islas), 33 (columna inexistente en el medidor), 34 (afirmación incorrecta del p90 en ISO 25010), 35 (confidencialidad de ISO 25012 sin medir la oferta municipal) y 36 (la ética decía que el bronce no se redistribuye, pero está en un repositorio público).
 - **Defectos de B:** 23 (el check `calidad` falló en `a38ccb0` por diferencias numéricas entre Windows y Ubuntu; corregido en `9abfaa9`) y 21 (CRLF en un JSON); del 24 al 26, errores de documentación en su borrador de ISO (no integrado), incluido el método del p90.
 - **Pendiente:** la etapa geoespacial es un comando aparte (`python -m pipeline.geoespacial`) que no corre en `pipeline.ejecutar`; el agregado conserva la captura del 21-nov (la del 22 trae los mismos 134 establecimientos).
 
@@ -40,7 +41,7 @@ Total en el PSP: A, 323 min (estimados); B, 70 min en E2 (incluye 8 min de un bo
 **Calidad.** Con una captura diaria, una ventana de 7 días trae unas 7 ejecuciones y un solo fallo la lleva bajo 95 %; medir por ventanas no es lo mismo que la tasa global. El p90 depende del método (4.26 s con `lower`, 4.98 s lineal).
 
 ## 6. Evidencias
-PR #23 a #26 (aprobados por la otra integrante; checks de `main` en verde en `26f7ee0`) · [`ENTREGA.md`](E2/ENTREGA.md), que enlaza cada evidencia por criterio · [`calidad/`](../calidad/README.md).
+PR #23 a #28 (aprobaciones, la observación sobre el #23 y el estado del CI en [`ENTREGA.md`](E2/ENTREGA.md), que enlaza cada evidencia por criterio) · [`calidad/`](../calidad/README.md).
 
 ## Uso de IA generativa
 Claude Code (Anthropic), en ambas cuentas: código, pruebas, análisis, documentación y verificaciones. Los PSP de B lo marcan fila por fila. No cuenta como revisión independiente.
